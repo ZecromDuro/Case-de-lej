@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notre Histoire — La Case de LEJ</title>
+  <meta name="description" content="La Case de LEJ, fondée à Abidjan par une agro-transformatrice passionnée. LEJ, les initiales de ses trois enfants."/>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <style>
+    /* ===== ABOUT PAGE STYLES ===== */
+    .about-hero {
+      background: linear-gradient(135deg, var(--black) 0%, #2A1A05 100%);
+      padding: calc(var(--nav-height) + 4rem) clamp(1rem, 4vw, 3rem) 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .about-hero::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      right: -10%;
+      width: 500px;
+      height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(201,144,26,0.12) 0%, transparent 65%);
+      pointer-events: none;
+    }
+
+    .about-hero-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .about-hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: var(--white);
+      margin-bottom: 1.5rem;
+      line-height: 1.15;
+    }
+
+    .about-hero h1 span { color: var(--gold); }
+
+    .about-hero p {
+      font-size: 1.05rem;
+      color: rgba(245,240,232,0.75);
+      line-height: 1.8;
+      margin-bottom: 1.25rem;
+    }
+
+    .about-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .case-illustration {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 40% 40%, rgba(201,144,26,0.25) 0%, rgba(201,144,26,0.05) 70%);
+      border: 2px solid rgba(201,144,26,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 7rem;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* LEJ letters */
+    .lej-section {
+      background: var(--gold);
+      color: var(--white);
+      padding: 4rem clamp(1rem, 4vw, 3rem);
+    }
+
+    .lej-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .lej-letters {
+      display: flex;
+      gap: 0;
+    }
+
+    .lej-letter {
+      width: 90px;
+      height: 90px;
+      background: rgba(255,255,255,0.2);
+      border: 2px solid rgba(255,255,255,0.4);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-size: 3rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-right: -8px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .lej-letter:nth-child(2) { z-index: 2; }
+    .lej-letter:last-child { margin-right: 0; }
+
+    .lej-text h2 {
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .lej-text p {
+      color: rgba(255,255,255,0.85);
+      line-height: 1.8;
+      font-size: 1rem;
+    }
+
+    /* Story timeline */
+    .timeline {
+      position: relative;
+      padding-left: 2.5rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.75rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2rem;
+      top: 0.4rem;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--gold);
+      border: 3px solid var(--white);
+      box-shadow: 0 0 0 2px var(--gold);
+    }
+
+    .timeline-year {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.25rem;
+    }
+
+    .timeline-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-text {
+      font-size: 0.9rem;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    /* Values */
+    .values-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+
+    .value-card {
+      border: 2px solid var(--cream-dark);
+      border-radius: var(--radius-lg);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    .value-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .value-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .value-card-title {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .value-card-text {
+      font-size: 0.875rem;
+      color: var(--gray-text);
+      line-height: 1.6;
+    }
+
+    /* Stat cards */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      background: var(--black);
+      border-radius: var(--radius-xl);
+      padding: 3rem 2.5rem;
+    }
+
+    .stat-item { text-align: center; }
+
+    .stat-number {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 0.4rem;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      color: rgba(245,240,232,0.6);
+    }
+
+    /* CTA strip */
+    .cta-strip {
+      background: var(--cream);
+      border-radius: var(--radius-xl);
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .cta-strip h3 {
+      font-family: var(--font-heading);
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      margin-bottom: 0.5rem;
+    }
+
+    .cta-strip p { color: var(--gray-text); font-size: 0.95rem; }
+
+    @media (max-width: 768px) {
+      .about-hero-inner { grid-template-columns: 1fr; }
+      .about-visual { display: none; }
+      .lej-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .values-cards { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div id="navbarPlaceholder"></div>
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="about-hero-inner">
+      <div>
+        <span class="section-label">Notre histoire</span>
+        <h1>La <span>Case</span> comme ancrage, <span>L·E·J</span> comme raison d'être</h1>
+        <p>Née à Abidjan d'une passion pour les saveurs de la Côte d'Ivoire, La Case de LEJ transforme les fruits locaux en produits artisanaux d'exception.</p>
+        <p>La "case" n'est pas un simple mot. C'est le foyer, la chaleur, le lieu où tout commence — un ancrage à nos racines ivoiriennes.</p>
+        <a href="paniers.html" class="btn btn-primary" style="margin-top:0.5rem">Découvrir nos produits</a>
+      </div>
+      <div class="about-visual">
+        <div class="case-illustration"><svg width="80" height="80" viewBox="0 0 100 100" fill="none" stroke="#C9901A" stroke-width="3" stroke-linecap="round"><path d="M50 12 L88 40 L88 88 L12 88 L12 40 Z"/><path d="M12 40 L50 12 L88 40"/><path d="M38 88 L38 62 Q38 54 46 54 L54 54 Q62 54 62 62 L62 88"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEJ Meaning -->
+  <div class="lej-section">
+    <div class="lej-inner">
+      <div class="lej-letters">
+        <div class="lej-letter">L</div>
+        <div class="lej-letter">E</div>
+        <div class="lej-letter">J</div>
+      </div>
+      <div class="lej-text">
+        <h2>Trois lettres, trois enfants, une mission</h2>
+        <p>LEJ représente les initiales des trois enfants de la fondatrice. Chaque produit est élaboré avec la même dévotion qu'une mère porte à ses enfants — avec soin, authenticité et amour.</p>
+        <p style="margin-top:0.75rem">C'est cette énergie familiale qui donne à nos produits leur âme unique.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Story -->
+  <section class="section">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start" class="story-grid">
+        <div class="reveal">
+          <span class="section-label">Notre parcours</span>
+          <h2 class="section-title">Une belle aventure ivoirienne</h2>
+          <div class="divider"></div>
+          <div class="timeline">
+            <div class="timeline-item">
+              <div class="timeline-year">Les débuts</div>
+              <div class="timeline-title">La passion de la transformation</div>
+              <p class="timeline-text">Tout commence dans une cuisine à Abidjan. Fascinée par la richesse des fruits locaux, notre fondatrice commence à transformer ce que la nature ivoirienne offre de meilleur.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">L'essor</div>
+              <div class="timeline-title">Les premières commandes</div>
+              <p class="timeline-text">Les premières confitures de mangue font sensation dans le cercle familial. Le bouche-à-oreille fait le reste. Les commandes de paniers pour événements commencent à arriver.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">Aujourd'hui</div>
+              <div class="timeline-title">Une marque reconnue</div>
+              <p class="timeline-text">La Case de LEJ est désormais la référence pour les paniers cadeaux artisanaux à Abidjan. Des particuliers aux grandes entreprises, la marque rayonne dans tout Abidjan.</p>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-year">Demain</div>
+              <div class="timeline-title">Grandir sans se trahir</div>
+              <p class="timeline-text">L'ambition : rester artisanal, rester local, rester sincère — tout en faisant rayonner les saveurs de Côte d'Ivoire au-delà d'Abidjan.</p>
+            </div>
+          </div>
+        </div>
+        <div class="reveal" style="padding-top:2rem">
+          <div style="background:var(--cream);border-radius:var(--radius-xl);padding:2.5rem;margin-bottom:1.5rem">
+            <div style="margin-bottom:1rem;color:var(--gold)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+            <h3 style="font-family:var(--font-heading);font-size:1.2rem;margin-bottom:0.75rem">Notre philosophie</h3>
+            <p style="color:var(--gray-text);line-height:1.8;font-size:0.95rem">Chez La Case de LEJ, nous croyons que les meilleurs produits viennent d'une terre généreuse, de mains expertes et d'un cœur ouvert. Pas de colorants, pas d'artifices. Juste la vérité du fruit ivoirien.</p>
+          </div>
+          <div style="background:var(--black);border-radius:var(--radius-xl);padding:2.5rem;color:var(--white)">
+            <div style="margin-bottom:1rem;color:var(--gold)"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <h3 style="font-family:var(--font-heading);font-size:1.2rem;margin-bottom:0.75rem;color:var(--white)">Notre engagement</h3>
+            <p style="color:rgba(245,240,232,0.7);line-height:1.8;font-size:0.95rem">Nous travaillons directement avec des producteurs locaux. Chaque achat chez nous soutient l'économie agricole ivoirienne et contribue à valoriser le savoir-faire de notre pays.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="stats-row reveal">
+        <div class="stat-item">
+          <div class="stat-number">5+</div>
+          <div class="stat-label">Fruits phares travaillés</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">18+</div>
+          <div class="stat-label">Produits artisanaux</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">100%</div>
+          <div class="stat-label">Naturel & sans additifs</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number">ABJ</div>
+          <div class="stat-label">Livraison Abidjan</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Values -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header centered reveal">
+        <span class="section-label">Ce qui nous guide</span>
+        <h2 class="section-title">Nos valeurs</h2>
+        <div class="divider"></div>
+      </div>
+      <div class="values-cards">
+        <div class="value-card reveal">
+          <div class="value-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10z"/><path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"/></svg></div>
+          <div class="value-card-title">Naturel</div>
+          <p class="value-card-text">Aucun conservateur, aucun colorant artificiel. Nos produits sont exactement ce qu'ils disent être : des fruits transformés à la main.</p>
+        </div>
+        <div class="value-card reveal">
+          <div class="value-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 11V6a2 2 0 0 0-4 0v0"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></div>
+          <div class="value-card-title">Artisanal</div>
+          <p class="value-card-text">Chaque pot est préparé en petites quantités, avec une attention aux détails impossible à reproduire industriellement.</p>
+        </div>
+        <div class="value-card reveal">
+          <div class="value-card-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+          <div class="value-card-title">Local</div>
+          <p class="value-card-text">Nos fruits viennent de Côte d'Ivoire. Nos producteurs sont ivoiriens. Notre fierté est ivoirienne.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="padding-top:0">
+    <div class="container">
+      <div class="cta-strip reveal">
+        <div>
+          <h3>Prêt à goûter l'authenticité ?</h3>
+          <p>Découvrez nos produits ou créez votre panier cadeau personnalisé.</p>
+        </div>
+        <div style="display:flex;gap:1rem;flex-wrap:wrap">
+          <a href="produits.html" class="btn btn-primary">Nos produits</a>
+          <a href="paniers.html" class="btn btn-secondary">Créer un panier</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div id="cartPlaceholder"></div>
+  <div id="footerPlaceholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    // Responsive story grid
+    const grid = document.querySelector('.story-grid');
+    if (grid && window.innerWidth < 768) {
+      grid.style.gridTemplateColumns = '1fr';
+    }
+    window.addEventListener('resize', () => {
+      if (grid) grid.style.gridTemplateColumns = window.innerWidth < 768 ? '1fr' : '1fr 1fr';
+    });
+  </script>
+</body>
+</html>

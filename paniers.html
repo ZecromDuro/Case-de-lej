@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paniers Cadeaux — La Case de LEJ</title>
+  <meta name="description" content="Créez votre panier cadeau personnalisé La Case de LEJ pour mariages, baptêmes, événements d'entreprise. Livraison à Abidjan."/>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/paniers.css"/>
+</head>
+<body>
+
+  <div id="navbarPlaceholder"></div>
+
+  <div class="page-hero">
+    <span class="section-label" style="justify-content:center;display:flex">Événements & Cadeaux</span>
+    <h1>Paniers <span>Cadeaux</span></h1>
+    <p>Composez votre panier artisanal sur mesure et commandez directement via WhatsApp.</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="configurator-layout">
+
+        <!-- LEFT: Configurator -->
+        <div>
+          <!-- Step tabs -->
+          <div class="steps-header">
+            <button class="step-tab active" data-step="1">
+              <span class="step-num">1</span> Occasion
+            </button>
+            <button class="step-tab" data-step="2">
+              <span class="step-num">2</span> Budget
+            </button>
+            <button class="step-tab" data-step="3">
+              <span class="step-num">3</span> Produits
+            </button>
+            <button class="step-tab" data-step="4">
+              <span class="step-num">4</span> Commander
+            </button>
+          </div>
+
+          <!-- Step 1: Occasion -->
+          <div class="step-panel active" id="step1">
+            <h3 style="font-family:var(--font-heading);font-size:1.3rem;margin-bottom:1.25rem">Pour quelle occasion ?</h3>
+            <div class="occasion-grid">
+              <div class="occasion-card" data-occasion="Mariage">
+                <div class="occasion-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3"/><circle cx="15" cy="9" r="3"/><path d="M12 12v9"/><path d="M9 21h6"/></svg></div>
+                <div class="occasion-name">Mariage</div>
+              </div>
+              <div class="occasion-card" data-occasion="Baptême">
+                <div class="occasion-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12.5 5 12 2.5C11.5 5 10 7.4 8 9c-2 1.6-3 3.5-3 5a7 7 0 0 0 7 7z"/></svg></div>
+                <div class="occasion-name">Baptême</div>
+              </div>
+              <div class="occasion-card" data-occasion="Anniversaire">
+                <div class="occasion-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+                <div class="occasion-name">Anniversaire</div>
+              </div>
+              <div class="occasion-card" data-occasion="Séminaire d'entreprise">
+                <div class="occasion-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></div>
+                <div class="occasion-name">Séminaire</div>
+              </div>
+              <div class="occasion-card" data-occasion="Fête d'entreprise">
+                <div class="occasion-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+                <div class="occasion-name">Entreprise</div>
+              </div>
+              <div class="occasion-card" data-occasion="Cadeau personnel">
+                <div class="occasion-emoji"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
+                <div class="occasion-name">Cadeau</div>
+              </div>
+            </div>
+            <div class="step-actions">
+              <button class="btn btn-primary" id="toStep2" disabled>Continuer →</button>
+            </div>
+          </div>
+
+          <!-- Step 2: Budget -->
+          <div class="step-panel" id="step2">
+            <h3 style="font-family:var(--font-heading);font-size:1.3rem;margin-bottom:0.5rem">Quel budget par panier ?</h3>
+            <p style="color:var(--gray-text);font-size:0.9rem;margin-bottom:1.5rem">Le prix final dépend des produits sélectionnés.</p>
+            <div class="budget-options">
+              <button class="budget-btn" data-budget="5000">~ 5 000 FCFA</button>
+              <button class="budget-btn" data-budget="10000">~ 10 000 FCFA</button>
+              <button class="budget-btn" data-budget="15000">~ 15 000 FCFA</button>
+              <button class="budget-btn" data-budget="25000">~ 25 000 FCFA</button>
+              <button class="budget-btn" data-budget="0">Pas de limite</button>
+            </div>
+            <div style="margin-bottom:1.5rem">
+              <label style="font-size:0.875rem;font-weight:600;display:block;margin-bottom:0.5rem">Nombre de paniers</label>
+              <div style="display:flex;align-items:center;gap:1rem">
+                <button class="qty-btn" id="qtyMinus" style="width:36px;height:36px">−</button>
+                <span id="basketQty" style="font-size:1.25rem;font-weight:700;min-width:32px;text-align:center">1</span>
+                <button class="qty-btn" id="qtyPlus" style="width:36px;height:36px">+</button>
+                <span style="font-size:0.875rem;color:var(--gray-text)">panier(s)</span>
+              </div>
+            </div>
+            <div class="step-actions">
+              <button class="btn btn-secondary" onclick="goStep(1)">← Retour</button>
+              <button class="btn btn-primary" id="toStep3" disabled>Continuer →</button>
+            </div>
+          </div>
+
+          <!-- Step 3: Products -->
+          <div class="step-panel" id="step3">
+            <h3 style="font-family:var(--font-heading);font-size:1.3rem;margin-bottom:0.5rem">Choisissez vos produits</h3>
+            <p style="color:var(--gray-text);font-size:0.9rem;margin-bottom:1.5rem">Sélectionnez et ajustez les quantités.</p>
+            <div class="picker-grid" id="pickerGrid"></div>
+            <div class="step-actions">
+              <button class="btn btn-secondary" onclick="goStep(2)">← Retour</button>
+              <button class="btn btn-primary" id="toStep4">Récapitulatif →</button>
+            </div>
+          </div>
+
+          <!-- Step 4: Summary & order -->
+          <div class="step-panel" id="step4">
+            <h3 style="font-family:var(--font-heading);font-size:1.3rem;margin-bottom:1.5rem">Votre commande est prête !</h3>
+
+            <div style="background:var(--cream);border-radius:var(--radius-lg);padding:1.75rem;margin-bottom:2rem">
+              <div id="orderRecap"></div>
+            </div>
+
+            <div style="margin-bottom:2rem">
+              <label style="font-size:0.875rem;font-weight:600;display:block;margin-bottom:0.5rem">Message personnalisé (optionnel)</label>
+              <textarea id="personalMessage" rows="3" placeholder="Ex: Pour les 30 ans de Marie, merci d'ajouter un mot doux…" style="width:100%;border:2px solid var(--cream-dark);border-radius:var(--radius-md);padding:0.875rem;font-family:var(--font-body);font-size:0.9rem;resize:vertical;outline:none;transition:var(--transition)"></textarea>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:1rem">
+              <button class="btn btn-whatsapp" id="finalOrderBtn" style="justify-content:center;font-size:1rem;padding:1rem">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                </svg>
+                Envoyer ma commande via WhatsApp
+              </button>
+              <button class="btn btn-secondary" onclick="goStep(3)">← Modifier</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: Live summary -->
+        <div>
+          <div class="summary-panel">
+            <div class="summary-title">
+              Mon panier
+              <span class="summary-badge" id="summaryCount">0 article</span>
+            </div>
+            <div class="summary-occasion" id="summaryOccasion" style="display:none">
+              <span id="summaryOccasionText"></span>
+            </div>
+            <div class="summary-items" id="summaryItems">
+              <div class="summary-empty">Aucun produit sélectionné</div>
+            </div>
+            <div class="summary-total-row">
+              <span class="summary-total-label">Total estimé</span>
+              <span class="summary-total-amount" id="summaryTotal">0 FCFA</span>
+            </div>
+            <p class="summary-note">Prix indicatifs · Confirmation par WhatsApp · Livraison incluse à Abidjan</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Events info section -->
+      <div style="margin-top:5rem">
+        <div class="section-header centered reveal">
+          <span class="section-label">Nos prestations</span>
+          <h2 class="section-title">Pour tous vos événements</h2>
+          <div class="divider"></div>
+        </div>
+        <div class="events-grid">
+          <div class="event-card reveal">
+            <div class="event-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="9" cy="9" r="3"/><circle cx="15" cy="9" r="3"/><path d="M12 12v9"/><path d="M9 21h6"/></svg></div>
+            <div>
+              <div class="event-name">Mariages & Fiançailles</div>
+              <p class="event-desc">Paniers élégants et personnalisés pour vos invités. Emballage soigné aux couleurs de votre événement.</p>
+            </div>
+          </div>
+          <div class="event-card reveal">
+            <div class="event-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><path d="M9 21V9"/></svg></div>
+            <div>
+              <div class="event-name">Événements d'entreprise</div>
+              <p class="event-desc">Séminaires, fêtes de fin d'année, cadeaux clients… Nous gérons les grandes quantités avec le même soin.</p>
+            </div>
+          </div>
+          <div class="event-card reveal">
+            <div class="event-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12.5 5 12 2.5C11.5 5 10 7.4 8 9c-2 1.6-3 3.5-3 5a7 7 0 0 0 7 7z"/></svg></div>
+            <div>
+              <div class="event-name">Baptêmes & Naissances</div>
+              <p class="event-desc">Des saveurs douces et naturelles pour célébrer les nouvelles arrivées avec authenticité.</p>
+            </div>
+          </div>
+          <div class="event-card reveal">
+            <div class="event-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+            <div>
+              <div class="event-name">Anniversaires & Fêtes</div>
+              <p class="event-desc">Rendez chaque anniversaire unique avec un panier sur mesure, livré à l'adresse de votre choix.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div id="cartPlaceholder"></div>
+  <div id="footerPlaceholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    const PHONE = '2250700000000';
+
+    const PRODUCTS = [
+      { id: 'jus-mangue', name: 'Jus de Mangue', price: 2500, emoji: '🥭' },
+      { id: 'jus-bissap', name: 'Jus de Bissap', price: 2000, emoji: '🌺' },
+      { id: 'jus-passion', name: 'Jus de Passion', price: 2800, emoji: '🍈' },
+      { id: 'jus-ananas', name: 'Jus d\'Ananas', price: 2200, emoji: '🍍' },
+      { id: 'liq-bissap', name: 'Liqueur de Bissap', price: 5500, emoji: '🌺' },
+      { id: 'liq-mangue', name: 'Liqueur de Mangue', price: 5000, emoji: '🥭' },
+      { id: 'conf-mangue', name: 'Confiture de Mangue', price: 3200, emoji: '🥭' },
+      { id: 'conf-ananas', name: 'Confiture d\'Ananas', price: 3200, emoji: '🍍' },
+      { id: 'sec-mangue', name: 'Mangue Séchée', price: 2000, emoji: '🥭' },
+      { id: 'sec-ananas', name: 'Chips d\'Ananas', price: 1800, emoji: '🍍' },
+      { id: 'sec-banane', name: 'Banane Séchée', price: 1800, emoji: '🍌' },
+      { id: 'pat-cookies', name: 'Cookies Mangue-Coco', price: 2500, emoji: '🍪' },
+      { id: 'pat-biscuits', name: 'Biscuits Bissap', price: 2200, emoji: '🌺' },
+    ];
+
+    // State
+    const state = { step: 1, occasion: '', budget: 0, qty: 1, selections: {} };
+
+    // Render picker
+    function renderPicker() {
+      const grid = document.getElementById('pickerGrid');
+      grid.innerHTML = PRODUCTS.map(p => `
+        <div class="picker-card ${state.selections[p.id] ? 'selected' : ''}" id="picker-${p.id}" onclick="togglePicker('${p.id}')">
+          <span class="picker-check">✓</span>
+          <span class="picker-emoji">${p.emoji}</span>
+          <div class="picker-info">
+            <div class="picker-name">${p.name}</div>
+            <div class="picker-price">${p.price.toLocaleString('fr-FR')} FCFA</div>
+            <div class="picker-qty">
+              <button class="picker-qty-btn" onclick="event.stopPropagation();changePickerQty('${p.id}',-1)">−</button>
+              <span class="picker-qty-val" id="pqty-${p.id}">${state.selections[p.id] || 1}</span>
+              <button class="picker-qty-btn" onclick="event.stopPropagation();changePickerQty('${p.id}',1)">+</button>
+            </div>
+          </div>
+        </div>`).join('');
+    }
+
+    function togglePicker(id) {
+      if (state.selections[id]) {
+        delete state.selections[id];
+      } else {
+        state.selections[id] = 1;
+      }
+      renderPicker();
+      updateSummary();
+    }
+
+    function changePickerQty(id, delta) {
+      if (!state.selections[id]) return;
+      state.selections[id] = Math.max(1, state.selections[id] + delta);
+      document.getElementById('pqty-' + id).textContent = state.selections[id];
+      updateSummary();
+    }
+
+    // Summary update
+    function updateSummary() {
+      const items = PRODUCTS.filter(p => state.selections[p.id]);
+      const count = items.reduce((s, p) => s + state.selections[p.id], 0);
+      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0);
+
+      document.getElementById('summaryCount').textContent = count + (count > 1 ? ' articles' : ' article');
+
+      const summaryItems = document.getElementById('summaryItems');
+      if (items.length === 0) {
+        summaryItems.innerHTML = '<div class="summary-empty">Aucun produit sélectionné</div>';
+      } else {
+        summaryItems.innerHTML = items.map(p => `
+          <div class="summary-item">
+            <span class="summary-item-name">${p.name} ×${state.selections[p.id]}</span>
+            <span class="summary-item-price">${(p.price * state.selections[p.id]).toLocaleString('fr-FR')} FCFA</span>
+          </div>`).join('');
+      }
+
+      document.getElementById('summaryTotal').textContent = total.toLocaleString('fr-FR') + ' FCFA';
+
+      // Occasion display
+      const occEl = document.getElementById('summaryOccasion');
+      if (state.occasion) {
+        occEl.style.display = 'flex';
+        document.getElementById('summaryOccasionText').textContent = state.occasion;
+      } else {
+        occEl.style.display = 'none';
+      }
+
+      // Step 4 recap
+      renderRecap();
+    }
+
+    function renderRecap() {
+      const el = document.getElementById('orderRecap');
+      if (!el) return;
+      const items = PRODUCTS.filter(p => state.selections[p.id]);
+      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0);
+
+      el.innerHTML = `
+        <div style="font-weight:600;margin-bottom:1rem;font-size:0.9rem;color:var(--gray-text)">
+          ${state.occasion ? state.occasion + ' · ' : ''}
+          ${state.qty} panier(s)
+        </div>
+        ${items.map(p => `
+          <div style="display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.9rem;border-bottom:1px dashed var(--cream-dark)">
+            <span>${p.name} ×${state.selections[p.id]}</span>
+            <span style="font-weight:600;color:var(--gold)">${(p.price * state.selections[p.id]).toLocaleString('fr-FR')} F</span>
+          </div>`).join('')}
+        <div style="display:flex;justify-content:space-between;padding:1rem 0 0;font-weight:700;font-size:1.05rem">
+          <span>Total estimé (×${state.qty})</span>
+          <span style="color:var(--gold)">${(total * state.qty).toLocaleString('fr-FR')} FCFA</span>
+        </div>`;
+    }
+
+    // Step navigation
+    function goStep(n) {
+      state.step = n;
+      document.querySelectorAll('.step-panel').forEach((p, i) => p.classList.toggle('active', i + 1 === n));
+      document.querySelectorAll('.step-tab').forEach((t, i) => t.classList.toggle('active', i + 1 === n));
+      if (n === 3) renderPicker();
+      window.scrollTo({ top: document.querySelector('.steps-header').getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+    }
+
+    // Occasion select
+    document.querySelectorAll('.occasion-card').forEach(card => {
+      card.addEventListener('click', () => {
+        document.querySelectorAll('.occasion-card').forEach(c => c.classList.remove('selected'));
+        card.classList.add('selected');
+        state.occasion = card.dataset.occasion;
+        document.getElementById('toStep2').disabled = false;
+        updateSummary();
+      });
+    });
+
+    document.getElementById('toStep2').addEventListener('click', () => goStep(2));
+
+    // Budget select
+    document.querySelectorAll('.budget-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.budget-btn').forEach(b => b.classList.remove('selected'));
+        btn.classList.add('selected');
+        state.budget = parseInt(btn.dataset.budget);
+        document.getElementById('toStep3').disabled = false;
+      });
+    });
+
+    document.getElementById('toStep3').addEventListener('click', () => goStep(3));
+    document.getElementById('toStep4').addEventListener('click', () => goStep(4));
+
+    // Qty
+    let qtyVal = 1;
+    document.getElementById('qtyMinus').addEventListener('click', () => {
+      qtyVal = Math.max(1, qtyVal - 1);
+      state.qty = qtyVal;
+      document.getElementById('basketQty').textContent = qtyVal;
+    });
+    document.getElementById('qtyPlus').addEventListener('click', () => {
+      qtyVal++;
+      state.qty = qtyVal;
+      document.getElementById('basketQty').textContent = qtyVal;
+    });
+
+    // WhatsApp order
+    document.getElementById('finalOrderBtn').addEventListener('click', () => {
+      const items = PRODUCTS.filter(p => state.selections[p.id]);
+      if (items.length === 0) { showToast('Ajoutez au moins un produit !'); return; }
+
+      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) * state.qty;
+      const lines = items.map(p => `• ${p.name} ×${state.selections[p.id]}`).join('\n');
+      const personalMsg = document.getElementById('personalMessage').value.trim();
+
+      const msg = encodeURIComponent(
+        `Bonjour La Case de LEJ,\n\n` +
+        `Je souhaite commander *${state.qty} panier(s)* pour : *${state.occasion || 'non précisé'}*\n\n` +
+        `Contenu par panier :\n${lines}\n\n` +
+        `Total estimé : ${total.toLocaleString('fr-FR')} FCFA\n` +
+        (personalMsg ? `\nMessage : ${personalMsg}\n` : '') +
+        `\nMerci de confirmer disponibilité et livraison.`
+      );
+
+      window.open(`https://wa.me/${PHONE}?text=${msg}`, '_blank');
+    });
+
+    // Step tabs click
+    document.querySelectorAll('.step-tab').forEach((tab, i) => {
+      tab.addEventListener('click', () => {
+        if (i + 1 < state.step) goStep(i + 1);
+      });
+    });
+
+    document.addEventListener('DOMContentLoaded', updateSummary);
+  </script>
+</body>
+</html>

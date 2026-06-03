@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Nos Produits — La Case de LEJ</title>
+  <meta name="description" content="Jus naturels, liqueurs artisanales, confitures, fruits séchés et pâtisseries. Tous nos produits à base de fruits ivoiriens."/>
+  <link rel="stylesheet" href="css/variables.css"/>
+  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/produits.css"/>
+</head>
+<body>
+
+  <div id="navbarPlaceholder"></div>
+
+  <div class="page-hero">
+    <span class="section-label" style="justify-content:center;display:flex">Notre gamme</span>
+    <h1>Nos <span>Produits</span></h1>
+    <p>Des fruits ivoiriens transformés avec passion et savoir-faire artisanal.</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <!-- Filter bar -->
+      <div class="filter-bar">
+        <button class="filter-btn active" data-filter="all">Tout voir</button>
+        <button class="filter-btn" data-filter="jus">Jus naturels</button>
+        <button class="filter-btn" data-filter="liqueurs">Liqueurs</button>
+        <button class="filter-btn" data-filter="confitures">Confitures</button>
+        <button class="filter-btn" data-filter="secs">Fruits séchés</button>
+        <button class="filter-btn" data-filter="patisseries">Pâtisseries</button>
+      </div>
+
+      <!-- Jus -->
+      <div class="category-section" id="jus" data-category="jus">
+        <h2 class="products-section-title">Jus Naturels</h2>
+        <div class="products-grid" id="grid-jus"></div>
+      </div>
+
+      <!-- Liqueurs -->
+      <div class="category-section" id="liqueurs" data-category="liqueurs">
+        <h2 class="products-section-title">Liqueurs Artisanales</h2>
+        <div class="products-grid" id="grid-liqueurs"></div>
+      </div>
+
+      <!-- Confitures -->
+      <div class="category-section" id="confitures" data-category="confitures">
+        <h2 class="products-section-title">Confitures</h2>
+        <div class="products-grid" id="grid-confitures"></div>
+      </div>
+
+      <!-- Fruits séchés -->
+      <div class="category-section" id="secs" data-category="secs">
+        <h2 class="products-section-title">Fruits Séchés</h2>
+        <div class="products-grid" id="grid-secs"></div>
+      </div>
+
+      <!-- Pâtisseries -->
+      <div class="category-section" id="patisseries" data-category="patisseries">
+        <h2 class="products-section-title">Pâtisseries</h2>
+        <div class="products-grid" id="grid-patisseries"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Product modal -->
+  <div class="product-modal-overlay" id="productModal">
+    <div class="product-modal" role="dialog">
+      <button class="product-modal-close" id="modalClose">✕</button>
+      <div class="product-modal-img" id="modalImg"></div>
+      <div class="product-modal-body">
+        <div class="product-modal-category" id="modalCategory"></div>
+        <h2 class="product-modal-name" id="modalName"></h2>
+        <p class="product-modal-desc" id="modalDesc"></p>
+        <div class="product-modal-footer">
+          <span class="product-modal-price" id="modalPrice"></span>
+          <button class="btn btn-primary" id="modalAddBtn">Ajouter au panier</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="cartPlaceholder"></div>
+  <div id="footerPlaceholder"></div>
+
+  <script src="js/components.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/cart.js"></script>
+  <script>
+    const ALL_PRODUCTS = [
+      // Jus
+      { id: 'jus-mangue', cat: 'jus', name: 'Jus de Mangue', catLabel: 'Jus naturels', desc: 'Mangue Kent pressée à froid. Sans sucre ajouté, sans conservateurs. La saveur la plus pure de la mangue ivoirienne.', price: 2500, emoji: '🥭', badge: 'Best-seller' },
+      { id: 'jus-bissap', cat: 'jus', name: 'Jus de Bissap', catLabel: 'Jus naturels', desc: 'Fleurs d\'hibiscus fraîches infusées avec du gingembre. Rafraîchissant et riche en antioxydants.', price: 2000, emoji: '🌺', badge: null },
+      { id: 'jus-passion', cat: 'jus', name: 'Jus de Passion', catLabel: 'Jus naturels', desc: 'Fruit de la passion 100% naturel, légèrement sucré au miel. Intense et acidulé.', price: 2800, emoji: '🍈', badge: 'Nouveau' },
+      { id: 'jus-ananas', cat: 'jus', name: 'Jus d\'Ananas', catLabel: 'Jus naturels', desc: 'Ananas Victoria de Côte d\'Ivoire pressé à froid. Sucré naturellement, désaltérant.', price: 2200, emoji: '🍍', badge: null },
+
+      // Liqueurs
+      { id: 'liq-bissap', cat: 'liqueurs', name: 'Liqueur de Bissap', catLabel: 'Liqueurs artisanales', desc: 'Hibiscus macéré 3 semaines dans une base alcoolisée artisanale. Légèrement sucré. Idéale à l\'apéritif ou en digestif.', price: 5500, emoji: '🌺', badge: null },
+      { id: 'liq-mangue', cat: 'liqueurs', name: 'Liqueur de Mangue', catLabel: 'Liqueurs artisanales', desc: 'Mangue mûre à coeur macérée avec des épices douces. Arômes fruités et chaleureux.', price: 5000, emoji: '🥭', badge: null },
+      { id: 'liq-gingembre', cat: 'liqueurs', name: 'Liqueur Gingembre-Citron', catLabel: 'Liqueurs artisanales', desc: 'Gingembre frais et citron vert. Tonique et légèrement piquante. Parfaite en cocktail.', price: 4800, emoji: '🫚', badge: 'Exclusif' },
+
+      // Confitures
+      { id: 'conf-mangue', cat: 'confitures', name: 'Confiture de Mangue', catLabel: 'Confitures', desc: 'Mangue Kent avec une pointe de vanille de Madagascar. Texture fondante, pas trop sucrée.', price: 3200, emoji: '🥭', badge: null },
+      { id: 'conf-ananas', cat: 'confitures', name: 'Confiture d\'Ananas', catLabel: 'Confitures', desc: 'Ananas caramélisé à la cannelle et à la cardamome. Un voyage en une cuillerée.', price: 3200, emoji: '🍍', badge: 'Nouveau' },
+      { id: 'conf-bissap', cat: 'confitures', name: 'Gelée de Bissap', catLabel: 'Confitures', desc: 'Hibiscus en gelée, légèrement acidulée. Parfaite sur du pain ou du fromage frais.', price: 3500, emoji: '🌺', badge: null },
+      { id: 'conf-banane', cat: 'confitures', name: 'Confiture Banane-Chocolat', catLabel: 'Confitures', desc: 'Banane plantain et cacao pur ivoirien. Le duo parfait pour le petit déjeuner.', price: 3800, emoji: '🍌', badge: null },
+
+      // Fruits séchés
+      { id: 'sec-mangue', cat: 'secs', name: 'Mangue Séchée', catLabel: 'Fruits séchés', desc: 'Lamelles de mangue séchées naturellement au soleil. Concentrées en saveur, sans sucre ajouté.', price: 2000, emoji: '🥭', badge: 'Best-seller' },
+      { id: 'sec-ananas', cat: 'secs', name: 'Chips d\'Ananas', catLabel: 'Fruits séchés', desc: 'Rondelles d\'ananas Victoria croustillantes. Le snack sain et délicieux.', price: 1800, emoji: '🍍', badge: null },
+      { id: 'sec-banane', cat: 'secs', name: 'Banane Séchée', catLabel: 'Fruits séchés', desc: 'Banane plantain séchée légèrement salée. Texture moelleuse, parfaite pour les grignotages.', price: 1800, emoji: '🍌', badge: null },
+      { id: 'sec-passion', cat: 'secs', name: 'Mix Fruits Tropicaux', catLabel: 'Fruits séchés', desc: 'Assortiment de fruits séchés ivoiriens : mangue, ananas, goyave, papaye. 100g.', price: 2500, emoji: '🌿', badge: null },
+
+      // Pâtisseries
+      { id: 'pat-cookies', cat: 'patisseries', name: 'Cookies Mangue-Coco', catLabel: 'Pâtisseries', desc: 'Cookies moelleux à la farine de coco, éclats de mangue séchée et pépites de chocolat noir.', price: 2500, emoji: '🍪', badge: null },
+      { id: 'pat-gateau', cat: 'patisseries', name: 'Cake à l\'Ananas', catLabel: 'Pâtisseries', desc: 'Moelleux renversé à l\'ananas caramélisé. Recette traditionnelle revisitée.', price: 4500, emoji: '🎂', badge: 'Nouveau' },
+      { id: 'pat-biscuits', cat: 'patisseries', name: 'Biscuits Bissap', catLabel: 'Pâtisseries', desc: 'Sablés fondants à la farine de mil et au sirop de bissap. Une douceur authentique.', price: 2200, emoji: '🌺', badge: null },
+    ];
+
+    // Render all products
+    const grids = {
+      jus: document.getElementById('grid-jus'),
+      liqueurs: document.getElementById('grid-liqueurs'),
+      confitures: document.getElementById('grid-confitures'),
+      secs: document.getElementById('grid-secs'),
+      patisseries: document.getElementById('grid-patisseries'),
+    };
+
+    function renderProducts(products) {
+      Object.keys(grids).forEach(k => { if (grids[k]) grids[k].innerHTML = ''; });
+      products.forEach(p => {
+        if (!grids[p.cat]) return;
+        const div = document.createElement('div');
+        div.className = 'product-card reveal';
+        div.innerHTML = `
+          <div class="product-img" style="cursor:pointer" onclick="openModal('${p.id}')">
+            <div class="product-img-placeholder">${p.name.charAt(0)}</div>
+            ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+          </div>
+          <div class="product-body">
+            <div class="product-category">${p.catLabel}</div>
+            <h3 class="product-name">${p.name}</h3>
+            <p class="product-desc">${p.desc.slice(0,80)}…</p>
+            <div class="product-footer">
+              <span class="product-price">${p.price.toLocaleString('fr-FR')} FCFA</span>
+              <button class="product-add-btn" onclick="cart.add({id:'${p.id}',name:'${p.name}',price:${p.price}})" aria-label="Ajouter">+</button>
+            </div>
+          </div>`;
+        grids[p.cat].appendChild(div);
+      });
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+    }
+
+    // Filter
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.category-section').forEach(sec => {
+          sec.classList.toggle('hidden', filter !== 'all' && sec.dataset.category !== filter);
+        });
+        if (filter !== 'all') {
+          setTimeout(() => document.getElementById(filter)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+        }
+      });
+    });
+
+    // Modal
+    function openModal(id) {
+      const p = ALL_PRODUCTS.find(x => x.id === id);
+      if (!p) return;
+      document.getElementById('modalImg').textContent = p.emoji;
+      document.getElementById('modalCategory').textContent = p.catLabel;
+      document.getElementById('modalName').textContent = p.name;
+      document.getElementById('modalDesc').textContent = p.desc;
+      document.getElementById('modalPrice').textContent = p.price.toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('modalAddBtn').onclick = () => {
+        cart.add({ id: p.id, name: p.name, price: p.price, emoji: p.emoji });
+        closeModal();
+      };
+      document.getElementById('productModal').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    document.getElementById('productModal')?.addEventListener('click', e => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+    document.getElementById('modalClose')?.addEventListener('click', closeModal);
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts(ALL_PRODUCTS);
+      // Handle hash navigation
+      const hash = location.hash.replace('#', '');
+      if (hash && grids[hash]) {
+        setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+      }
+    });
+  </script>
+</body>
+</html>

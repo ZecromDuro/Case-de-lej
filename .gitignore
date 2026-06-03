@@ -1,0 +1,11 @@
+node_modules/
+*.zip
+banana-3d-scan/source/Banana.obj
+banana-3d-scan/source/Banana.glb
+banana-3d-scan/source/Banana_web.glb
+banana-3d-scan/source/Banana_draco.glb
+banana-3d-scan/textures/Banana_1.jpg
+banana-3d-scan/textures/internal_ground_ao_texture.jpeg
+images/logo/Logo.png
+prepare-orange.js
+simplify-banana.mjs

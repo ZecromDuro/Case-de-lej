@@ -1,0 +1,11 @@
+Model Information:
+* title:	Mango
+* source:	https://sketchfab.com/3d-models/mango-ef55eaf1a8ef4c168ffb0560145cb229
+* author:	STUDIO DUCKBILL (https://sketchfab.com/DuckbillStudio)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Mango" (https://sketchfab.com/3d-models/mango-ef55eaf1a8ef4c168ffb0560145cb229) by STUDIO DUCKBILL (https://sketchfab.com/DuckbillStudio) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
