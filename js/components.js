@@ -11,11 +11,6 @@ function injectNavbar() {
           <img src="images/logo/logo_nav.png?v=2" alt="La Case de LEJ"/>
         </a>
 
-        <a href="index.html" class="nav-brand">
-          <span class="nav-brand-title">LA CASE DE LEJ</span>
-          <span class="nav-brand-tagline">Épicerie fine locale &amp; confection coffret cadeau</span>
-        </a>
-
         <!-- Right: cart + hamburger -->
         <div class="nav-actions">
           <span class="nav-account"></span>
@@ -32,6 +27,11 @@ function injectNavbar() {
         </div>
 
       </div>
+
+      <a href="index.html" class="nav-brand">
+        <span class="nav-brand-title">LA CASE DE LEJ</span>
+        <span class="nav-brand-tagline">Épicerie fine locale &amp; confection coffret cadeau</span>
+      </a>
     </nav>
 
     <!-- Mobile menu -->
