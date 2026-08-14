@@ -161,20 +161,21 @@ h1, h2, h3, h4 {
   -webkit-backdrop-filter: blur(16px);
 }
 
-/* ── Nav inner: logo à gauche, actions à droite ── */
+/* ── Nav inner: logo | marque centrée | actions ── */
 .nav-inner {
   width: 100%;
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
   align-items: center;
-  justify-content: space-between;
+  column-gap: 0.5rem;
 }
 
 /* ── Logo ── */
 .nav-logo {
+  grid-column: 1;
   display: flex;
   align-items: center;
   text-decoration: none;
-  flex-shrink: 0;
 }
 
 .nav-logo img {
@@ -183,44 +184,44 @@ h1, h2, h3, h4 {
   display: block;
 }
 
-.nav-brand-text {
+/* ── Marque : centrée entre le logo et les actions ── */
+.nav-brand {
+  grid-column: 2;
+  min-width: 0;
   display: flex;
   flex-direction: column;
-  line-height: 1.15;
-  margin-left: 0.65rem;
-  white-space: nowrap;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.2;
 }
 
 .nav-brand-title {
   font-family: var(--font-heading);
   font-weight: 700;
-  font-size: clamp(0.85rem, 2vw, 1.05rem);
+  font-size: clamp(0.72rem, 3.4vw, 1.05rem);
   letter-spacing: 0.03em;
   color: var(--cream);
+  white-space: nowrap;
 }
 
 .navbar.scrolled .nav-brand-title { color: var(--black); }
 
 .nav-brand-tagline {
-  font-size: clamp(0.55rem, 1.4vw, 0.66rem);
+  display: block;
+  font-size: clamp(0.5rem, 2vw, 0.66rem);
   font-weight: 400;
   color: rgba(245, 240, 230, 0.72);
   letter-spacing: 0.01em;
-  white-space: normal;
+  max-width: 100%;
 }
 
 .navbar.scrolled .nav-brand-tagline { color: var(--gray-text); }
 
-@media (max-width: 560px) {
-  .nav-brand-tagline { display: none; }
-  .nav-brand-title { font-size: 0.72rem; letter-spacing: 0.02em; }
-  .nav-brand-text { margin-left: 0.4rem; }
-  .nav-logo img { height: 32px; }
+@media (max-width: 480px) {
+  .nav-logo img { height: 30px; }
   .nav-actions { gap: 0.15rem; }
-}
-
-@media (max-width: 340px) {
-  .nav-brand-title { font-size: 0.62rem; }
 }
 
 /* ── Actions : panier + hamburger ── */

@@ -9,10 +9,11 @@ function injectNavbar() {
         <!-- Logo -->
         <a href="index.html" class="nav-logo">
           <img src="images/logo/logo_nav.png?v=2" alt="La Case de LEJ"/>
-          <span class="nav-brand-text">
-            <span class="nav-brand-title">LA CASE DE LEJ</span>
-            <span class="nav-brand-tagline">Épicerie fine locale &amp; confection coffret cadeau</span>
-          </span>
+        </a>
+
+        <a href="index.html" class="nav-brand">
+          <span class="nav-brand-title">LA CASE DE LEJ</span>
+          <span class="nav-brand-tagline">Épicerie fine locale &amp; confection coffret cadeau</span>
         </a>
 
         <!-- Right: cart + hamburger -->
