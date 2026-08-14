@@ -180,15 +180,25 @@
   color: inherit;
 }
 
+/* Hauteur réservée sur 2 lignes, même quand le texte n'en prend qu'une :
+   les quatre thèmes ont des textes de longueurs différentes, et sans cette
+   réserve le bloc de texte — donc la hauteur du héro — changeait selon le
+   thème affiché, jusqu'à cacher les boutons sur mobile. */
 #heroTagline {
   font-family: var(--font-heading);
   font-size: clamp(1.05rem, 2.1vw, 1.5rem);
   font-weight: 400;
   font-style: italic;
+  line-height: 1.3;
   opacity: 0.9;
   margin-bottom: 0.9rem;
   color: inherit;
-  max-width: 22ch;
+  max-width: 26ch;
+  min-height: calc(1.3em * 2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 #heroProduct {
@@ -196,9 +206,15 @@
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
+  line-height: 1.5;
   opacity: 0.68;
   margin-bottom: 2.2rem;
   color: inherit;
+  min-height: calc(1.5em * 2);
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
 }
 
 /* Masque de révélation ligne par ligne */
@@ -453,54 +469,53 @@
 }
 #heroSection[data-ink="dark"] .hero-arrow:hover { background: rgba(0,0,0,0.12); }
 
-.hero-scroll {
-  position: absolute;
-  right: clamp(1rem, 4vw, 3rem);
-  bottom: 2.8rem;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  font-size: 0.7rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  opacity: 0.55;
-}
-.hero-scroll span {
-  display: block;
-  width: 1px;
-  height: 34px;
-  background: linear-gradient(to bottom, transparent, currentColor);
-  animation: heroScroll 2.4s ease-in-out infinite;
-  transform-origin: top;
-}
-@keyframes heroScroll {
-  0%, 100% { transform: scaleY(0.3); opacity: 0.3; }
-  50%      { transform: scaleY(1);   opacity: 1; }
-}
-
-/* ----- Responsive hero ----- */
+/* ----- Responsive hero -----
+   Sur mobile, le héro occupe une hauteur d'écran fixe (100svh — la plus
+   petite hauteur de viewport possible, barre d'adresse comprise) au lieu
+   d'un min-height qui pouvait grandir avec le texte. Combiné à la réserve
+   de 2 lignes sur la légende et la ligne produit, la hauteur totale ne
+   bouge plus d'un thème à l'autre : les boutons restent toujours visibles
+   sans avoir à faire défiler la page. */
 @media (max-width: 900px) {
+  #heroSection { min-height: 0; height: 100svh; }
+
   .hero-inner {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
     text-align: center;
-    padding-bottom: 7.5rem;
-    gap: 1rem;
+    min-height: 0;
+    height: 100%;
+    padding: calc(var(--nav-height) + 0.75rem) clamp(1rem, 4vw, 3rem) 1.5rem;
+    gap: clamp(0.5rem, 3vh, 1.25rem);
+    align-content: center;
+    overflow: hidden;
   }
-  #heroContent { order: 2; }
-  .hero-stage  { order: 1; height: clamp(240px, 52vw, 340px); }
+  #heroContent { order: 2; min-height: 0; }
+  .hero-stage  { order: 1; height: clamp(180px, 30vh, 320px); flex-shrink: 0; }
   .hero-actions { justify-content: center; }
   #heroTagline { max-width: none; margin-inline: auto; }
-  .hero-scroll { display: none; }
+  #heroProduct { margin-bottom: clamp(1rem, 3vh, 2.2rem); }
   .hero-ring   { display: none; }
 }
 
 @media (max-width: 600px) {
   .hero-tab { --pad: 0.5rem; font-size: 0.68rem; padding-bottom: 0.65rem; }
   .hero-arrow { display: none; }          /* les onglets suffisent, le balayage aussi */
-  .hero-inner { padding-bottom: 6.5rem; }
-  .hero-stage { height: clamp(200px, 46vw, 300px); }
-  .hero-nav { bottom: 1.8rem; }
+  .hero-inner { padding-bottom: 1.1rem; }
+  .hero-stage { height: clamp(150px, 26vh, 260px); }
+  .hero-nav { bottom: 1.1rem; }
+  #heroBadgeText { display: none; }       /* la puce seule suffit, gagne une ligne */
+}
+
+/* Petits écrans en hauteur (téléphones compacts, mode paysage) : on
+   resserre encore pour garantir que tout tienne sans défilement. */
+@media (max-width: 900px) and (max-height: 720px) {
+  #heroFruitName { font-size: clamp(2.2rem, 8vw, 3.4rem); margin-bottom: 0.4rem; }
+  .hero-fruit-label { margin-bottom: 0.35rem; }
+  #heroTagline  { font-size: clamp(0.9rem, 2vw, 1.1rem); margin-bottom: 0.5rem; }
+  #heroProduct  { margin-bottom: clamp(0.75rem, 2vh, 1.2rem); }
+  .hero-badge   { margin-bottom: 0.75rem; }
+  .hero-stage   { height: clamp(120px, 22vh, 200px); }
 }
 
 /* ----- Accessibilité : mouvement réduit ----- */
@@ -547,92 +562,143 @@
   100% { transform: translateX(-50%); }
 }
 
-/* ========== CATEGORIES ========== */
-/* ----- Univers (regroupement des catégories) ----- */
-.universe + .universe { margin-top: 3rem; }
+/* ==========================================================================
+   EXPLORATEUR DE CATÉGORIES — rail horizontal
+   Une rangée d'onglets « univers » au-dessus d'un rail de catégories qui
+   défile horizontalement (glisser, flèches, ou molette + Maj). Le rail
+   déborde volontairement du conteneur pour suggérer la suite hors écran.
+   ========================================================================== */
 
-.universe-head {
+.cx-tabs-wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.cx-tabs-wrap::-webkit-scrollbar { display: none; }
+
+.cx-tabs {
   display: flex;
-  align-items: baseline;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-bottom: 1.25rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1px solid var(--cream-dark);
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  width: max-content;
 }
 
-.universe-title {
-  font-family: var(--font-heading);
-  font-size: 1.25rem;
-  font-weight: 600;
-}
-
-.universe-blurb {
+.cx-tab {
+  padding: 0.55rem 1.25rem;
+  border-radius: 100px;
   font-size: 0.85rem;
+  font-weight: 600;
   color: var(--gray-text);
-  margin: 0;
-}
-
-.categories-grid {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1rem;
-}
-
-.category-card {
-  background: var(--cream);
-  border-radius: var(--radius-lg);
-  padding: 1.5rem 1rem;
-  text-align: center;
-  cursor: pointer;
+  background: var(--white);
+  border: 2px solid var(--cream-dark);
+  white-space: nowrap;
   transition: var(--transition);
-  border: 2px solid transparent;
-  text-decoration: none;
-  color: var(--black);
-  display: block;
 }
-
-.category-card:hover {
-  border-color: var(--gold);
-  background: var(--white);
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
-}
-
-.category-emoji {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 56px;
-  height: 56px;
-  margin-bottom: 0.85rem;
-  border-radius: 50%;
-  background: var(--white);
-  color: var(--gold);
-  box-shadow: inset 0 0 0 1px var(--cream-dark);
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), background var(--transition), color var(--transition);
-}
-
-.category-card:hover .category-emoji {
-  transform: translateY(-3px) rotate(-6deg);
+.cx-tab:hover { border-color: var(--gold); color: var(--black); }
+.cx-tab.is-active {
   background: var(--gold);
+  border-color: var(--gold);
   color: var(--white);
   box-shadow: var(--shadow-gold);
 }
 
-.category-name {
+.cx-rail-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cx-rail {
+  flex: 1;
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  cursor: grab;
+  padding: 0.25rem clamp(1rem, 4vw, 3rem) 1rem;
+  transition: opacity 0.18s ease;
+
+  /* Estompe les bords : suggère qu'il y a plus à découvrir de chaque côté. */
+  mask-image: linear-gradient(to right, transparent 0, #000 clamp(1rem, 4vw, 3rem), #000 calc(100% - clamp(1rem, 4vw, 3rem)), transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 clamp(1rem, 4vw, 3rem), #000 calc(100% - clamp(1rem, 4vw, 3rem)), transparent 100%);
+}
+.cx-rail::-webkit-scrollbar { display: none; }
+.cx-rail.is-dragging { cursor: grabbing; scroll-snap-type: none; }
+.cx-rail.is-switching { opacity: 0; }
+
+.cx-card {
+  scroll-snap-align: start;
+  flex: 0 0 auto;
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.6rem;
+  padding: 1.5rem 1rem;
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  text-decoration: none;
+  color: var(--black);
+  transition: var(--transition);
+  user-select: none;
+}
+.cx-rail:not(.is-dragging) .cx-card:hover {
+  border-color: var(--gold);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.cx-card-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--gold);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background var(--transition), color var(--transition);
+}
+.cx-card:hover .cx-card-icon {
+  transform: translateY(-2px) rotate(-6deg);
+  background: var(--gold);
+  color: var(--white);
+}
+
+.cx-card-name {
   font-family: var(--font-heading);
-  font-size: 0.98rem;
+  font-size: 0.95rem;
   font-weight: 600;
-  margin-bottom: 0.25rem;
   line-height: 1.25;
 }
 
-.category-count {
-  font-size: 0.78rem;
+.cx-card-count {
+  font-size: 0.75rem;
   color: var(--gray-text);
-  line-height: 1.45;
+  line-height: 1.4;
 }
+
+.cx-arrow {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  color: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+}
+.cx-arrow:hover { border-color: var(--gold); color: var(--gold); transform: scale(1.06); }
 
 /* ========== BANDEAU CAZCHOCO ========== */
 .cazchoco-banner {
@@ -868,7 +934,6 @@
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 900px) {
-  .categories-grid { grid-template-columns: repeat(3, 1fr); }
   .testimonials-grid { grid-template-columns: 1fr; }
   .values-grid { grid-template-columns: repeat(2, 1fr); }
 
@@ -880,21 +945,20 @@
 }
 
 @media (max-width: 600px) {
-  .categories-grid { grid-template-columns: repeat(2, 1fr); }
   .values-grid { grid-template-columns: 1fr; }
 }
 
 /* ========== AFFINAGE MOBILE (accueil) ========== */
 @media (max-width: 768px) {
-  /* Univers : 2 cartes par ligne, plus compactes */
-  .categories-grid { grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
-  .category-card { padding: 1.15rem 0.75rem; }
-  .category-emoji { width: 46px; height: 46px; margin-bottom: 0.6rem; }
-  .category-name { font-size: 0.88rem; }
-  .category-count { font-size: 0.72rem; }
-
-  .universe + .universe { margin-top: 2rem; }
-  .universe-head { flex-direction: column; gap: 0.2rem; }
+  /* L'explorateur garde son défilement horizontal sur mobile — c'est
+     justement le point : pas de flèches (le doigt suffit), cartes un peu
+     plus étroites pour en laisser deviner trois à l'écran. */
+  .cx-arrow { display: none; }
+  .cx-card { width: 138px; padding: 1.15rem 0.85rem; }
+  .cx-card-icon { width: 44px; height: 44px; }
+  .cx-card-name { font-size: 0.85rem; }
+  .cx-card-count { font-size: 0.7rem; }
+  .cx-rail { gap: 0.75rem; }
 
   /* Bandeau CazChoco empilé */
   .cazchoco-banner-inner { grid-template-columns: 1fr; text-align: center; }
@@ -908,11 +972,13 @@
   .basket-banner { padding: 1.75rem 1.25rem; }
 }
 
-@media (max-width: 330px) {
-  .categories-grid { grid-template-columns: 1fr; }
-}
+/* ==========================================================================
+   SÉLECTIONS DE L'ACCUEIL — les produits prennent la place que les
+   catégories occupaient avant : cartes plus grandes que sur la page listing,
+   sous un grand titre centré.
+   ========================================================================== */
+#selections { margin-top: 0.5rem; }
 
-/* ========== SÉLECTIONS DE L'ACCUEIL ========== */
 .selection + .selection { margin-top: 3.5rem; }
 
 .selection-head {
@@ -923,10 +989,23 @@
   gap: 1rem;
   margin-bottom: 2rem;
 }
-.selection-head .section-title { margin-bottom: 0; }
+
+.selection-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.25rem, 2.4vw, 1.55rem);
+  font-weight: 600;
+  color: var(--black);
+}
+
+#produitsSection .products-grid {
+  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+  gap: 1.75rem;
+}
+#produitsSection .product-img { aspect-ratio: 1/1; }
 
 @media (max-width: 600px) {
   .selection + .selection { margin-top: 2.5rem; }
   .selection-head { margin-bottom: 1.25rem; }
   .selection-head .btn { width: 100%; justify-content: center; }
+  #produitsSection .products-grid { grid-template-columns: repeat(auto-fill, minmax(155px, 1fr)); gap: 1rem; }
 }

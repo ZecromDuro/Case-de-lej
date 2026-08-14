@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="images/favicon.png"/>
   <title>La Case de LEJ — Produits artisanaux d'Abidjan</title>
   <meta name="description" content="La Case de LEJ transforme les fruits locaux ivoiriens en produits artisanaux : jus, liqueurs, confitures, fruits séchés. Coffrets cadeaux personnalisés à Abidjan."/>
-  <link rel="stylesheet" href="css/variables.css?v=10"/>
-  <link rel="stylesheet" href="css/global.css?v=10"/>
-  <link rel="stylesheet" href="css/account.css?v=10"/>
-  <link rel="stylesheet" href="css/home.css?v=10"/>
+  <link rel="stylesheet" href="css/variables.css?v=11"/>
+  <link rel="stylesheet" href="css/global.css?v=11"/>
+  <link rel="stylesheet" href="css/account.css?v=11"/>
+  <link rel="stylesheet" href="css/home.css?v=11"/>
 </head>
 <body>
 
@@ -71,8 +72,6 @@
       </button>
     </nav>
 
-    <div class="hero-scroll" aria-hidden="true"><span></span>Faites défiler</div>
-
   </section>
 
   <!-- ===== INTRO STRIP ===== -->
@@ -122,16 +121,74 @@
     </div>
   </div>
 
-  <!-- ===== CATEGORIES ===== -->
-  <section class="section">
+  <!-- ===== NOS PRODUITS (mis en avant) ===== -->
+  <section class="section" id="produitsSection">
     <div class="container">
       <div class="section-header centered reveal">
-        <span class="section-label">Nos catégories</span>
-        <h2 class="section-title">Vingt façons de goûter la Côte d'Ivoire</h2>
+        <span class="section-label">Nos produits</span>
+        <h2 class="section-title">Ce que l'atelier prépare pour vous</h2>
         <div class="divider"></div>
-        <p class="section-subtitle">De la tablette CazChoco au coffret de cérémonie : tout ce que l'atelier prépare, rangé par univers.</p>
+        <p class="section-subtitle">Nouveautés, meilleures ventes et suggestions taillées pour vos goûts.</p>
       </div>
-      <div id="categoriesUniverses"></div>
+
+      <div id="selections">
+
+        <div class="selection" id="selNouveautes" hidden>
+          <div class="selection-head reveal">
+            <div>
+              <span class="section-label">Tout juste arrivés</span>
+              <h3 class="selection-title">Les nouveautés</h3>
+            </div>
+            <a href="produits.html" class="btn btn-secondary">Voir tout</a>
+          </div>
+          <div class="products-grid" data-grid="nouveautes"></div>
+        </div>
+
+        <div class="selection" id="selBestSellers" hidden>
+          <div class="selection-head reveal">
+            <div>
+              <span class="section-label">Ce qui part le plus vite</span>
+              <h3 class="selection-title">Les plus commandés</h3>
+            </div>
+          </div>
+          <div class="products-grid" data-grid="best"></div>
+        </div>
+
+        <div class="selection" id="selPourVous" hidden>
+          <div class="selection-head reveal">
+            <div>
+              <span class="section-label" id="pourVousLabel">D'après ce que vous avez regardé</span>
+              <h3 class="selection-title" id="pourVousTitre">Pourrait vous plaire</h3>
+            </div>
+          </div>
+          <div class="products-grid" data-grid="pourvous"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== EXPLORER LES CATÉGORIES (rail horizontal) ===== -->
+  <section class="section category-explorer" style="background: var(--cream);">
+    <div class="container">
+      <div class="section-header reveal" style="margin-bottom:1.75rem">
+        <span class="section-label">Explorer</span>
+        <h2 class="section-title" style="margin-bottom:0">Différentes façons de goûter la Côte d'Ivoire</h2>
+      </div>
+    </div>
+
+    <div class="cx-tabs-wrap">
+      <div class="cx-tabs" id="cxTabs" role="tablist" aria-label="Univers de produits"></div>
+    </div>
+
+    <div class="cx-rail-wrap">
+      <button class="cx-arrow cx-arrow-prev" id="cxPrev" aria-label="Précédent">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="cx-rail" id="cxRail" role="tabpanel"></div>
+      <button class="cx-arrow cx-arrow-next" id="cxNext" aria-label="Suivant">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
     </div>
   </section>
 
@@ -155,44 +212,6 @@
           <img src="images/hero/chocolat.png" alt="Éclats de chocolat noir CazChoco" loading="lazy"/>
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- ===== SÉLECTIONS (nouveautés, best-sellers, suggestions) ===== -->
-  <section class="section" style="background: var(--cream); padding-top: 3rem;">
-    <div class="container" id="selections">
-
-      <div class="selection" id="selNouveautes" hidden>
-        <div class="selection-head reveal">
-          <div>
-            <span class="section-label">Tout juste arrivés</span>
-            <h2 class="section-title">Les nouveautés</h2>
-          </div>
-          <a href="produits.html" class="btn btn-secondary">Voir tout</a>
-        </div>
-        <div class="products-grid" data-grid="nouveautes"></div>
-      </div>
-
-      <div class="selection" id="selBestSellers" hidden>
-        <div class="selection-head reveal">
-          <div>
-            <span class="section-label">Ce qui part le plus vite</span>
-            <h2 class="section-title">Les plus commandés</h2>
-          </div>
-        </div>
-        <div class="products-grid" data-grid="best"></div>
-      </div>
-
-      <div class="selection" id="selPourVous" hidden>
-        <div class="selection-head reveal">
-          <div>
-            <span class="section-label" id="pourVousLabel">D'après ce que vous avez regardé</span>
-            <h2 class="section-title" id="pourVousTitre">Pourrait vous plaire</h2>
-          </div>
-        </div>
-        <div class="products-grid" data-grid="pourvous"></div>
-      </div>
-
     </div>
   </section>
 
@@ -310,35 +329,107 @@
   <div id="footerPlaceholder"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="js/supabase-config.js?v=10"></script>
-  <script src="js/catalog.js?v=10"></script>
-  <script src="js/auth.js?v=10"></script>
-  <script src="js/checkout.js?v=10"></script>
-  <script src="js/components.js?v=10"></script>
-  <script src="js/nav.js?v=10"></script>
-  <script src="js/cart.js?v=10"></script>
-  <script src="js/reco.js?v=10"></script>
-  <script src="js/hero.js?v=10"></script>
+  <script src="js/supabase-config.js?v=11"></script>
+  <script src="js/catalog.js?v=11"></script>
+  <script src="js/auth.js?v=11"></script>
+  <script src="js/checkout.js?v=11"></script>
+  <script src="js/components.js?v=11"></script>
+  <script src="js/nav.js?v=11"></script>
+  <script src="js/cart.js?v=11"></script>
+  <script src="js/reco.js?v=11"></script>
+  <script src="js/hero.js?v=11"></script>
   <script>
-    // Les 4 univers et leurs catégories
-    function renderUniverses() {
-      const host = document.getElementById('categoriesUniverses');
-      if (!host) return;
-      host.innerHTML = catalog.groups.map(g => `
-        <div class="universe reveal">
-          <div class="universe-head">
-            <h3 class="universe-title">${g.label}</h3>
-            <p class="universe-blurb">${g.blurb}</p>
-          </div>
-          <div class="categories-grid">
-            ${catalog.categoriesOfGroup(g.id).map(c => `
-              <a href="produits.html#${c.slug}" class="category-card">
-                <span class="category-emoji">${catalog.icon(c.slug, 30)}</span>
-                <div class="category-name">${c.label}</div>
-                <div class="category-count">${catalog.teaser(c.slug)}</div>
-              </a>`).join('')}
-          </div>
-        </div>`).join('');
+    /* ==========================================================================
+       EXPLORATEUR DE CATÉGORIES — défilement horizontal
+       Une rangée d'onglets « univers », et sous chacun un rail horizontal des
+       catégories qui lui appartiennent. Change d'univers = fondu + glissement
+       du rail ; à l'intérieur d'un univers, on fait défiler à la souris, au
+       doigt ou via les flèches.
+       ========================================================================== */
+
+    let cxActiveGroup = 0;
+
+    function cxCard(c) {
+      return `
+        <a href="produits.html#${c.slug}" class="cx-card">
+          <span class="cx-card-icon">${catalog.icon(c.slug, 26)}</span>
+          <span class="cx-card-name">${c.label}</span>
+          <span class="cx-card-count">${catalog.teaser(c.slug)}</span>
+        </a>`;
+    }
+
+    function renderCategoryExplorer() {
+      const tabsHost = document.getElementById('cxTabs');
+      const railHost = document.getElementById('cxRail');
+      if (!tabsHost || !railHost) return;
+
+      tabsHost.innerHTML = catalog.groups.map((g, i) => `
+        <button class="cx-tab${i === cxActiveGroup ? ' is-active' : ''}" data-index="${i}" role="tab" aria-selected="${i === cxActiveGroup}">
+          ${g.label}
+        </button>`).join('');
+
+      cxRenderRail(true);
+
+      tabsHost.querySelectorAll('.cx-tab').forEach(tab => {
+        tab.addEventListener('click', () => cxGoToGroup(Number(tab.dataset.index)));
+      });
+    }
+
+    function cxRenderRail(instant) {
+      const railHost = document.getElementById('cxRail');
+      const g = catalog.groups[cxActiveGroup];
+      const cards = catalog.categoriesOfGroup(g.id).map(cxCard).join('');
+
+      if (instant) {
+        railHost.innerHTML = cards;
+        return;
+      }
+      // Petit fondu enchaîné pour marquer le changement d'univers.
+      railHost.classList.add('is-switching');
+      setTimeout(() => {
+        railHost.innerHTML = cards;
+        railHost.scrollTo({ left: 0 });
+        railHost.classList.remove('is-switching');
+      }, 180);
+    }
+
+    function cxGoToGroup(index) {
+      if (index === cxActiveGroup) return;
+      cxActiveGroup = index;
+      document.querySelectorAll('.cx-tab').forEach((t, i) => {
+        t.classList.toggle('is-active', i === index);
+        t.setAttribute('aria-selected', i === index);
+      });
+      cxRenderRail(false);
+    }
+
+    function cxWireRailControls() {
+      const rail = document.getElementById('cxRail');
+      const prev = document.getElementById('cxPrev');
+      const next = document.getElementById('cxNext');
+      if (!rail) return;
+
+      const step = () => Math.min(rail.clientWidth * 0.8, 480);
+      prev?.addEventListener('click', () => rail.scrollBy({ left: -step(), behavior: 'smooth' }));
+      next?.addEventListener('click', () => rail.scrollBy({ left: step(), behavior: 'smooth' }));
+
+      // Glisser à la souris, comme sur le héro.
+      let down = false, startX = 0, startScroll = 0, moved = false;
+      rail.addEventListener('pointerdown', e => {
+        down = true; moved = false;
+        startX = e.clientX; startScroll = rail.scrollLeft;
+        rail.classList.add('is-dragging');
+      });
+      window.addEventListener('pointermove', e => {
+        if (!down) return;
+        const dx = e.clientX - startX;
+        if (Math.abs(dx) > 4) moved = true;
+        rail.scrollLeft = startScroll - dx;
+      });
+      window.addEventListener('pointerup', () => { down = false; rail.classList.remove('is-dragging'); });
+
+      // Un glissement ne doit pas déclencher le clic du lien sous le doigt.
+      rail.addEventListener('click', e => { if (moved) { e.preventDefault(); e.stopPropagation(); } }, true);
     }
 
     /* ---------- Cartes produit ---------- */
@@ -415,7 +506,8 @@
 
     // Le catalogue vient de Supabase : on attend qu'il soit chargé.
     document.addEventListener('lej:ready', async () => {
-      renderUniverses();
+      renderCategoryExplorer();
+      cxWireRailControls();
       await renderSelections();
       document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
     });
