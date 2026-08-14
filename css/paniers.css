@@ -384,6 +384,226 @@
   line-height: 1.5;
 }
 
+.step-hint {
+  font-size: 0.9rem;
+  color: var(--gray-text);
+  margin-top: -0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------- Étape emballage ---------- */
+.box-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 1rem;
+}
+
+.box-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 1.25rem 1rem;
+  border: 2px solid var(--cream-dark);
+  border-radius: var(--radius-lg);
+  background: var(--white);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.box-card:hover { border-color: var(--gold-light); }
+.box-card.selected { border-color: var(--gold); background: #FFF8EC; }
+
+.box-card-check {
+  position: absolute;
+  top: 0.6rem; right: 0.6rem;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--white);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.box-card.selected .box-card-check { display: flex; }
+
+.box-card-thumb {
+  width: 100%;
+  aspect-ratio: 4/3;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.box-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.box-card-mono {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--cream);
+}
+.box-card-mono span {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.55;
+}
+
+.box-card-name { font-weight: 600; font-size: 0.92rem; }
+.box-card-price { font-size: 0.85rem; color: var(--gold); font-weight: 700; }
+
+.box-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+  color: var(--gray-text);
+}
+.box-empty .btn { margin-top: 1rem; }
+
+/* ---------- Éditeur de carte ---------- */
+.card-designer {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: var(--cream);
+  border-radius: var(--radius-lg);
+}
+
+.card-designer-title {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.card-designer-title em { font-style: normal; font-weight: 400; color: var(--gray-text); font-size: 0.85rem; }
+
+.card-designer-hint {
+  font-size: 0.85rem;
+  color: var(--gray-text);
+  line-height: 1.55;
+  margin-bottom: 1.25rem;
+}
+
+.card-designer-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.card-canvas {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1050/600;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  background: var(--white);
+}
+
+.card-designer-controls { display: flex; flex-direction: column; gap: 1.1rem; }
+.card-control-group { display: flex; flex-direction: column; gap: 0.5rem; }
+.card-control-label { font-size: 0.8rem; font-weight: 600; }
+
+.card-swatches { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+
+.card-swatch {
+  width: 34px; height: 34px;
+  border-radius: 50%;
+  border: 2px solid var(--cream-dark);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.card-swatch.selected { border-color: var(--black); box-shadow: 0 0 0 2px var(--white), 0 0 0 4px var(--gold); }
+
+.card-swatch-border {
+  width: auto;
+  height: auto;
+  border-radius: 100px;
+  padding: 0.4rem 0.9rem;
+  background: var(--white);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--black);
+}
+.card-swatch-border.selected { border-color: var(--gold); background: #FFF8EC; box-shadow: none; }
+
+.card-fonts { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.card-font-btn {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--cream-dark);
+  background: var(--white);
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.card-font-btn.selected { border-color: var(--gold); background: #FFF8EC; }
+
+#cardMessage {
+  width: 100%;
+  border: 2px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  padding: 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  resize: vertical;
+  outline: none;
+  transition: var(--transition);
+}
+#cardMessage:focus { border-color: var(--gold); }
+
+/* ---------- Pour moi / à offrir ---------- */
+.gift-toggle {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0.35rem;
+  background: var(--cream);
+  border-radius: 100px;
+  width: fit-content;
+}
+
+.gift-toggle-btn {
+  padding: 0.6rem 1.5rem;
+  border-radius: 100px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--gray-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.gift-toggle-btn.is-active { background: var(--gold); color: var(--white); }
+
+.gx-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.gx-fields .auth-field { margin-bottom: 0; }
+
+.gx-recipient {
+  margin: 0.5rem 0 1.5rem;
+  padding: 1.25rem;
+  border: 1px dashed var(--gold);
+  border-radius: var(--radius-lg);
+  background: #FFF8EC;
+}
+.gx-recipient-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
 /* Step nav buttons */
 .step-actions {
   display: flex;
@@ -442,4 +662,10 @@
   .occasion-grid { grid-template-columns: repeat(2, 1fr); }
   .events-grid { grid-template-columns: 1fr; }
   .steps-header { flex-direction: column; gap: 0.25rem; }
+}
+
+@media (max-width: 760px) {
+  .card-designer-layout { grid-template-columns: 1fr; }
+  .gx-fields { grid-template-columns: 1fr; }
+  .box-grid { grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); }
 }

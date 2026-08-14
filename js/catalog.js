@@ -45,7 +45,7 @@ const FALLBACK = {
     { slug: 'cazchoco',   label: 'CazChoco',     group_id: 'epicerie', icon: 'choco', blurb: '', is_brand: true },
     { slug: 'jus-nectar', label: 'Jus & Nectar', group_id: 'boissons', icon: 'juice', blurb: '', is_brand: false }
   ],
-  products: [], occasions: [], events: []
+  products: [], occasions: [], events: [], boxes: []
 };
 
 const catalog = {
@@ -57,16 +57,17 @@ const catalog = {
     if (this.data && !force) return this.data;
 
     try {
-      const [groups, categories, products, occasions, events, stats] = await Promise.all([
+      const [groups, categories, products, occasions, events, stats, boxes] = await Promise.all([
         sb.from('groups').select('*').order('position'),
         sb.from('categories').select('*').order('position'),
         sb.from('products').select('*').order('position'),
         sb.from('occasions').select('*').order('position'),
         sb.from('events').select('*').order('position'),
-        sb.from('product_stats').select('*')
+        sb.from('product_stats').select('*'),
+        sb.from('boxes').select('*').order('position')
       ]);
 
-      const failed = [groups, categories, products, occasions, events].find(r => r.error);
+      const failed = [groups, categories, products, occasions, events, boxes].find(r => r.error);
       if (failed) throw failed.error;
 
       this.data = {
@@ -75,6 +76,7 @@ const catalog = {
         products: products.data,
         occasions: occasions.data,
         events: events.data,
+        boxes: boxes.data,
         // Les statistiques ne sont pas vitales : en cas d'échec on continue.
         stats: stats.error ? [] : stats.data
       };
@@ -95,6 +97,8 @@ const catalog = {
   get allProducts() { return this.data.products; },
   get occasions()   { return this.data.occasions; },
   get events()      { return this.data.events; },
+  get boxes()       { return (this.data.boxes || []).filter(b => b.is_active !== false); },
+  get allBoxes()    { return this.data.boxes || []; },
 
   get stats() { return this.data.stats || []; },
 
@@ -111,6 +115,7 @@ const catalog = {
 
   category:   (slug) => catalog.data.categories.find(c => c.slug === slug),
   product:    (id)   => catalog.data.products.find(p => p.id === id),
+  box:        (id)   => (catalog.data.boxes || []).find(b => b.id === id),
   byCategory: (slug) => catalog.products.filter(p => p.category === slug),
   categoriesOfGroup: (groupId) => catalog.data.categories.filter(c => c.group_id === groupId),
   label: (slug) => (catalog.data.categories.find(c => c.slug === slug) || {}).label || '',
@@ -125,7 +130,7 @@ const catalog = {
       stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
   },
 
-  /** Visuel d'un produit : sa photo si elle existe, sinon un monogramme. */
+  /** Visuel d'un produit ou d'une box : sa photo si elle existe, sinon un monogramme. */
   visual(p, cssClass = 'product-img-placeholder') {
     if (p.image_url) {
       return `<img class="product-photo" src="${p.image_url}" alt="${p.name}" loading="lazy"/>`;

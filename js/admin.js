@@ -335,6 +335,54 @@ function editProduct(id) {
 }
 
 /* ==========================================================================
+   EMBALLAGES (« box »)
+   ========================================================================== */
+
+function renderBoxes() {
+  const items = catalog.allBoxes;
+
+  $('#boxList').innerHTML = items.length ? items.map(b => `
+    <article class="ad-card ${b.is_active === false ? 'is-off' : ''}">
+      <div class="ad-card-thumb">
+        ${b.image_url ? `<img src="${esc(b.image_url)}" alt=""/>` : `<span>${esc((b.name || '?').charAt(0))}</span>`}
+      </div>
+      <div class="ad-card-body">
+        <div class="ad-card-title">
+          ${esc(b.name)}
+          ${b.is_active === false ? '<em class="ad-chip is-muted">Masqué</em>' : ''}
+        </div>
+        <div class="ad-card-meta">${Number(b.price).toLocaleString('fr-FR')} FCFA</div>
+      </div>
+      <div class="ad-card-actions">
+        <button class="ad-btn ad-btn-ghost" data-edit-box="${esc(b.id)}">Modifier</button>
+        <button class="ad-btn ad-btn-danger" data-del-box="${esc(b.id)}">Supprimer</button>
+      </div>
+    </article>`).join('')
+    : '<p class="ad-empty">Aucun emballage. Le configurateur de coffret restera bloqué à l\'étape « Emballage » tant qu\'aucun n\'est créé.</p>';
+}
+
+function editBox(id) {
+  const b = id ? catalog.box(id) : null;
+  const isNew = !b;
+  const d = b || { id: '', name: '', description: '', price: 0, image_url: '', is_active: true };
+
+  openDrawer(isNew ? 'Nouvel emballage' : "Modifier l'emballage", `
+    ${field.text('name', 'Nom', d.name)}
+    ${field.number('price', 'Prix', d.price, { hint: 'en FCFA, par coffret' })}
+    ${field.area('description', 'Description', d.description)}
+    ${field.image(d.image_url)}
+    ${field.toggle('is_active', 'Proposé aux clients', d.is_active !== false)}
+  `, async () => {
+    const v = formData();
+    if (!v.name) { toast('Le nom est obligatoire', true); return; }
+    v.id = isNew ? slugify(v.name) + '-' + Date.now().toString(36).slice(-4) : d.id;
+    if (await save('boxes', v, 'id')) closeDrawer();
+  });
+
+  wireImageField('box-' + (d.id || 'nouveau'));
+}
+
+/* ==========================================================================
    CATÉGORIES
    ========================================================================== */
 
@@ -518,11 +566,19 @@ async function renderOrders() {
           <div class="ad-card-meta">
             ${date} · ${esc(o.customer_name)} · ${esc(o.customer_phone)}
             ${o.delivery_address ? ' · ' + esc(o.delivery_address) : ''}
+            ${o.box_name ? ` · Emballage : ${esc(o.box_name)} (${Number(o.box_price).toLocaleString('fr-FR')} F)` : ''}
           </div>
           <ul class="ad-order-items">
             ${o.order_items.map(i => `<li>${esc(i.name)} ×${i.quantity} — ${(i.unit_price * i.quantity).toLocaleString('fr-FR')} F</li>`).join('')}
           </ul>
-          ${o.message ? `<p class="ad-order-msg">« ${esc(o.message)} »</p>` : ''}
+          ${o.is_gift ? `
+            <div class="ad-order-gift">
+              <strong>À offrir</strong> — ${esc(o.recipient_name)} · ${esc(o.recipient_phone)}
+              ${o.recipient_address ? `<br/>Livraison : ${esc(o.recipient_address)}` : ''}
+            </div>` : ''}
+          ${o.card_text ? `<p class="ad-order-msg">« ${esc(o.card_text)} »</p>` : ''}
+          ${o.card_image_url ? `<a class="ad-order-card-link" href="${esc(o.card_image_url)}" target="_blank" rel="noopener">Voir la carte personnalisée →</a>` : ''}
+          ${!o.card_text && o.message ? `<p class="ad-order-msg">« ${esc(o.message)} »</p>` : ''}
           <div class="ad-order-total">${o.total.toLocaleString('fr-FR')} FCFA</div>
         </div>
         <div class="ad-card-actions ad-order-actions">
@@ -531,7 +587,7 @@ async function renderOrders() {
               `<option value="${k}" ${o.status === k ? 'selected' : ''}>${v}</option>`).join('')}
           </select>
           <a class="ad-btn ad-btn-ghost" target="_blank" rel="noopener"
-             href="https://wa.me/${esc(String(o.customer_phone).replace(/\D/g, ''))}">WhatsApp</a>
+             href="https://wa.me/${esc(String((o.is_gift ? o.recipient_phone : o.customer_phone) || o.customer_phone).replace(/\D/g, ''))}">WhatsApp</a>
         </div>
       </article>`;
   }).join('') : '<p class="ad-empty">Aucune commande.</p>';
@@ -547,6 +603,7 @@ function renderAll() {
     catalog.categories.map(c => `<option value="${esc(c.slug)}">${esc(c.label)}</option>`).join('');
 
   renderProducts();
+  renderBoxes();
   renderCategories();
   renderOccasions();
   renderEvents();
@@ -558,6 +615,7 @@ document.addEventListener('click', async e => {
   if (!t) return;
 
   if (t.dataset.editProduct) return editProduct(t.dataset.editProduct);
+  if (t.dataset.editBox)     return editBox(t.dataset.editBox);
   if (t.dataset.editCat)     return editCategory(t.dataset.editCat);
   if (t.dataset.editOcc)     return editOccasion(t.dataset.editOcc);
   if (t.dataset.editEv)      return editEvent(t.dataset.editEv);
@@ -565,6 +623,10 @@ document.addEventListener('click', async e => {
   if (t.dataset.delProduct) {
     const p = catalog.product(t.dataset.delProduct);
     return remove('products', 'id', p.id, `Supprimer « ${p.name} » ?`);
+  }
+  if (t.dataset.delBox) {
+    const b = catalog.box(t.dataset.delBox);
+    return remove('boxes', 'id', b.id, `Supprimer l'emballage « ${b.name} » ?`);
   }
   if (t.dataset.delCat) {
     const c = catalog.category(t.dataset.delCat);
@@ -627,6 +689,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
   $('#btnNewProduct').addEventListener('click', () => editProduct(null));
+  $('#btnNewBox').addEventListener('click', () => editBox(null));
   $('#btnNewCategory').addEventListener('click', () => editCategory(null));
   $('#btnNewOccasion').addEventListener('click', () => editOccasion(null));
   $('#btnNewEvent').addEventListener('click', () => editEvent(null));

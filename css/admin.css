@@ -571,3 +571,24 @@ textarea.ad-input { resize: vertical; line-height: 1.6; }
 /* Stock non suivi : ni alerte, ni fausse quantité */
 .ad-stock-free { color: var(--gray-text); font-style: italic; }
 .ad-pill.is-free { background: var(--gray-light); color: var(--gray-text); }
+
+/* ---------- Cadeau et carte personnalisée (commandes) ---------- */
+.ad-order-gift {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.85rem;
+  background: #FFF8EC;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.ad-order-gift strong { color: var(--gold-dark); }
+
+.ad-order-card-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-decoration: underline;
+}

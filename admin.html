@@ -6,9 +6,9 @@
   <link rel="icon" type="image/png" href="images/favicon.png"/>
   <meta name="robots" content="noindex, nofollow"/>
   <title>Tableau de bord — La Case de LEJ</title>
-  <link rel="stylesheet" href="css/variables.css?v=12"/>
-  <link rel="stylesheet" href="css/account.css?v=12"/>
-  <link rel="stylesheet" href="css/admin.css?v=12"/>
+  <link rel="stylesheet" href="css/variables.css?v=15"/>
+  <link rel="stylesheet" href="css/account.css?v=15"/>
+  <link rel="stylesheet" href="css/admin.css?v=15"/>
 </head>
 <body>
 
@@ -39,6 +39,7 @@
 
 <nav class="ad-tabs" id="adTabs">
   <button class="ad-tab is-active" data-view="produits">Produits</button>
+  <button class="ad-tab" data-view="emballages">Emballages</button>
   <button class="ad-tab" data-view="categories">Catégories</button>
   <button class="ad-tab" data-view="occasions">Occasions</button>
   <button class="ad-tab" data-view="evenements">Événements</button>
@@ -64,6 +65,18 @@
     </div>
 
     <div class="ad-list" id="productList"></div>
+  </section>
+
+  <!-- ===== EMBALLAGES ===== -->
+  <section class="ad-view" id="view-emballages">
+    <div class="ad-view-head">
+      <div>
+        <h1>Emballages</h1>
+        <p class="ad-sub">Proposés au client à l'étape « Emballage » du configurateur de coffret.</p>
+      </div>
+      <button class="ad-btn ad-btn-primary" id="btnNewBox">Nouvel emballage</button>
+    </div>
+    <div class="ad-list" id="boxList"></div>
   </section>
 
   <!-- ===== CATÉGORIES ===== -->
@@ -158,9 +171,9 @@
 <div class="ad-toast" id="adToast"></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<script src="js/supabase-config.js?v=12"></script>
-<script src="js/catalog.js?v=12"></script>
-<script src="js/auth.js?v=12"></script>
-<script src="js/admin.js?v=12"></script>
+<script src="js/supabase-config.js?v=15"></script>
+<script src="js/catalog.js?v=15"></script>
+<script src="js/auth.js?v=15"></script>
+<script src="js/admin.js?v=15"></script>
 </body>
 </html>

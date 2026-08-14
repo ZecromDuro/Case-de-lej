@@ -6,10 +6,11 @@
   <link rel="icon" type="image/png" href="images/favicon.png"/>
   <title>Coffrets Cadeaux — La Case de LEJ</title>
   <meta name="description" content="Créez votre coffret cadeau personnalisé La Case de LEJ pour mariages, baptêmes, événements d'entreprise. Livraison à Abidjan."/>
-  <link rel="stylesheet" href="css/variables.css?v=12"/>
-  <link rel="stylesheet" href="css/global.css?v=12"/>
-  <link rel="stylesheet" href="css/account.css?v=12"/>
-  <link rel="stylesheet" href="css/paniers.css?v=12"/>
+  <link rel="stylesheet" href="css/variables.css?v=15"/>
+  <link rel="stylesheet" href="css/global.css?v=15"/>
+  <link rel="stylesheet" href="css/account.css?v=15"/>
+  <link rel="stylesheet" href="css/paniers.css?v=15"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Caveat:wght@600&family=Great+Vibes&display=swap"/>
 </head>
 <body>
 
@@ -36,7 +37,10 @@
               <span class="step-num">2</span> Produits
             </button>
             <button class="step-tab" data-step="3">
-              <span class="step-num">3</span> Commander
+              <span class="step-num">3</span> Emballage
+            </button>
+            <button class="step-tab" data-step="4">
+              <span class="step-num">4</span> Commander
             </button>
           </div>
 
@@ -67,31 +71,111 @@
             <div class="picker-grid" id="pickerGrid"></div>
             <div class="step-actions">
               <button class="btn btn-secondary" onclick="goStep(1)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Retour</button>
-              <button class="btn btn-primary" id="toStep3">Récapitulatif <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+              <button class="btn btn-primary" id="toStep3">Choisir l'emballage <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
             </div>
           </div>
 
-          <!-- Étape 3 : récapitulatif et commande -->
+          <!-- Étape 3 : emballage -->
           <div class="step-panel" id="step3">
+            <h3 class="step-title">Quel emballage ?</h3>
+            <p class="step-hint">Chaque coffret sera présenté dans cet écrin.</p>
+            <div class="box-grid" id="boxGrid"></div>
+            <div class="step-actions">
+              <button class="btn btn-secondary" onclick="goStep(2)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Retour</button>
+              <button class="btn btn-primary" id="toStep4" disabled>Récapitulatif <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Étape 4 : personnalisation, destinataire et commande -->
+          <div class="step-panel" id="step4">
             <h3 class="step-title">Votre commande est prête</h3>
 
             <div style="background:var(--cream);border-radius:var(--radius-lg);padding:1.75rem;margin-bottom:2rem">
               <div id="orderRecap"></div>
             </div>
 
-            <div style="margin-bottom:2rem">
-              <label style="font-size:0.875rem;font-weight:600;display:block;margin-bottom:0.5rem">Message personnalisé (optionnel)</label>
-              <textarea id="personalMessage" rows="3" placeholder="Ex: Pour les 30 ans de Marie, merci d'ajouter un mot doux…" style="width:100%;border:2px solid var(--cream-dark);border-radius:var(--radius-md);padding:0.875rem;font-family:var(--font-body);font-size:0.9rem;resize:vertical;outline:none;transition:var(--transition)"></textarea>
+            <!-- Carte personnalisée -->
+            <div class="card-designer" id="cardDesigner">
+              <h4 class="card-designer-title">Une carte pour accompagner le coffret <em>(facultatif)</em></h4>
+              <p class="card-designer-hint">Choisissez un fond, une bordure, une écriture, puis votre message : la carte sera jointe à votre commande, prête à imprimer.</p>
+
+              <div class="card-designer-layout">
+                <canvas id="cardCanvas" width="1050" height="600" class="card-canvas"></canvas>
+
+                <div class="card-designer-controls">
+                  <div class="card-control-group">
+                    <span class="card-control-label">Fond</span>
+                    <div class="card-swatches" id="cardBackgrounds"></div>
+                  </div>
+                  <div class="card-control-group">
+                    <span class="card-control-label">Bordure</span>
+                    <div class="card-swatches" id="cardBorders"></div>
+                  </div>
+                  <div class="card-control-group">
+                    <span class="card-control-label">Écriture</span>
+                    <div class="card-fonts" id="cardFonts"></div>
+                  </div>
+                  <div class="card-control-group">
+                    <label class="card-control-label" for="cardMessage">Message</label>
+                    <textarea id="cardMessage" rows="3" maxlength="140" placeholder="Ex : Joyeux anniversaire Marie, toute notre affection !"></textarea>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            <!-- Pour moi / à offrir -->
+            <div class="gift-toggle" id="giftToggle">
+              <button type="button" class="gift-toggle-btn is-active" data-gift="false">Pour moi</button>
+              <button type="button" class="gift-toggle-btn" data-gift="true">À offrir</button>
+            </div>
+
+            <div class="gx-fields">
+              <div class="auth-field">
+                <label for="gxName">Votre nom complet <span aria-hidden="true">*</span></label>
+                <input id="gxName" autocomplete="name" required/>
+              </div>
+              <div class="auth-field">
+                <label for="gxPhone">Votre téléphone (WhatsApp) <span aria-hidden="true">*</span></label>
+                <input id="gxPhone" type="tel" autocomplete="tel" required placeholder="+225 07 07 77 31 97"/>
+              </div>
+              <div class="auth-field">
+                <label for="gxEmail">E-mail <em>facultatif</em></label>
+                <input id="gxEmail" type="email" autocomplete="email"/>
+              </div>
+              <div class="auth-field" id="gxAddressField">
+                <label for="gxAddress">Votre adresse <em>facultatif</em></label>
+                <input id="gxAddress" autocomplete="street-address" placeholder="Quartier, repère…"/>
+              </div>
+            </div>
+
+            <div class="gx-recipient" id="gxRecipient" hidden>
+              <h4 class="gx-recipient-title">Coordonnées du destinataire</h4>
+              <div class="gx-fields">
+                <div class="auth-field">
+                  <label for="gxRecipientName">Nom complet <span aria-hidden="true">*</span></label>
+                  <input id="gxRecipientName" autocomplete="off"/>
+                </div>
+                <div class="auth-field">
+                  <label for="gxRecipientPhone">Téléphone <span aria-hidden="true">*</span></label>
+                  <input id="gxRecipientPhone" type="tel" autocomplete="off" placeholder="+225 07 07 77 31 97"/>
+                </div>
+                <div class="auth-field">
+                  <label for="gxRecipientAddress">Adresse de livraison <span aria-hidden="true">*</span></label>
+                  <input id="gxRecipientAddress" autocomplete="off" placeholder="Quartier, repère…"/>
+                </div>
+              </div>
+            </div>
+
+            <p class="auth-error" id="gxError" hidden></p>
 
             <div style="display:flex;flex-direction:column;gap:1rem">
               <button class="btn btn-whatsapp" id="finalOrderBtn" style="justify-content:center;font-size:1rem;padding:1rem">
                 <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
                 </svg>
-                Envoyer ma commande via WhatsApp
+                <span id="finalOrderLabel">Envoyer ma commande via WhatsApp</span>
               </button>
-              <button class="btn btn-secondary" onclick="goStep(2)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Modifier</button>
+              <button class="btn btn-secondary" onclick="goStep(3)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg> Modifier</button>
             </div>
           </div>
         </div>
@@ -136,16 +220,55 @@
   <div id="footerPlaceholder"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="js/supabase-config.js?v=12"></script>
-  <script src="js/catalog.js?v=12"></script>
-  <script src="js/auth.js?v=12"></script>
-  <script src="js/checkout.js?v=12"></script>
-  <script src="js/components.js?v=12"></script>
-  <script src="js/nav.js?v=12"></script>
-  <script src="js/cart.js?v=12"></script>
+  <script src="js/supabase-config.js?v=15"></script>
+  <script src="js/catalog.js?v=15"></script>
+  <script src="js/auth.js?v=15"></script>
+  <script src="js/checkout.js?v=15"></script>
+  <script src="js/components.js?v=15"></script>
+  <script src="js/nav.js?v=15"></script>
+  <script src="js/cart.js?v=15"></script>
   <script>
     // State
-    const state = { step: 1, occasion: '', qty: 1, selections: {} };
+    const state = {
+      step: 1, occasion: '', qty: 1, selections: {},
+      boxId: null,
+      isGift: false,
+      card: { bg: 'or', border: 'simple', font: 'dancing', text: '' }
+    };
+
+    /* ---------- Étape 3 : emballage ---------- */
+
+    function renderBoxGrid() {
+      const grid = document.getElementById('boxGrid');
+      const boxes = catalog.boxes;
+
+      if (!boxes.length) {
+        grid.innerHTML = `
+          <div class="box-empty">
+            <p>Aucun emballage n'est disponible pour le moment.</p>
+            <a href="https://wa.me/2250707773197" target="_blank" class="btn btn-secondary">Nous écrire sur WhatsApp</a>
+          </div>`;
+        document.getElementById('toStep4').disabled = true;
+        return;
+      }
+
+      grid.innerHTML = boxes.map(b => `
+        <button type="button" class="box-card ${state.boxId === b.id ? 'selected' : ''}" data-box="${b.id}">
+          <span class="box-card-check"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span>
+          <span class="box-card-thumb">${catalog.visual(b, 'box-card-mono')}</span>
+          <span class="box-card-name">${b.name}</span>
+          <span class="box-card-price">${Number(b.price).toLocaleString('fr-FR')} FCFA</span>
+        </button>`).join('');
+
+      grid.querySelectorAll('.box-card').forEach(btn => {
+        btn.addEventListener('click', () => {
+          state.boxId = btn.dataset.box;
+          grid.querySelectorAll('.box-card').forEach(c => c.classList.toggle('selected', c === btn));
+          document.getElementById('toStep4').disabled = false;
+          updateSummary();
+        });
+      });
+    }
 
     // Render picker — regroupé par catégorie
     function renderPicker() {
@@ -202,7 +325,8 @@
     function updateSummary() {
       const items = catalog.products.filter(p => state.selections[p.id]);
       const count = items.reduce((s, p) => s + state.selections[p.id], 0);
-      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0);
+      const box = state.boxId ? catalog.box(state.boxId) : null;
+      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) + (box ? box.price : 0);
 
       document.getElementById('summaryCount').textContent = count + (count > 1 ? ' articles' : ' article');
 
@@ -214,7 +338,12 @@
           <div class="summary-item">
             <span class="summary-item-name">${p.name} ×${state.selections[p.id]}</span>
             <span class="summary-item-price">${(p.price * state.selections[p.id]).toLocaleString('fr-FR')} FCFA</span>
-          </div>`).join('');
+          </div>`).join('')
+          + (box ? `
+          <div class="summary-item">
+            <span class="summary-item-name">Emballage — ${box.name}</span>
+            <span class="summary-item-price">${box.price.toLocaleString('fr-FR')} FCFA</span>
+          </div>` : '');
       }
 
       document.getElementById('summaryTotal').textContent = total.toLocaleString('fr-FR') + ' FCFA';
@@ -236,18 +365,24 @@
       const el = document.getElementById('orderRecap');
       if (!el) return;
       const items = catalog.products.filter(p => state.selections[p.id]);
-      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0);
+      const box = state.boxId ? catalog.box(state.boxId) : null;
+      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) + (box ? box.price : 0);
 
       el.innerHTML = `
         <div style="font-weight:600;margin-bottom:1rem;font-size:0.9rem;color:var(--gray-text)">
           ${state.occasion ? state.occasion + ' · ' : ''}
-          ${state.qty} coffret(s)
+          ${state.qty} coffret(s)${box ? ' · ' + box.name : ''}
         </div>
         ${items.map(p => `
           <div style="display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.9rem;border-bottom:1px dashed var(--cream-dark)">
             <span>${p.name} ×${state.selections[p.id]}</span>
             <span style="font-weight:600;color:var(--gold)">${(p.price * state.selections[p.id]).toLocaleString('fr-FR')} F</span>
           </div>`).join('')}
+        ${box ? `
+          <div style="display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.9rem;border-bottom:1px dashed var(--cream-dark)">
+            <span>Emballage — ${box.name}</span>
+            <span style="font-weight:600;color:var(--gold)">${box.price.toLocaleString('fr-FR')} F</span>
+          </div>` : ''}
         <div style="display:flex;justify-content:space-between;padding:1rem 0 0;font-weight:700;font-size:1.05rem">
           <span>Total estimé (×${state.qty})</span>
           <span style="color:var(--gold)">${(total * state.qty).toLocaleString('fr-FR')} FCFA</span>
@@ -286,18 +421,21 @@
         </div>`).join('');
     }
 
-    // Navigation entre les 3 étapes
+    // Navigation entre les 4 étapes
     function goStep(n) {
       state.step = n;
       document.querySelectorAll('.step-panel').forEach((p, i) => p.classList.toggle('active', i + 1 === n));
       document.querySelectorAll('.step-tab').forEach((t, i) => t.classList.toggle('active', i + 1 === n));
       if (n === 2) renderPicker();
+      if (n === 3) renderBoxGrid();
+      if (n === 4) { updateSummary(); drawCard(); }
       const head = document.querySelector('.steps-header');
       window.scrollTo({ top: head.getBoundingClientRect().top + window.scrollY - 90, behavior: 'smooth' });
     }
 
     document.getElementById('toStep2').addEventListener('click', () => goStep(2));
     document.getElementById('toStep3').addEventListener('click', () => goStep(3));
+    document.getElementById('toStep4').addEventListener('click', () => goStep(4));
 
     // Nombre de coffrets
     document.getElementById('qtyMinus').addEventListener('click', () => {
@@ -311,29 +449,299 @@
       updateSummary();
     });
 
-    // Commande : enregistrée en base, puis transmise par WhatsApp
-    document.getElementById('finalOrderBtn').addEventListener('click', () => {
-      const items = catalog.products.filter(p => state.selections[p.id]);
-      if (items.length === 0) { showToast('Ajoutez au moins un produit !'); return; }
+    /* ==========================================================================
+       CARTE PERSONNALISÉE — fond, bordure et écriture prédéfinis, dessinés
+       sur un <canvas> au format carte de visite (1050×600). Aucune image
+       externe : tout est tracé en JS, donc léger et cohérent avec la charte.
+       ========================================================================== */
 
-      const personalMsg = document.getElementById('personalMessage').value.trim();
+    const CARD_BACKGROUNDS = [
+      { id: 'or',      label: 'Doré',       swatch: 'linear-gradient(135deg,#F5D89A,#C9901A)',
+        draw(ctx, w, h) {
+          const g = ctx.createLinearGradient(0, 0, w, h);
+          g.addColorStop(0, '#FBEBC8'); g.addColorStop(0.55, '#E8B95C'); g.addColorStop(1, '#B9821A');
+          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+        } },
+      { id: 'creme',   label: 'Crème',      swatch: '#F5F0E8',
+        draw(ctx, w, h) { ctx.fillStyle = '#F7F2E9'; ctx.fillRect(0, 0, w, h); } },
+      { id: 'chocolat',label: 'Chocolat',   swatch: 'linear-gradient(135deg,#6B3A18,#1C0D06)',
+        draw(ctx, w, h) {
+          const g = ctx.createLinearGradient(0, 0, w, h);
+          g.addColorStop(0, '#5A3016'); g.addColorStop(1, '#1C0D06');
+          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+        } },
+      { id: 'rose',    label: 'CazChoco',   swatch: 'linear-gradient(135deg,#F5A9C6,#E8035B)',
+        draw(ctx, w, h) {
+          const g = ctx.createLinearGradient(0, 0, w, h);
+          g.addColorStop(0, '#FCE4EE'); g.addColorStop(1, '#E8035B');
+          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+        } },
+      { id: 'vert',    label: 'Nature',     swatch: 'linear-gradient(135deg,#CFE3D1,#2E7D32)',
+        draw(ctx, w, h) {
+          const g = ctx.createLinearGradient(0, 0, w, h);
+          g.addColorStop(0, '#E4F0E5'); g.addColorStop(1, '#3E7A44');
+          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+        } },
+      { id: 'nuit',    label: 'Nuit',       swatch: 'linear-gradient(135deg,#2A2440,#0B0A14)',
+        draw(ctx, w, h) {
+          const g = ctx.createLinearGradient(0, 0, w, h);
+          g.addColorStop(0, '#2A2440'); g.addColorStop(1, '#0B0A14');
+          ctx.fillStyle = g; ctx.fillRect(0, 0, w, h);
+        } }
+    ];
 
-      openCheckout({
-        kind: 'coffret',
-        occasion: state.occasion,
-        boxCount: state.qty,
-        items: items.map(p => ({ id: p.id, name: p.name, price: p.price, qty: state.selections[p.id] })),
-        onDone: () => {
-          state.selections = {};
-          renderPicker();
-          updateSummary();
-          goStep(1);
-        }
+    const CARD_BORDERS = [
+      { id: 'aucune', label: 'Aucune', draw() {} },
+      { id: 'simple', label: 'Simple', draw(ctx, w, h, ink) {
+          ctx.strokeStyle = ink; ctx.globalAlpha = 0.85; ctx.lineWidth = 4;
+          ctx.strokeRect(28, 28, w - 56, h - 56); ctx.globalAlpha = 1;
+        } },
+      { id: 'double', label: 'Double', draw(ctx, w, h, ink) {
+          ctx.strokeStyle = ink; ctx.globalAlpha = 0.85; ctx.lineWidth = 3;
+          ctx.strokeRect(24, 24, w - 48, h - 48);
+          ctx.strokeRect(36, 36, w - 72, h - 72); ctx.globalAlpha = 1;
+        } },
+      { id: 'pointille', label: 'Pointillé', draw(ctx, w, h, ink) {
+          ctx.strokeStyle = ink; ctx.globalAlpha = 0.85; ctx.lineWidth = 3;
+          ctx.setLineDash([10, 10]);
+          ctx.strokeRect(28, 28, w - 56, h - 56);
+          ctx.setLineDash([]); ctx.globalAlpha = 1;
+        } },
+      { id: 'ornee', label: 'Ornée', draw(ctx, w, h, ink) {
+          ctx.strokeStyle = ink; ctx.globalAlpha = 0.85; ctx.lineWidth = 3;
+          ctx.strokeRect(28, 28, w - 56, h - 56);
+          const corners = [[28, 28, 1, 1], [w - 28, 28, -1, 1], [28, h - 28, 1, -1], [w - 28, h - 28, -1, -1]];
+          corners.forEach(([x, y, dx, dy]) => {
+            ctx.beginPath();
+            ctx.moveTo(x, y + dy * 26); ctx.lineTo(x, y); ctx.lineTo(x + dx * 26, y);
+            ctx.stroke();
+          });
+          ctx.globalAlpha = 1;
+        } }
+    ];
+
+    const CARD_FONTS = [
+      { id: 'dancing', label: 'Dancing Script', family: "'Dancing Script', cursive" },
+      { id: 'caveat',  label: 'Caveat',         family: "'Caveat', cursive" },
+      { id: 'vibes',   label: 'Great Vibes',    family: "'Great Vibes', cursive" }
+    ];
+
+    function renderCardControls() {
+      document.getElementById('cardBackgrounds').innerHTML = CARD_BACKGROUNDS.map(b => `
+        <button type="button" class="card-swatch ${state.card.bg === b.id ? 'selected' : ''}"
+                data-bg="${b.id}" style="background:${b.swatch}" title="${b.label}" aria-label="Fond ${b.label}"></button>`).join('');
+
+      document.getElementById('cardBorders').innerHTML = CARD_BORDERS.map(b => `
+        <button type="button" class="card-swatch card-swatch-border ${state.card.border === b.id ? 'selected' : ''}"
+                data-border="${b.id}" title="${b.label}">${b.label}</button>`).join('');
+
+      document.getElementById('cardFonts').innerHTML = CARD_FONTS.map(f => `
+        <button type="button" class="card-font-btn ${state.card.font === f.id ? 'selected' : ''}"
+                data-font="${f.id}" style="font-family:${f.family}">${f.label}</button>`).join('');
+
+      document.getElementById('cardBackgrounds').querySelectorAll('[data-bg]').forEach(btn =>
+        btn.addEventListener('click', () => { state.card.bg = btn.dataset.bg; renderCardControls(); drawCard(); }));
+      document.getElementById('cardBorders').querySelectorAll('[data-border]').forEach(btn =>
+        btn.addEventListener('click', () => { state.card.border = btn.dataset.border; renderCardControls(); drawCard(); }));
+      document.getElementById('cardFonts').querySelectorAll('[data-font]').forEach(btn =>
+        btn.addEventListener('click', () => { state.card.font = btn.dataset.font; renderCardControls(); drawCard(); }));
+    }
+
+    function wrapCardText(ctx, text, maxWidth) {
+      const words = text.split(/\s+/).filter(Boolean);
+      const lines = [];
+      let line = '';
+      words.forEach(word => {
+        const test = line ? line + ' ' + word : word;
+        if (ctx.measureText(test).width > maxWidth && line) { lines.push(line); line = word; }
+        else line = test;
       });
+      if (line) lines.push(line);
+      return lines.slice(0, 4);
+    }
 
-      // Report du mot personnalisé dans le formulaire de commande
-      const champ = document.getElementById('coMessage');
-      if (champ && personalMsg) champ.value = personalMsg;
+    function drawCard() {
+      const canvas = document.getElementById('cardCanvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width, h = canvas.height;
+
+      const bg     = CARD_BACKGROUNDS.find(b => b.id === state.card.bg) || CARD_BACKGROUNDS[0];
+      const border = CARD_BORDERS.find(b => b.id === state.card.border) || CARD_BORDERS[0];
+      const font   = CARD_FONTS.find(f => f.id === state.card.font) || CARD_FONTS[0];
+      const dark   = ['chocolat', 'rose', 'nuit'].includes(bg.id);
+      const ink    = dark ? '#FFF8ED' : '#2A1A0B';
+
+      ctx.clearRect(0, 0, w, h);
+      bg.draw(ctx, w, h);
+      border.draw(ctx, w, h, ink);
+
+      // En-tête discret
+      ctx.fillStyle = ink; ctx.globalAlpha = 0.65;
+      ctx.font = '600 22px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('LA CASE DE LEJ', w / 2, 78);
+      ctx.globalAlpha = 1;
+
+      // Message manuscrit, centré, retour à la ligne automatique
+      const text = (state.card.text || '').trim() || 'Avec toute notre affection…';
+      ctx.font = `52px ${font.family}`;
+      ctx.fillStyle = ink;
+      const lines = wrapCardText(ctx, text, w - 220);
+      const lineHeight = 62;
+      const startY = h / 2 - ((lines.length - 1) * lineHeight) / 2;
+      lines.forEach((l, i) => ctx.fillText(l, w / 2, startY + i * lineHeight));
+
+      // Signature
+      ctx.globalAlpha = 0.6;
+      ctx.font = '18px Inter, sans-serif';
+      ctx.fillText('Abidjan, Côte d\'Ivoire', w / 2, h - 56);
+      ctx.globalAlpha = 1;
+    }
+
+    document.getElementById('cardMessage').addEventListener('input', e => {
+      state.card.text = e.target.value;
+      drawCard();
+    });
+
+    /* ==========================================================================
+       POUR MOI / À OFFRIR
+       ========================================================================== */
+
+    document.querySelectorAll('.gift-toggle-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        state.isGift = btn.dataset.gift === 'true';
+        document.querySelectorAll('.gift-toggle-btn').forEach(b => b.classList.toggle('is-active', b === btn));
+        document.getElementById('gxRecipient').hidden = !state.isGift;
+        document.getElementById('gxAddressField').querySelector('label em').textContent =
+          state.isGift ? 'facultatif — vous n\'êtes pas livré' : 'facultatif';
+      });
+    });
+
+    /* ==========================================================================
+       COMMANDE — enregistrée en base (avec emballage, cadeau, carte), puis
+       transmise par WhatsApp. Propre au configurateur de coffret : n'utilise
+       pas la fenêtre de commande partagée du panier classique.
+       ========================================================================== */
+
+    async function uploadCardImage() {
+      const canvas = document.getElementById('cardCanvas');
+      const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+      if (!blob) return '';
+      const path = `carte-${Date.now()}-${Math.random().toString(36).slice(2, 8)}.png`;
+      const { error } = await sb.storage.from('cartes').upload(path, blob, { contentType: 'image/png' });
+      if (error) { console.error('Envoi de la carte impossible :', error.message); return ''; }
+      const { data } = sb.storage.from('cartes').getPublicUrl(path);
+      return data.publicUrl;
+    }
+
+    function gxErreurLisible(err) {
+      const m = (err && err.message) || '';
+      if (/destinataire/i.test(m)) return m;
+      if (/obligatoires/i.test(m)) return 'Le nom et le téléphone sont obligatoires.';
+      if (/Produit indisponible/i.test(m)) return "Un produit de votre sélection n'est plus disponible.";
+      if (/Emballage indisponible/i.test(m)) return "Cet emballage n'est plus disponible, choisissez-en un autre.";
+      if (/fetch|network/i.test(m)) return 'Connexion impossible. Vérifiez votre réseau et réessayez.';
+      return "La commande n'a pas pu être enregistrée. Réessayez ou écrivez-nous sur WhatsApp.";
+    }
+
+    document.getElementById('finalOrderBtn').addEventListener('click', async () => {
+      const items = catalog.products.filter(p => state.selections[p.id]);
+      const err = document.getElementById('gxError');
+      err.hidden = true;
+
+      if (items.length === 0) { showToast('Ajoutez au moins un produit !'); return; }
+      if (!state.boxId) { showToast('Choisissez un emballage !'); goStep(3); return; }
+
+      const name    = document.getElementById('gxName').value.trim();
+      const phone   = document.getElementById('gxPhone').value.trim();
+      const email   = document.getElementById('gxEmail').value.trim();
+      const address = document.getElementById('gxAddress').value.trim();
+
+      if (!name || !phone) {
+        err.textContent = 'Votre nom et votre téléphone sont nécessaires pour vous recontacter.';
+        err.hidden = false;
+        return;
+      }
+
+      let recipientName = '', recipientPhone = '', recipientAddress = '';
+      if (state.isGift) {
+        recipientName    = document.getElementById('gxRecipientName').value.trim();
+        recipientPhone   = document.getElementById('gxRecipientPhone').value.trim();
+        recipientAddress = document.getElementById('gxRecipientAddress').value.trim();
+        if (!recipientName || !recipientPhone || !recipientAddress) {
+          err.textContent = 'Le nom, le téléphone et l\'adresse du destinataire sont nécessaires pour la livraison.';
+          err.hidden = false;
+          return;
+        }
+      }
+
+      const btn = document.getElementById('finalOrderBtn');
+      const label = document.getElementById('finalOrderLabel');
+      btn.disabled = true;
+      const labelAvant = label.textContent;
+      label.textContent = 'Enregistrement…';
+
+      try {
+        const cardImageUrl = state.card.text.trim() ? await uploadCardImage() : '';
+
+        const { data, error } = await sb.rpc('place_order', {
+          p_kind:      'coffret',
+          p_name:      name,
+          p_phone:     phone,
+          p_email:     email || null,
+          p_address:   address,
+          p_occasion:  state.occasion,
+          p_box_count: state.qty,
+          p_message:   '',
+          p_items:     items.map(p => ({ id: p.id, qty: state.selections[p.id] })),
+          p_box_id:    state.boxId,
+          p_is_gift:   state.isGift,
+          p_recipient_name:    recipientName,
+          p_recipient_phone:   recipientPhone,
+          p_recipient_address: recipientAddress,
+          p_card_image_url: cardImageUrl,
+          p_card_text:      state.card.text.trim()
+        });
+
+        if (error) throw error;
+        const order = Array.isArray(data) ? data[0] : data;
+        const box = catalog.box(state.boxId);
+
+        const lignes = items.map(p => `• ${p.name} ×${state.selections[p.id]}`).join('\n');
+        const texte = encodeURIComponent(
+          `Bonjour La Case de LEJ,\n\n` +
+          `Commande *${order.reference}*\n\n` +
+          `${state.qty} coffret(s) — ${state.occasion || 'occasion non précisée'}\n` +
+          `Emballage : ${box ? box.name : '—'}\n\n` +
+          `Contenu par coffret :\n${lignes}\n\n` +
+          `Total estimé : ${order.total.toLocaleString('fr-FR')} FCFA\n\n` +
+          `De la part de : ${name} (${phone})\n` +
+          (state.isGift
+            ? `À offrir à : ${recipientName} (${recipientPhone})\nLivraison : ${recipientAddress}\n`
+            : (address ? `Livraison : ${address}\n` : '')) +
+          (cardImageUrl ? `\nCarte personnalisée : ${cardImageUrl}\n` : '') +
+          `\nMerci de confirmer la disponibilité et la livraison.`
+        );
+
+        showToast(`Commande ${order.reference} enregistrée`);
+        window.open(`https://wa.me/2250707773197?text=${texte}`, '_blank');
+
+        // Réinitialisation pour une éventuelle nouvelle commande
+        state.selections = {}; state.boxId = null; state.isGift = false;
+        state.card = { bg: 'or', border: 'simple', font: 'dancing', text: '' };
+        document.getElementById('cardMessage').value = '';
+        document.querySelectorAll('.gift-toggle-btn').forEach(b => b.classList.toggle('is-active', b.dataset.gift === 'false'));
+        document.getElementById('gxRecipient').hidden = true;
+        renderPicker();
+        updateSummary();
+        goStep(1);
+      } catch (ex) {
+        err.textContent = gxErreurLisible(ex);
+        err.hidden = false;
+      } finally {
+        btn.disabled = false;
+        label.textContent = labelAvant;
+      }
     });
 
     // Step tabs click
@@ -346,6 +754,7 @@
     document.addEventListener('lej:ready', () => {
       renderOccasions();
       renderEvents();
+      renderCardControls();
       updateSummary();
       document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
     });
