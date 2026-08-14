@@ -131,6 +131,28 @@
 .auth-field input:disabled { background: var(--gray-light); color: var(--gray-text); }
 .auth-field textarea { resize: vertical; line-height: 1.6; }
 
+.auth-password-wrap { position: relative; }
+.auth-password-wrap input { padding-right: 2.6rem; }
+.auth-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 0.55rem;
+  transform: translateY(-50%);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  background: transparent;
+  color: var(--gray-text);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s, background 0.2s;
+}
+.auth-password-toggle:hover { color: var(--black); background: var(--gray-light); }
+.auth-password-toggle svg { display: block; }
+
 .auth-check {
   display: flex;
   align-items: center;
