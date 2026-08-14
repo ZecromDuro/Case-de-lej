@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Tableau de bord — La Case de LEJ</title>
+  <link rel="stylesheet" href="css/variables.css?v=10"/>
+  <link rel="stylesheet" href="css/account.css?v=10"/>
+  <link rel="stylesheet" href="css/admin.css?v=10"/>
+</head>
+<body>
+
+<!-- Barrière d'accès -->
+<div class="ad-gate" id="adGate" hidden>
+  <div class="ad-gate-card">
+    <h1 id="gateTitle">Connexion requise</h1>
+    <p id="gateText">Connectez-vous avec le compte administrateur de La Case de LEJ.</p>
+    <button class="ad-btn ad-btn-primary" id="gateAction">Se connecter</button>
+    <button class="ad-btn ad-btn-ghost" id="gateSignOut" hidden>Changer de compte</button>
+    <a class="ad-gate-back" href="index.html">Retour au site</a>
+  </div>
+</div>
+
+<div id="adApp" hidden>
+
+<header class="ad-top">
+  <div class="ad-top-inner">
+    <a class="ad-brand" href="index.html">
+      La Case de LEJ<small>Tableau de bord</small>
+    </a>
+    <div class="ad-top-actions">
+      <button class="ad-btn ad-btn-ghost" id="btnRefresh">Rafraîchir</button>
+      <a class="ad-btn ad-btn-ghost" href="index.html">Voir le site</a>
+    </div>
+  </div>
+</header>
+
+<nav class="ad-tabs" id="adTabs">
+  <button class="ad-tab is-active" data-view="produits">Produits</button>
+  <button class="ad-tab" data-view="categories">Catégories</button>
+  <button class="ad-tab" data-view="occasions">Occasions</button>
+  <button class="ad-tab" data-view="evenements">Événements</button>
+  <button class="ad-tab" data-view="stocks">Stocks</button>
+  <button class="ad-tab" data-view="commandes">Commandes</button>
+</nav>
+
+<main class="ad-main">
+
+  <!-- ===== PRODUITS ===== -->
+  <section class="ad-view is-active" id="view-produits">
+    <div class="ad-view-head">
+      <div>
+        <h1>Produits</h1>
+        <p class="ad-sub" id="prodCount"></p>
+      </div>
+      <button class="ad-btn ad-btn-primary" id="btnNewProduct">Nouveau produit</button>
+    </div>
+
+    <div class="ad-filters">
+      <input type="search" id="prodSearch" placeholder="Rechercher un produit…" class="ad-input"/>
+      <select id="prodCatFilter" class="ad-input"></select>
+    </div>
+
+    <div class="ad-list" id="productList"></div>
+  </section>
+
+  <!-- ===== CATÉGORIES ===== -->
+  <section class="ad-view" id="view-categories">
+    <div class="ad-view-head">
+      <div>
+        <h1>Catégories</h1>
+        <p class="ad-sub">Les univers regroupent les catégories sur le site.</p>
+      </div>
+      <button class="ad-btn ad-btn-primary" id="btnNewCategory">Nouvelle catégorie</button>
+    </div>
+    <div class="ad-list" id="categoryList"></div>
+  </section>
+
+  <!-- ===== OCCASIONS ===== -->
+  <section class="ad-view" id="view-occasions">
+    <div class="ad-view-head">
+      <div>
+        <h1>Occasions</h1>
+        <p class="ad-sub">Proposées à l'étape 1 du configurateur de coffret.</p>
+      </div>
+      <button class="ad-btn ad-btn-primary" id="btnNewOccasion">Nouvelle occasion</button>
+    </div>
+    <div class="ad-list" id="occasionList"></div>
+  </section>
+
+  <!-- ===== ÉVÉNEMENTS ===== -->
+  <section class="ad-view" id="view-evenements">
+    <div class="ad-view-head">
+      <div>
+        <h1>Événements</h1>
+        <p class="ad-sub">Les prestations affichées en bas de la page Coffrets.</p>
+      </div>
+      <button class="ad-btn ad-btn-primary" id="btnNewEvent">Nouvel événement</button>
+    </div>
+    <div class="ad-list" id="eventList"></div>
+  </section>
+
+  <!-- ===== STOCKS ===== -->
+  <section class="ad-view" id="view-stocks">
+    <div class="ad-view-head">
+      <div>
+        <h1>Stocks</h1>
+        <p class="ad-sub">Vue rapide pour ajuster les quantités. À 0, le produit passe « épuisé ».</p>
+      </div>
+    </div>
+    <div class="ad-stock-summary" id="stockSummary"></div>
+    <div class="ad-table-wrap">
+      <table class="ad-table" id="stockTable"></table>
+    </div>
+  </section>
+
+  <!-- ===== COMMANDES ===== -->
+  <section class="ad-view" id="view-commandes">
+    <div class="ad-view-head">
+      <div>
+        <h1>Commandes</h1>
+        <p class="ad-sub" id="orderCount"></p>
+      </div>
+    </div>
+    <div class="ad-filters">
+      <select id="orderStatusFilter" class="ad-input">
+        <option value="">Tous les statuts</option>
+        <option value="nouvelle">Reçues</option>
+        <option value="confirmee">Confirmées</option>
+        <option value="preparee">En préparation</option>
+        <option value="livree">Livrées</option>
+        <option value="annulee">Annulées</option>
+      </select>
+    </div>
+    <div class="ad-list" id="orderList"></div>
+  </section>
+
+</main>
+
+</div><!-- /#adApp -->
+
+<!-- ===== TIROIR D'ÉDITION ===== -->
+<div class="ad-drawer-overlay" id="drawerOverlay"></div>
+<aside class="ad-drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <div class="ad-drawer-head">
+    <h2 id="drawerTitle">Éditer</h2>
+    <button class="ad-icon-btn" id="drawerClose" aria-label="Fermer">&times;</button>
+  </div>
+  <form class="ad-drawer-body" id="drawerForm"></form>
+  <div class="ad-drawer-foot">
+    <button class="ad-btn ad-btn-ghost" id="drawerCancel" type="button">Annuler</button>
+    <button class="ad-btn ad-btn-primary" id="drawerSave" type="button">Enregistrer</button>
+  </div>
+</aside>
+
+<div class="ad-toast" id="adToast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-config.js?v=10"></script>
+<script src="js/catalog.js?v=10"></script>
+<script src="js/auth.js?v=10"></script>
+<script src="js/admin.js?v=10"></script>
+</body>
+</html>

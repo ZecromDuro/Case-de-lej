@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mon compte — La Case de LEJ</title>
+  <meta name="description" content="Retrouvez vos commandes et vos informations de livraison. Le compte est facultatif : vous pouvez commander sans vous inscrire."/>
+  <meta name="robots" content="noindex"/>
+  <link rel="stylesheet" href="css/variables.css?v=10"/>
+  <link rel="stylesheet" href="css/global.css?v=10"/>
+  <link rel="stylesheet" href="css/account.css?v=10"/>
+</head>
+<body>
+
+  <div id="navbarPlaceholder"></div>
+
+  <div class="page-hero">
+    <span class="section-label" style="justify-content:center;display:flex">Espace client</span>
+    <h1>Mon <span>compte</span></h1>
+    <p>Vos commandes et vos coordonnées, réunies au même endroit.</p>
+  </div>
+
+  <section class="section">
+    <div class="container">
+
+      <!-- Visiteur non connecté -->
+      <div class="account-guest" id="accountGuest" hidden>
+        <h2>Vous n'êtes pas connecté</h2>
+        <p>
+          Le compte reste <strong>facultatif</strong> : vous pouvez commander sans vous inscrire,
+          par le panier ou par le configurateur de coffret. Créer un compte sert seulement à
+          retrouver l'historique de vos commandes et à éviter de ressaisir vos coordonnées.
+        </p>
+        <div class="account-guest-actions">
+          <button class="btn btn-primary" onclick="openAuth('signin')">Se connecter</button>
+          <button class="btn btn-secondary" onclick="openAuth('signup')">Créer un compte</button>
+        </div>
+        <p class="account-guest-alt">
+          <a href="produits.html">Continuer sans compte</a>
+        </p>
+      </div>
+
+      <!-- Client connecté -->
+      <div class="account-view" id="accountView" hidden>
+
+        <div class="account-grid">
+          <aside class="account-card">
+            <h2 class="account-card-title">Mes informations</h2>
+            <form id="profileForm">
+              <div class="auth-field">
+                <label for="pfName">Nom complet</label>
+                <input id="pfName" autocomplete="name"/>
+              </div>
+              <div class="auth-field">
+                <label for="pfPhone">Téléphone</label>
+                <input id="pfPhone" type="tel" autocomplete="tel"/>
+              </div>
+              <div class="auth-field">
+                <label for="pfAddress">Adresse de livraison</label>
+                <input id="pfAddress" autocomplete="street-address"/>
+              </div>
+              <div class="auth-field">
+                <label for="pfEmail">E-mail</label>
+                <input id="pfEmail" disabled/>
+              </div>
+              <p class="auth-error" id="pfError" hidden></p>
+              <button type="submit" class="btn btn-primary account-save">Enregistrer</button>
+            </form>
+
+            <div class="account-links">
+              <a href="admin.html" class="admin-only" hidden>Tableau de bord</a>
+              <button type="button" id="btnSignOut">Se déconnecter</button>
+            </div>
+          </aside>
+
+          <div>
+            <h2 class="account-card-title">Mes commandes</h2>
+            <div id="ordersList" class="orders-list">
+              <p class="orders-loading">Chargement…</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <div id="cartPlaceholder"></div>
+  <div id="footerPlaceholder"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js?v=10"></script>
+  <script src="js/catalog.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/checkout.js?v=10"></script>
+  <script src="js/components.js?v=10"></script>
+  <script src="js/nav.js?v=10"></script>
+  <script src="js/cart.js?v=10"></script>
+  <script>
+    const STATUTS = {
+      nouvelle:  { label: 'Reçue',     cls: 'is-new' },
+      confirmee: { label: 'Confirmée', cls: 'is-ok' },
+      preparee:  { label: 'En préparation', cls: 'is-work' },
+      livree:    { label: 'Livrée',    cls: 'is-done' },
+      annulee:   { label: 'Annulée',   cls: 'is-off' }
+    };
+
+    function renderAccount() {
+      document.getElementById('accountGuest').hidden = !!auth.user;
+      document.getElementById('accountView').hidden  = !auth.user;
+      if (!auth.user) return;
+
+      const p = auth.profile || {};
+      document.getElementById('pfName').value    = p.full_name || '';
+      document.getElementById('pfPhone').value   = p.phone || '';
+      document.getElementById('pfAddress').value = p.address || '';
+      document.getElementById('pfEmail').value   = auth.user.email || '';
+
+      loadOrders();
+    }
+
+    async function loadOrders() {
+      const host = document.getElementById('ordersList');
+      try {
+        const orders = await auth.myOrders();
+        if (!orders.length) {
+          host.innerHTML = `<div class="orders-empty">
+            <p>Aucune commande pour le moment.</p>
+            <a href="produits.html" class="btn btn-secondary">Découvrir les produits</a>
+          </div>`;
+          return;
+        }
+
+        host.innerHTML = orders.map(o => {
+          const st = STATUTS[o.status] || STATUTS.nouvelle;
+          const date = new Date(o.created_at).toLocaleDateString('fr-FR', {
+            day: 'numeric', month: 'long', year: 'numeric'
+          });
+          return `
+            <article class="order-card">
+              <header class="order-head">
+                <div>
+                  <div class="order-ref">${o.reference}</div>
+                  <div class="order-date">${date} · ${o.kind === 'coffret' ? 'Coffret cadeau' : 'Panier'}</div>
+                </div>
+                <span class="order-status ${st.cls}">${st.label}</span>
+              </header>
+              <ul class="order-items">
+                ${o.order_items.map(i => `
+                  <li><span>${i.name} <em>×${i.quantity}</em></span>
+                      <span>${(i.unit_price * i.quantity).toLocaleString('fr-FR')} F</span></li>`).join('')}
+              </ul>
+              ${o.box_count > 1 ? `<div class="order-boxes">${o.box_count} coffrets identiques</div>` : ''}
+              <footer class="order-foot">
+                <span>Total</span>
+                <strong>${o.total.toLocaleString('fr-FR')} FCFA</strong>
+              </footer>
+            </article>`;
+        }).join('');
+      } catch (err) {
+        host.innerHTML = `<p class="orders-empty">Impossible de charger vos commandes pour le moment.</p>`;
+      }
+    }
+
+    document.getElementById('profileForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const err = document.getElementById('pfError');
+      err.hidden = true;
+      try {
+        await auth.saveProfile({
+          full_name: document.getElementById('pfName').value.trim(),
+          phone:     document.getElementById('pfPhone').value.trim(),
+          address:   document.getElementById('pfAddress').value.trim()
+        });
+        showToast('Informations enregistrées');
+      } catch (ex) {
+        err.textContent = "Impossible d'enregistrer. Réessayez.";
+        err.hidden = false;
+      }
+    });
+
+    document.getElementById('btnSignOut').addEventListener('click', async () => {
+      await auth.signOut();
+      showToast('Vous êtes déconnecté');
+    });
+
+    document.addEventListener('lej:ready', renderAccount);
+    document.addEventListener('DOMContentLoaded', () => {
+      auth.onChange(() => renderAccount());
+    });
+  </script>
+</body>
+</html>

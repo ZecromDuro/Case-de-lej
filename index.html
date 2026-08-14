@@ -4,51 +4,74 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>La Case de LEJ — Produits artisanaux d'Abidjan</title>
-  <meta name="description" content="La Case de LEJ transforme les fruits locaux ivoiriens en produits artisanaux : jus, liqueurs, confitures, fruits séchés. Paniers cadeaux personnalisés à Abidjan."/>
-  <link rel="stylesheet" href="css/variables.css"/>
-  <link rel="stylesheet" href="css/global.css"/>
-  <link rel="stylesheet" href="css/home.css"/>
+  <meta name="description" content="La Case de LEJ transforme les fruits locaux ivoiriens en produits artisanaux : jus, liqueurs, confitures, fruits séchés. Coffrets cadeaux personnalisés à Abidjan."/>
+  <link rel="stylesheet" href="css/variables.css?v=10"/>
+  <link rel="stylesheet" href="css/global.css?v=10"/>
+  <link rel="stylesheet" href="css/account.css?v=10"/>
+  <link rel="stylesheet" href="css/home.css?v=10"/>
 </head>
 <body>
 
   <div id="navbarPlaceholder"></div>
 
   <!-- ===== HERO ===== -->
-  <section id="heroSection">
-    <canvas id="heroCanvas"></canvas>
+  <section id="heroSection" aria-roledescription="carrousel" aria-label="Nos matières premières">
+
+    <!-- Ambient background layers (crossfaded per theme) -->
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-bg-layer" data-layer="a"></div>
+      <div class="hero-bg-layer" data-layer="b"></div>
+      <div class="hero-rays"></div>
+      <div class="hero-vignette"></div>
+      <canvas id="heroParticles"></canvas>
+      <div class="hero-grain"></div>
+    </div>
 
     <div class="hero-inner">
       <div id="heroContent">
         <div class="hero-badge">
           <span class="hero-badge-dot"></span>
-          Fait à Abidjan · 100% naturel
+          <span id="heroBadgeText">Fait à Abidjan · 100% naturel</span>
         </div>
-        <p class="hero-fruit-label">Fruit phare</p>
-        <h1 id="heroFruitName">Mangue</h1>
-        <p id="heroTagline">La reine des tropiques</p>
-        <p id="heroProduct">Jus · Confiture · Séché</p>
+        <p class="hero-fruit-label" id="heroEyebrow">Récolte n°01 · Cacao</p>
+        <h1 id="heroFruitName">Chocolat</h1>
+        <p id="heroTagline">Le cacao ivoirien, fondu à la main</p>
+        <p id="heroProduct">Tablettes · Pâte à tartiner · Cookies</p>
         <div class="hero-actions">
           <a href="produits.html" class="btn btn-white">Découvrir les produits</a>
-          <a href="paniers.html" class="btn btn-secondary" style="border-color:rgba(255,255,255,0.6);color:#fff">Créer un panier</a>
+          <a href="paniers.html" class="btn btn-ghost">Créer un coffret cadeau</a>
         </div>
       </div>
-      <div class="hero-canvas-area"></div>
+
+      <div class="hero-stage" id="heroStage">
+        <div class="hero-halo" aria-hidden="true"></div>
+        <div class="hero-ring" aria-hidden="true"></div>
+        <div class="hero-media" id="heroMedia">
+          <img class="hero-img is-active" data-index="0" src="images/hero/chocolat.png"  alt="Éclats de chocolat noir issus du cacao ivoirien"/>
+          <img class="hero-img" data-index="1" src="images/hero/gingembre.png" alt="Rhizome de gingembre frais et ses tranches"/>
+          <img class="hero-img" data-index="2" src="images/hero/mangue.png"    alt="Mangue mûre couverte de gouttes d'eau"/>
+          <img class="hero-img" data-index="3" src="images/hero/arachide.png"  alt="Arachides en coque dans une coupelle"/>
+        </div>
+        <div class="hero-ground" aria-hidden="true"></div>
+      </div>
     </div>
 
-    <nav class="hero-nav">
+    <nav class="hero-nav" aria-label="Sélection de la matière première">
       <button class="hero-arrow" id="heroPrev" aria-label="Précédent">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
-      <div class="hero-dots">
-        <button class="hero-dot active" data-index="0" aria-label="Mangue"></button>
-        <button class="hero-dot" data-index="1" aria-label="Banane"></button>
-        <button class="hero-dot" data-index="2" aria-label="Ananas"></button>
-        <button class="hero-dot" data-index="3" aria-label="Orange"></button>
+      <div class="hero-tabs" id="heroTabs">
+        <button class="hero-tab is-active" data-index="0"><span>Chocolat</span><i class="hero-tab-fill"></i></button>
+        <button class="hero-tab" data-index="1"><span>Gingembre</span><i class="hero-tab-fill"></i></button>
+        <button class="hero-tab" data-index="2"><span>Mangue</span><i class="hero-tab-fill"></i></button>
+        <button class="hero-tab" data-index="3"><span>Arachide</span><i class="hero-tab-fill"></i></button>
       </div>
       <button class="hero-arrow" id="heroNext" aria-label="Suivant">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
       </button>
     </nav>
+
+    <div class="hero-scroll" aria-hidden="true"><span></span>Faites défiler</div>
 
   </section>
 
@@ -73,7 +96,7 @@
       </div>
       <div class="intro-strip-item">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        Paniers sur mesure
+        Coffrets sur mesure
       </div>
       <!-- Duplicate for seamless loop -->
       <div class="intro-strip-item">
@@ -94,7 +117,7 @@
       </div>
       <div class="intro-strip-item">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-        Paniers sur mesure
+        Coffrets sur mesure
       </div>
     </div>
   </div>
@@ -103,52 +126,73 @@
   <section class="section">
     <div class="container">
       <div class="section-header centered reveal">
-        <span class="section-label">Nos produits</span>
-        <h2 class="section-title">Saveurs ivoiriennes transformées</h2>
+        <span class="section-label">Nos catégories</span>
+        <h2 class="section-title">Vingt façons de goûter la Côte d'Ivoire</h2>
         <div class="divider"></div>
-        <p class="section-subtitle">Des fruits cultivés en Côte d'Ivoire, travaillés à la main pour révéler leurs meilleures saveurs.</p>
+        <p class="section-subtitle">De la tablette CazChoco au coffret de cérémonie : tout ce que l'atelier prépare, rangé par univers.</p>
       </div>
-      <div class="categories-grid">
-        <a href="produits.html#jus" class="category-card reveal">
-          <span class="category-emoji"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5S12.5 5 12 2.5C11.5 5 10 7.4 8 9c-2 1.6-3 3.5-3 5a7 7 0 0 0 7 7z"/></svg></span>
-          <div class="category-name">Jus naturels</div>
-          <div class="category-count">Mangue, Bissap, Passion…</div>
-        </a>
-        <a href="produits.html#liqueurs" class="category-card reveal">
-          <span class="category-emoji"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 2h8"/><path d="M9 2v3L7 8v12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V8l-2-3V2"/><line x1="7" y1="14" x2="17" y2="14"/></svg></span>
-          <div class="category-name">Liqueurs artisanales</div>
-          <div class="category-count">Recettes exclusives</div>
-        </a>
-        <a href="produits.html#confitures" class="category-card reveal">
-          <span class="category-emoji"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><rect x="4" y="6" width="16" height="16" rx="2"/><path d="M4 10h16"/></svg></span>
-          <div class="category-name">Confitures</div>
-          <div class="category-count">Mangue, Ananas, Banane…</div>
-        </a>
-        <a href="produits.html#secs" class="category-card reveal">
-          <span class="category-emoji"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></span>
-          <div class="category-name">Fruits séchés</div>
-          <div class="category-count">Snacks sains & naturels</div>
-        </a>
-        <a href="produits.html#patisseries" class="category-card reveal">
-          <span class="category-emoji"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 11l19-9-9 19-2-8-8-2z"/></svg></span>
-          <div class="category-name">Pâtisseries</div>
-          <div class="category-count">Cookies, gâteaux, biscuits</div>
-        </a>
+      <div id="categoriesUniverses"></div>
+    </div>
+  </section>
+
+  <!-- ===== CAZCHOCO — LA BRANCHE CHOCOLAT ===== -->
+  <section class="cazchoco-banner">
+    <div class="container">
+      <div class="cazchoco-banner-inner reveal">
+        <div class="cazchoco-banner-text">
+          <span class="cazchoco-banner-label">Notre branche chocolat</span>
+          <h2 class="cazchoco-banner-title">
+            <img src="images/logo/cazchoco_web.png" alt="CazChoco" width="720" height="478" loading="lazy"/>
+          </h2>
+          <p class="cazchoco-banner-baseline">Le chocolat ivoirien, <em>notre fierté</em></p>
+          <p class="cazchoco-banner-desc">
+            Le pays produit près de la moitié du cacao mondial et n'en transforme presque rien.
+            CazChoco garde la fève ici : récolte à San-Pédro, torréfaction et conchage à Abidjan.
+          </p>
+          <a href="cazchoco.html" class="btn btn-choco-inline">Découvrir CazChoco</a>
+        </div>
+        <div class="cazchoco-banner-media">
+          <img src="images/hero/chocolat.png" alt="Éclats de chocolat noir CazChoco" loading="lazy"/>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== FEATURED PRODUCTS ===== -->
+  <!-- ===== SÉLECTIONS (nouveautés, best-sellers, suggestions) ===== -->
   <section class="section" style="background: var(--cream); padding-top: 3rem;">
-    <div class="container">
-      <div class="section-header reveal" style="display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:2.5rem;">
-        <div>
-          <span class="section-label">À la une</span>
-          <h2 class="section-title" style="margin-bottom:0">Nos incontournables</h2>
+    <div class="container" id="selections">
+
+      <div class="selection" id="selNouveautes" hidden>
+        <div class="selection-head reveal">
+          <div>
+            <span class="section-label">Tout juste arrivés</span>
+            <h2 class="section-title">Les nouveautés</h2>
+          </div>
+          <a href="produits.html" class="btn btn-secondary">Voir tout</a>
         </div>
-        <a href="produits.html" class="btn btn-secondary">Voir tout</a>
+        <div class="products-grid" data-grid="nouveautes"></div>
       </div>
-      <div class="products-grid" id="featuredProducts"></div>
+
+      <div class="selection" id="selBestSellers" hidden>
+        <div class="selection-head reveal">
+          <div>
+            <span class="section-label">Ce qui part le plus vite</span>
+            <h2 class="section-title">Les plus commandés</h2>
+          </div>
+        </div>
+        <div class="products-grid" data-grid="best"></div>
+      </div>
+
+      <div class="selection" id="selPourVous" hidden>
+        <div class="selection-head reveal">
+          <div>
+            <span class="section-label" id="pourVousLabel">D'après ce que vous avez regardé</span>
+            <h2 class="section-title" id="pourVousTitre">Pourrait vous plaire</h2>
+          </div>
+        </div>
+        <div class="products-grid" data-grid="pourvous"></div>
+      </div>
+
     </div>
   </section>
 
@@ -158,23 +202,23 @@
       <div class="basket-banner reveal">
         <div>
           <span class="section-label" style="color:var(--gold-light)">Événements & Cadeaux</span>
-          <h2 class="basket-banner-title">Offrez un panier <span>La Case de LEJ</span></h2>
-          <p>Mariages, baptêmes, séminaires, fêtes d'entreprise… Nous créons des paniers cadeaux artisanaux sur mesure, livrés à Abidjan.</p>
+          <h2 class="basket-banner-title">Offrez un coffret <span>La Case de LEJ</span></h2>
+          <p>Mariages, baptêmes, séminaires, fêtes d'entreprise… Nous créons des coffrets cadeaux artisanaux sur mesure, livrés à Abidjan.</p>
           <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap">
             <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(245,240,232,0.7);font-size:0.85rem">
-              <span style="color:var(--gold)">✓</span> Contenu personnalisable
+              <span style="color:var(--gold);display:flex"><svg class="ico-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Contenu personnalisable
             </div>
             <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(245,240,232,0.7);font-size:0.85rem">
-              <span style="color:var(--gold)">✓</span> Emballage soigné
+              <span style="color:var(--gold);display:flex"><svg class="ico-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Emballage soigné
             </div>
             <div style="display:flex;align-items:center;gap:0.5rem;color:rgba(245,240,232,0.7);font-size:0.85rem">
-              <span style="color:var(--gold)">✓</span> Livraison Abidjan
+              <span style="color:var(--gold);display:flex"><svg class="ico-check" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> Livraison Abidjan
             </div>
           </div>
         </div>
         <div class="basket-banner-actions">
-          <a href="paniers.html" class="btn btn-primary">Configurer un panier</a>
-          <a href="https://wa.me/2250700000000" class="btn btn-whatsapp" target="_blank">
+          <a href="paniers.html" class="btn btn-primary">Configurer un coffret cadeau</a>
+          <a href="https://wa.me/2250707773197" class="btn btn-whatsapp" target="_blank">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
             </svg>
@@ -196,8 +240,8 @@
       <div class="testimonials-grid">
         <div class="testimonial-card reveal">
           <div class="testimonial-quote">"</div>
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">Les paniers cadeaux pour notre séminaire ont fait un tabac ! Tout le monde a adoré les confitures de mangue. Service impeccable et livraison ponctuelle.</p>
+          <div class="testimonial-stars" aria-label="5 étoiles sur 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <p class="testimonial-text">Les coffrets cadeaux pour notre séminaire ont fait un tabac ! Tout le monde a adoré les confitures de mangue. Service impeccable et livraison ponctuelle.</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">AK</div>
             <div>
@@ -208,8 +252,8 @@
         </div>
         <div class="testimonial-card reveal">
           <div class="testimonial-quote">"</div>
-          <div class="testimonial-stars">★★★★★</div>
-          <p class="testimonial-text">Commandé 20 paniers pour mon mariage. Les invités ont été touchés par la qualité et l'authenticité des produits. La liqueur de bissap est extraordinaire !</p>
+          <div class="testimonial-stars" aria-label="5 étoiles sur 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <p class="testimonial-text">Commandé 20 coffrets pour mon mariage. Les invités ont été touchés par la qualité et l'authenticité des produits. La liqueur de bissap est extraordinaire !</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">MD</div>
             <div>
@@ -220,7 +264,7 @@
         </div>
         <div class="testimonial-card reveal">
           <div class="testimonial-quote">"</div>
-          <div class="testimonial-stars">★★★★★</div>
+          <div class="testimonial-stars" aria-label="5 étoiles sur 5"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-text">Les fruits séchés d'ananas sont mes snacks préférés. Parfaits pour le bureau. Je recommande à tous mes collègues. Bravo La Case de LEJ !</p>
           <div class="testimonial-author">
             <div class="testimonial-avatar">KA</div>
@@ -246,7 +290,7 @@
         <div class="value-item reveal">
           <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M18 11V6a2 2 0 0 0-4 0v0"/><path d="M14 10V4a2 2 0 0 0-4 0v2"/><path d="M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></div>
           <div class="value-title">Fait main</div>
-          <p class="value-text">Chaque pot, chaque panier est préparé et assemblé à la main avec soin et attention.</p>
+          <p class="value-text">Chaque pot, chaque coffret est préparé et assemblé à la main avec soin et attention.</p>
         </div>
         <div class="value-item reveal">
           <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
@@ -256,7 +300,7 @@
         <div class="value-item reveal">
           <div class="value-icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></div>
           <div class="value-title">Sur mesure</div>
-          <p class="value-text">Chaque commande est unique. Nous adaptons chaque panier à votre occasion et vos goûts.</p>
+          <p class="value-text">Chaque commande est unique. Nous adaptons chaque coffret à votre occasion et vos goûts.</p>
         </div>
       </div>
     </div>
@@ -265,45 +309,120 @@
   <div id="cartPlaceholder"></div>
   <div id="footerPlaceholder"></div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
-  <script src="js/components.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/hero3d.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js?v=10"></script>
+  <script src="js/catalog.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/checkout.js?v=10"></script>
+  <script src="js/components.js?v=10"></script>
+  <script src="js/nav.js?v=10"></script>
+  <script src="js/cart.js?v=10"></script>
+  <script src="js/reco.js?v=10"></script>
+  <script src="js/hero.js?v=10"></script>
   <script>
-    // Featured products data
-    const FEATURED = [
-      { id: 'jus-mangue', name: 'Jus de Mangue', category: 'Jus naturels', desc: 'Pressé à froid, sans sucre ajouté. Saveur tropicale intense.', price: 2500, emoji: '🥭', badge: 'Best-seller' },
-      { id: 'confiture-ananas', name: 'Confiture d\'Ananas', category: 'Confitures', desc: 'Ananas Victoria de Côte d\'Ivoire, caramélisé à la cannelle.', price: 3200, emoji: '🍍', badge: 'Nouveau' },
-      { id: 'liqueur-bissap', name: 'Liqueur de Bissap', category: 'Liqueurs', desc: 'Hibiscus macéré, légèrement sucré. Idéale à l\'apéritif.', price: 5500, emoji: '🌺', badge: null },
-      { id: 'seche-banane', name: 'Banane Séchée', category: 'Fruits séchés', desc: 'Banane plantain séchée naturellement, croquante et saine.', price: 1800, emoji: '🍌', badge: null },
-    ];
+    // Les 4 univers et leurs catégories
+    function renderUniverses() {
+      const host = document.getElementById('categoriesUniverses');
+      if (!host) return;
+      host.innerHTML = catalog.groups.map(g => `
+        <div class="universe reveal">
+          <div class="universe-head">
+            <h3 class="universe-title">${g.label}</h3>
+            <p class="universe-blurb">${g.blurb}</p>
+          </div>
+          <div class="categories-grid">
+            ${catalog.categoriesOfGroup(g.id).map(c => `
+              <a href="produits.html#${c.slug}" class="category-card">
+                <span class="category-emoji">${catalog.icon(c.slug, 30)}</span>
+                <div class="category-name">${c.label}</div>
+                <div class="category-count">${catalog.teaser(c.slug)}</div>
+              </a>`).join('')}
+          </div>
+        </div>`).join('');
+    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const grid = document.getElementById('featuredProducts');
-      if (!grid) return;
-      grid.innerHTML = FEATURED.map(p => `
+    /* ---------- Cartes produit ---------- */
+
+    function carteProduit(p, mention) {
+      const epuise = catalog.estEpuise(p);
+      return `
         <div class="product-card reveal">
           <div class="product-img">
-            ${p.emoji}
-            ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+            ${catalog.visual(p)}
+            ${mention ? `<span class="product-badge">${mention}</span>`
+                      : p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+            ${epuise ? '<span class="product-badge is-out">Épuisé</span>' : ''}
           </div>
           <div class="product-body">
-            <div class="product-category">${p.category}</div>
+            <div class="product-category">${catalog.label(p.category)}</div>
             <h3 class="product-name">${p.name}</h3>
-            <p class="product-desc">${p.desc}</p>
+            <p class="product-desc">${(p.description || '').slice(0, 90)}</p>
             <div class="product-footer">
               <span class="product-price">${p.price.toLocaleString('fr-FR')} FCFA</span>
-              <button class="product-add-btn" onclick="cart.add({id:'${p.id}',name:'${p.name}',price:${p.price},emoji:'${p.emoji}'})" aria-label="Ajouter au panier">+</button>
+              <button class="product-add-btn"
+                      onclick="ajouter('${p.id}', this)"
+                      aria-label="Ajouter ${p.name} au panier" ${epuise ? 'disabled' : ''}>+</button>
             </div>
           </div>
-        </div>
-      `).join('');
-      // Re-observe new elements
+        </div>`;
+    }
+
+    // L'ajout au panier nourrit aussi les suggestions.
+    function ajouter(id, btn) {
+      const p = catalog.product(id);
+      if (!p) return;
+      cart.add({ id: p.id, name: p.name, price: p.price }, btn);
+      reco.noter(p.id, 'panier');
+    }
+
+    function remplir(nom, produits, mention) {
+      const grille = document.querySelector(`[data-grid="${nom}"]`);
+      if (!grille) return false;
+      grille.innerHTML = produits.map(p => carteProduit(p, mention)).join('');
+      return produits.length > 0;
+    }
+
+    /* ---------- Les trois sélections ---------- */
+
+    async function renderSelections() {
+      // 1. Nouveautés
+      const nouveaux = reco.nouveautes(4);
+      document.getElementById('selNouveautes').hidden = !remplir('nouveautes', nouveaux, 'Nouveau');
+
+      // 2. Best-sellers — masqués tant qu'aucune vente n'a eu lieu
+      const best = reco.bestSellers(4);
+      document.getElementById('selBestSellers').hidden = !remplir('best', best);
+
+      // 3. Suggestions personnalisées, avec repli honnête
+      let pour = await reco.pourVous(4);
+      const personnalise = pour.length > 0;
+
+      if (!personnalise) {
+        pour = reco.aDecouvrir(4, [...nouveaux, ...best]);
+        document.getElementById('pourVousLabel').textContent = 'Pour commencer';
+        document.getElementById('pourVousTitre').textContent = 'À découvrir';
+      } else {
+        document.getElementById('pourVousLabel').textContent = auth.user
+          ? "D'après vos commandes et ce que vous avez regardé"
+          : "D'après ce que vous avez regardé";
+        document.getElementById('pourVousTitre').textContent = 'Pourrait vous plaire';
+      }
+
+      document.getElementById('selPourVous').hidden = !remplir('pourvous', pour);
+
       document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+    }
+
+    // Le catalogue vient de Supabase : on attend qu'il soit chargé.
+    document.addEventListener('lej:ready', async () => {
+      renderUniverses();
+      await renderSelections();
+      document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
+    });
+
+    // Les suggestions se recalculent à la connexion ou à la déconnexion.
+    document.addEventListener('DOMContentLoaded', () => {
+      auth.onChange(() => { if (catalog.data) renderSelections(); });
     });
   </script>
 </body>

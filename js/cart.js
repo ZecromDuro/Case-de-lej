@@ -7,7 +7,12 @@ const cart = {
     this.updateUI();
   },
 
-  add(product) {
+  /**
+   * @param {object} product   { id, name, price, image_url? }
+   * @param {HTMLElement} [sourceEl]  bouton cliqué : sert de point de départ
+   *   à l'animation de vol vers le panier. Facultatif.
+   */
+  add(product, sourceEl) {
     const existing = this.items.find(i => i.id === product.id);
     if (existing) {
       existing.qty += 1;
@@ -16,6 +21,7 @@ const cart = {
     }
     this.save();
     showToast(`${product.name} ajouté au panier`);
+    if (sourceEl) flyToCart(sourceEl, product);
   },
 
   remove(id) {
@@ -89,7 +95,7 @@ function renderCartPanel() {
           <button class="qty-btn" onclick="cart.updateQty('${item.id}', -1)">−</button>
           <span class="qty-val">${item.qty}</span>
           <button class="qty-btn" onclick="cart.updateQty('${item.id}', 1)">+</button>
-          <button class="qty-btn" style="margin-left:0.25rem;color:#e44;" onclick="cart.remove('${item.id}')">✕</button>
+          <button class="qty-btn" style="margin-left:0.25rem;color:#e44;" onclick="cart.remove('${item.id}')" aria-label="Retirer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
         </div>
       </div>
     </div>
@@ -112,15 +118,85 @@ function closeCart() {
   document.body.style.overflow = '';
 }
 
-// ========== WHATSAPP ORDER ==========
-function orderViaWhatsApp(occasion = '') {
+// ========== COMMANDE ==========
+// La commande est enregistrée en base avant d'ouvrir WhatsApp.
+function orderViaWhatsApp() {
   if (cart.items.length === 0) {
     showToast('Votre panier est vide !');
     return;
   }
-  const PHONE = '2250700000000'; // à remplacer par le vrai numéro
-  const msg = cart.toWhatsAppText(occasion);
-  window.open(`https://wa.me/${PHONE}?text=${msg}`, '_blank');
+  closeCart();
+  openCheckout({
+    kind: 'panier',
+    items: cart.items.map(i => ({ id: i.id, name: i.name, price: i.price, qty: i.qty })),
+    onDone: () => { cart.items = []; cart.save(); }
+  });
+}
+
+// ========== ANIMATION "VOL VERS LE PANIER" ==========
+// Une miniature du produit part du bouton cliqué et rejoint l'icône panier
+// de la barre de navigation, en s'amenuisant sur une trajectoire courbe.
+function flyToCart(sourceEl, product) {
+  const target = document.querySelector('.nav-cart-btn');
+  if (!target || !sourceEl) return;
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) { bumpCartIcon(); return; }
+
+  // On cherche un visuel du produit près du bouton : la photo de la carte,
+  // celle de la fiche modale, ou à défaut le bouton lui-même.
+  const hote = sourceEl.closest('.product-card, .product-modal, .picker-card') || sourceEl;
+  const visuel = hote.querySelector('.product-photo, .product-img-placeholder, .product-modal-mono, .picker-emoji') || sourceEl;
+
+  const depart = visuel.getBoundingClientRect();
+  const arrivee = target.getBoundingClientRect();
+  if (depart.width === 0 || depart.height === 0) { bumpCartIcon(); return; }
+
+  const taille = Math.min(depart.width, depart.height, 84);
+  const image = visuel.querySelector ? visuel.querySelector('img') : null;
+
+  const clone = document.createElement('div');
+  clone.className = 'fly-clone' + (image ? '' : ' fly-clone-plain');
+  clone.style.width  = taille + 'px';
+  clone.style.height = taille + 'px';
+  clone.style.left = (depart.left + depart.width / 2 - taille / 2) + 'px';
+  clone.style.top  = (depart.top  + depart.height / 2 - taille / 2) + 'px';
+
+  if (image) {
+    clone.style.backgroundImage = `url("${image.src}")`;
+  } else {
+    clone.textContent = (product.name || '?').trim().charAt(0).toUpperCase();
+  }
+
+  document.body.appendChild(clone);
+
+  const dx = (arrivee.left + arrivee.width / 2) - (depart.left + depart.width / 2);
+  const dy = (arrivee.top  + arrivee.height / 2) - (depart.top  + depart.height / 2);
+
+  // Point intermédiaire relevé : la miniature passe par-dessus la page,
+  // plutôt que de filer en ligne droite.
+  const milieuX = dx * 0.5;
+  const milieuY = dy * 0.5 - Math.max(90, Math.abs(dy) * 0.5);
+
+  const anim = clone.animate([
+    { transform: 'translate(0px, 0px) scale(1) rotate(0deg)',                          opacity: 1,    offset: 0 },
+    { transform: `translate(${milieuX}px, ${milieuY}px) scale(0.75) rotate(8deg)`,      opacity: 1,    offset: 0.55 },
+    { transform: `translate(${dx}px, ${dy}px) scale(0.1) rotate(14deg)`,                opacity: 0.35, offset: 1 }
+  ], { duration: 700, easing: 'cubic-bezier(0.3, 0.6, 0.35, 1)' });
+
+  // La promesse `finished` plutôt que l'événement `onfinish` : sur un onglet
+  // en arrière-plan, le navigateur peut retarder indéfiniment la remise des
+  // événements d'animation alors que la promesse, elle, se résout normalement.
+  const nettoyer = () => { clone.remove(); bumpCartIcon(); };
+  anim.finished.then(nettoyer, nettoyer);
+}
+
+function bumpCartIcon() {
+  const target = document.querySelector('.nav-cart-btn');
+  if (!target) return;
+  target.classList.remove('cart-bump');
+  void target.offsetWidth;   // relance l'animation même si elle vient de jouer
+  target.classList.add('cart-bump');
 }
 
 // ========== TOAST ==========
@@ -132,7 +208,7 @@ function showToast(message) {
     toast.className = 'toast';
     document.body.appendChild(toast);
   }
-  toast.innerHTML = `<span class="toast-icon">✓</span> ${message}`;
+  toast.innerHTML = `<span class="toast-icon"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span> ${message}`;
   toast.classList.add('show');
   clearTimeout(toast._timer);
   toast._timer = setTimeout(() => toast.classList.remove('show'), 2800);

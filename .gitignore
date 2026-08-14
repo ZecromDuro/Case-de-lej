@@ -1,34 +1,7 @@
 node_modules/
 
-# Gros fichiers sources / scans originaux
+# Configuration locale de l'outil de développement (non liée au site)
+.claude/
+
+# Fichiers volumineux qui n'ont pas leur place sur GitHub
 *.zip
-banana-3d-scan/source/Banana.obj
-banana-3d-scan/source/Banana.glb
-banana-3d-scan/source/Banana_web.glb
-banana-3d-scan/source/Banana_draco.glb
-banana-3d-scan/textures/Banana_1.jpg
-banana-3d-scan/textures/internal_ground_ao_texture.jpeg
-
-# Modèles 3D originaux non optimisés (trop lourds pour GitHub)
-mango/scene.glb
-mango/scene.bin
-mango/scene.gltf
-mango/scene_web.gltf
-pineapple/scene.glb
-pineapple/scene.bin
-pineapple/scene.gltf
-pineapple/scene_web.gltf
-
-# Textures orange originales (non optimisées)
-cara_cara_orange/textures/fr_caraOrange_diffuse.jpeg
-cara_cara_orange/textures/fr_caraOrange_normal.jpeg
-cara_cara_orange/textures/fr_caraOrange_specularGlossiness.png
-cara_cara_orange/scene_raw.glb
-cara_cara_orange/scene_patched.gltf
-
-# Logo haute résolution (inutile sur le web)
-images/logo/Logo.png
-
-# Scripts de build
-prepare-orange.js
-simplify-banana.mjs

@@ -1,10 +1,79 @@
 /* ========== PAGE PRODUITS ========== */
+
+/* ── Tri : bouton qui déplie les catégories ── */
+.filter-dock {
+  position: sticky;
+  top: calc(var(--nav-height) + 0.5rem);
+  z-index: 40;
+  margin-bottom: 2rem;
+}
+
+.filter-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cream-dark);
+  background: var(--white);
+  box-shadow: var(--shadow-sm);
+  color: var(--black);
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  transition: var(--transition);
+}
+
+.filter-toggle:hover { border-color: var(--gold); }
+.filter-toggle.is-open { border-color: var(--gold); box-shadow: var(--shadow-md); }
+
+.filter-toggle > svg:first-child { color: var(--gold); flex-shrink: 0; }
+
+.filter-toggle-label { flex-shrink: 0; }
+
+.filter-toggle-value {
+  margin-left: auto;
+  padding: 0.2rem 0.7rem;
+  border-radius: 100px;
+  background: var(--cream);
+  color: var(--gold-dark);
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 55%;
+}
+
+.filter-chevron {
+  flex-shrink: 0;
+  color: var(--gray-text);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.filter-toggle.is-open .filter-chevron { transform: rotate(180deg); }
+
+.filter-panel {
+  overflow: hidden;
+  height: 0;
+  transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
 .filter-bar {
   display: flex;
-  gap: 0.75rem;
+  gap: 0.6rem;
   flex-wrap: wrap;
-  margin-bottom: 2.5rem;
   align-items: center;
+  margin-top: 0.75rem;
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--cream-dark);
+  background: var(--white);
+  box-shadow: var(--shadow-md);
+  max-height: min(60vh, 460px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .filter-btn {
@@ -39,7 +108,76 @@
   scroll-margin-top: calc(var(--nav-height) + 1rem);
 }
 
+.filter-btn.is-soon {
+  opacity: 0.6;
+  border-style: dashed;
+}
+.filter-btn.is-soon:hover { opacity: 1; }
+
+.filter-count {
+  display: inline-block;
+  margin-left: 0.35rem;
+  padding: 0 0.4rem;
+  border-radius: 100px;
+  background: var(--cream);
+  color: var(--gray-text);
+  font-size: 0.72rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+.filter-btn.active .filter-count,
+.filter-btn:hover .filter-count {
+  background: rgba(255,255,255,0.25);
+  color: var(--white);
+}
+
+/* ── Univers ── */
+.catalog-group { margin-bottom: 3.5rem; }
+.catalog-group.hidden { display: none; }
+
+.catalog-group-head {
+  margin-bottom: 2rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 2px solid var(--gold);
+}
+
+.catalog-group-title {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-weight: 700;
+  margin-bottom: 0.2rem;
+}
+
+.catalog-group-blurb {
+  font-size: 0.9rem;
+  color: var(--gray-text);
+}
+
+.products-section-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--cream);
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.products-section-count {
+  margin-left: auto;
+  font-style: normal;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gray-text);
+}
+
 .products-section-title span { font-size: 1.5rem; }
+.products-section-title .products-section-icon { font-size: inherit; }
 
 .category-section {
   margin-bottom: 4rem;
@@ -47,21 +185,108 @@
 
 .category-section.hidden { display: none; }
 
-/* Product image placeholder (first letter) */
-.product-img-placeholder {
-  width: 100%;
-  aspect-ratio: 4/3;
-  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+/* ── Catégorie encore vide ── */
+.category-empty {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 1.75rem;
+  border: 1px dashed var(--cream-dark);
+  border-radius: var(--radius-lg);
+  background: var(--cream);
+}
+
+.category-empty > div:nth-child(2) { flex: 1 1 260px; }
+
+.category-empty-icon {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--white);
+  color: var(--gold);
+  flex-shrink: 0;
+}
+
+.category-empty-title {
   font-family: var(--font-heading);
-  font-size: 3.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.category-empty-text {
+  font-size: 0.85rem;
+  color: var(--gray-text);
+  line-height: 1.55;
+}
+
+/* Visuel produit : photo si elle existe, sinon monogramme */
+.product-img-placeholder {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background:
+    radial-gradient(80% 80% at 30% 20%, rgba(255,255,255,0.9), transparent 60%),
+    linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  user-select: none;
+}
+
+.product-img-placeholder span {
+  font-family: var(--font-heading);
+  font-size: 3.2rem;
   font-weight: 700;
   color: var(--gold);
   letter-spacing: -0.02em;
+  opacity: 0.55;
+}
+
+.product-photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
   border-radius: var(--radius-md) var(--radius-md) 0 0;
-  user-select: none;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.product-card:hover .product-photo { transform: scale(1.04); }
+
+.product-badge.is-out {
+  top: auto;
+  bottom: 0.6rem;
+  background: var(--black);
+  color: var(--white);
+}
+
+.product-add-btn[disabled] { opacity: 0.35; pointer-events: none; }
+
+.product-modal-mono {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--cream) 0%, var(--cream-dark) 100%);
+}
+.product-modal-mono span {
+  font-family: var(--font-heading);
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--gold);
+  opacity: 0.5;
+}
+.product-modal-img .product-photo {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: auto;
+  border-radius: 0;
+  object-fit: cover;
+  object-position: center;
 }
 
 /* ========== PRODUCT MODAL ========== */
@@ -99,12 +324,15 @@
 }
 
 .product-modal-img {
-  aspect-ratio: 16/9;
-  background: var(--cream);
+  aspect-ratio: 4/3;
+  max-height: 42vh;
+  background:
+    radial-gradient(70% 70% at 50% 35%, var(--white), transparent 70%),
+    var(--cream);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 5rem;
+  overflow: hidden;
 }
 
 .product-modal-body { padding: 2rem; }

@@ -4,10 +4,11 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Nos Produits — La Case de LEJ</title>
-  <meta name="description" content="Jus naturels, liqueurs artisanales, confitures, fruits séchés et pâtisseries. Tous nos produits à base de fruits ivoiriens."/>
-  <link rel="stylesheet" href="css/variables.css"/>
-  <link rel="stylesheet" href="css/global.css"/>
-  <link rel="stylesheet" href="css/produits.css"/>
+  <meta name="description" content="CazChoco, biscuiterie, jus & nectars, liqueurs, sirops, confitures, thés, coffrets de fête et kits cérémonie : les 20 catégories de La Case de LEJ."/>
+  <link rel="stylesheet" href="css/variables.css?v=10"/>
+  <link rel="stylesheet" href="css/global.css?v=10"/>
+  <link rel="stylesheet" href="css/account.css?v=10"/>
+  <link rel="stylesheet" href="css/produits.css?v=10"/>
 </head>
 <body>
 
@@ -16,51 +17,32 @@
   <div class="page-hero">
     <span class="section-label" style="justify-content:center;display:flex">Notre gamme</span>
     <h1>Nos <span>Produits</span></h1>
-    <p>Des fruits ivoiriens transformés avec passion et savoir-faire artisanal.</p>
+    <p>Vingt catégories, quatre univers : l'épicerie sucrée, les boissons, la maison et les coffrets d'occasion.</p>
   </div>
 
   <section class="section">
     <div class="container">
 
-      <!-- Filter bar -->
-      <div class="filter-bar">
-        <button class="filter-btn active" data-filter="all">Tout voir</button>
-        <button class="filter-btn" data-filter="jus">Jus naturels</button>
-        <button class="filter-btn" data-filter="liqueurs">Liqueurs</button>
-        <button class="filter-btn" data-filter="confitures">Confitures</button>
-        <button class="filter-btn" data-filter="secs">Fruits séchés</button>
-        <button class="filter-btn" data-filter="patisseries">Pâtisseries</button>
+      <!-- Tri : les catégories sont empilées dans ce bouton et se déplient au clic -->
+      <div class="filter-dock">
+        <button class="filter-toggle" id="filterToggle" aria-expanded="false" aria-controls="filterPanel">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <line x1="4" y1="7" x2="20" y2="7"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="10" y1="17" x2="14" y2="17"/>
+          </svg>
+          <span class="filter-toggle-label">Trier par catégorie</span>
+          <span class="filter-toggle-value" id="filterCurrent">Tout voir</span>
+          <svg class="filter-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </button>
+
+        <div class="filter-panel" id="filterPanel" hidden>
+          <div class="filter-bar" id="filterBar"></div>
+        </div>
       </div>
 
-      <!-- Jus -->
-      <div class="category-section" id="jus" data-category="jus">
-        <h2 class="products-section-title">Jus Naturels</h2>
-        <div class="products-grid" id="grid-jus"></div>
-      </div>
-
-      <!-- Liqueurs -->
-      <div class="category-section" id="liqueurs" data-category="liqueurs">
-        <h2 class="products-section-title">Liqueurs Artisanales</h2>
-        <div class="products-grid" id="grid-liqueurs"></div>
-      </div>
-
-      <!-- Confitures -->
-      <div class="category-section" id="confitures" data-category="confitures">
-        <h2 class="products-section-title">Confitures</h2>
-        <div class="products-grid" id="grid-confitures"></div>
-      </div>
-
-      <!-- Fruits séchés -->
-      <div class="category-section" id="secs" data-category="secs">
-        <h2 class="products-section-title">Fruits Séchés</h2>
-        <div class="products-grid" id="grid-secs"></div>
-      </div>
-
-      <!-- Pâtisseries -->
-      <div class="category-section" id="patisseries" data-category="patisseries">
-        <h2 class="products-section-title">Pâtisseries</h2>
-        <div class="products-grid" id="grid-patisseries"></div>
-      </div>
+      <!-- Sections, univers par univers (générées depuis le catalogue) -->
+      <div id="catalogSections"></div>
 
     </div>
   </section>
@@ -68,7 +50,7 @@
   <!-- Product modal -->
   <div class="product-modal-overlay" id="productModal">
     <div class="product-modal" role="dialog">
-      <button class="product-modal-close" id="modalClose">✕</button>
+      <button class="product-modal-close" id="modalClose" aria-label="Fermer"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
       <div class="product-modal-img" id="modalImg"></div>
       <div class="product-modal-body">
         <div class="product-modal-category" id="modalCategory"></div>
@@ -85,100 +67,130 @@
   <div id="cartPlaceholder"></div>
   <div id="footerPlaceholder"></div>
 
-  <script src="js/components.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/cart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js?v=10"></script>
+  <script src="js/catalog.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/checkout.js?v=10"></script>
+  <script src="js/components.js?v=10"></script>
+  <script src="js/nav.js?v=10"></script>
+  <script src="js/cart.js?v=10"></script>
+  <script src="js/reco.js?v=10"></script>
   <script>
-    const ALL_PRODUCTS = [
-      // Jus
-      { id: 'jus-mangue', cat: 'jus', name: 'Jus de Mangue', catLabel: 'Jus naturels', desc: 'Mangue Kent pressée à froid. Sans sucre ajouté, sans conservateurs. La saveur la plus pure de la mangue ivoirienne.', price: 2500, emoji: '🥭', badge: 'Best-seller' },
-      { id: 'jus-bissap', cat: 'jus', name: 'Jus de Bissap', catLabel: 'Jus naturels', desc: 'Fleurs d\'hibiscus fraîches infusées avec du gingembre. Rafraîchissant et riche en antioxydants.', price: 2000, emoji: '🌺', badge: null },
-      { id: 'jus-passion', cat: 'jus', name: 'Jus de Passion', catLabel: 'Jus naturels', desc: 'Fruit de la passion 100% naturel, légèrement sucré au miel. Intense et acidulé.', price: 2800, emoji: '🍈', badge: 'Nouveau' },
-      { id: 'jus-ananas', cat: 'jus', name: 'Jus d\'Ananas', catLabel: 'Jus naturels', desc: 'Ananas Victoria de Côte d\'Ivoire pressé à froid. Sucré naturellement, désaltérant.', price: 2200, emoji: '🍍', badge: null },
+    /* ---------- Rendu du catalogue ---------- */
 
-      // Liqueurs
-      { id: 'liq-bissap', cat: 'liqueurs', name: 'Liqueur de Bissap', catLabel: 'Liqueurs artisanales', desc: 'Hibiscus macéré 3 semaines dans une base alcoolisée artisanale. Légèrement sucré. Idéale à l\'apéritif ou en digestif.', price: 5500, emoji: '🌺', badge: null },
-      { id: 'liq-mangue', cat: 'liqueurs', name: 'Liqueur de Mangue', catLabel: 'Liqueurs artisanales', desc: 'Mangue mûre à coeur macérée avec des épices douces. Arômes fruités et chaleureux.', price: 5000, emoji: '🥭', badge: null },
-      { id: 'liq-gingembre', cat: 'liqueurs', name: 'Liqueur Gingembre-Citron', catLabel: 'Liqueurs artisanales', desc: 'Gingembre frais et citron vert. Tonique et légèrement piquante. Parfaite en cocktail.', price: 4800, emoji: '🫚', badge: 'Exclusif' },
-
-      // Confitures
-      { id: 'conf-mangue', cat: 'confitures', name: 'Confiture de Mangue', catLabel: 'Confitures', desc: 'Mangue Kent avec une pointe de vanille de Madagascar. Texture fondante, pas trop sucrée.', price: 3200, emoji: '🥭', badge: null },
-      { id: 'conf-ananas', cat: 'confitures', name: 'Confiture d\'Ananas', catLabel: 'Confitures', desc: 'Ananas caramélisé à la cannelle et à la cardamome. Un voyage en une cuillerée.', price: 3200, emoji: '🍍', badge: 'Nouveau' },
-      { id: 'conf-bissap', cat: 'confitures', name: 'Gelée de Bissap', catLabel: 'Confitures', desc: 'Hibiscus en gelée, légèrement acidulée. Parfaite sur du pain ou du fromage frais.', price: 3500, emoji: '🌺', badge: null },
-      { id: 'conf-banane', cat: 'confitures', name: 'Confiture Banane-Chocolat', catLabel: 'Confitures', desc: 'Banane plantain et cacao pur ivoirien. Le duo parfait pour le petit déjeuner.', price: 3800, emoji: '🍌', badge: null },
-
-      // Fruits séchés
-      { id: 'sec-mangue', cat: 'secs', name: 'Mangue Séchée', catLabel: 'Fruits séchés', desc: 'Lamelles de mangue séchées naturellement au soleil. Concentrées en saveur, sans sucre ajouté.', price: 2000, emoji: '🥭', badge: 'Best-seller' },
-      { id: 'sec-ananas', cat: 'secs', name: 'Chips d\'Ananas', catLabel: 'Fruits séchés', desc: 'Rondelles d\'ananas Victoria croustillantes. Le snack sain et délicieux.', price: 1800, emoji: '🍍', badge: null },
-      { id: 'sec-banane', cat: 'secs', name: 'Banane Séchée', catLabel: 'Fruits séchés', desc: 'Banane plantain séchée légèrement salée. Texture moelleuse, parfaite pour les grignotages.', price: 1800, emoji: '🍌', badge: null },
-      { id: 'sec-passion', cat: 'secs', name: 'Mix Fruits Tropicaux', catLabel: 'Fruits séchés', desc: 'Assortiment de fruits séchés ivoiriens : mangue, ananas, goyave, papaye. 100g.', price: 2500, emoji: '🌿', badge: null },
-
-      // Pâtisseries
-      { id: 'pat-cookies', cat: 'patisseries', name: 'Cookies Mangue-Coco', catLabel: 'Pâtisseries', desc: 'Cookies moelleux à la farine de coco, éclats de mangue séchée et pépites de chocolat noir.', price: 2500, emoji: '🍪', badge: null },
-      { id: 'pat-gateau', cat: 'patisseries', name: 'Cake à l\'Ananas', catLabel: 'Pâtisseries', desc: 'Moelleux renversé à l\'ananas caramélisé. Recette traditionnelle revisitée.', price: 4500, emoji: '🎂', badge: 'Nouveau' },
-      { id: 'pat-biscuits', cat: 'patisseries', name: 'Biscuits Bissap', catLabel: 'Pâtisseries', desc: 'Sablés fondants à la farine de mil et au sirop de bissap. Une douceur authentique.', price: 2200, emoji: '🌺', badge: null },
-    ];
-
-    // Render all products
-    const grids = {
-      jus: document.getElementById('grid-jus'),
-      liqueurs: document.getElementById('grid-liqueurs'),
-      confitures: document.getElementById('grid-confitures'),
-      secs: document.getElementById('grid-secs'),
-      patisseries: document.getElementById('grid-patisseries'),
-    };
-
-    function renderProducts(products) {
-      Object.keys(grids).forEach(k => { if (grids[k]) grids[k].innerHTML = ''; });
-      products.forEach(p => {
-        if (!grids[p.cat]) return;
-        const div = document.createElement('div');
-        div.className = 'product-card reveal';
-        div.innerHTML = `
+    function productCard(p) {
+      return `
+        <div class="product-card reveal">
           <div class="product-img" style="cursor:pointer" onclick="openModal('${p.id}')">
-            <div class="product-img-placeholder">${p.name.charAt(0)}</div>
+            ${catalog.visual(p)}
             ${p.badge ? `<span class="product-badge">${p.badge}</span>` : ''}
+            ${catalog.estEpuise(p) ? `<span class="product-badge is-out">Épuisé</span>` : ''}
           </div>
           <div class="product-body">
-            <div class="product-category">${p.catLabel}</div>
+            <div class="product-category">${catalog.label(p.category)}</div>
             <h3 class="product-name">${p.name}</h3>
-            <p class="product-desc">${p.desc.slice(0,80)}…</p>
+            <p class="product-desc">${(p.description || '').slice(0, 80)}…</p>
             <div class="product-footer">
               <span class="product-price">${p.price.toLocaleString('fr-FR')} FCFA</span>
-              <button class="product-add-btn" onclick="cart.add({id:'${p.id}',name:'${p.name}',price:${p.price}})" aria-label="Ajouter">+</button>
+              <button class="product-add-btn" onclick="cart.add({id:'${p.id}',name:'${p.name}',price:${p.price}},this);reco.noter('${p.id}','panier')"
+                      aria-label="Ajouter ${p.name} au panier" ${catalog.estEpuise(p) ? 'disabled' : ''}>+</button>
             </div>
-          </div>`;
-        grids[p.cat].appendChild(div);
-      });
+          </div>
+        </div>`;
+    }
+
+    /* Catégorie encore vide : on le dit franchement plutôt que d'afficher un vide. */
+    function comingSoon(c) {
+      return `
+        <div class="category-empty reveal">
+          <div class="category-empty-icon">${catalog.icon(c.slug, 26)}</div>
+          <div>
+            <div class="category-empty-title">${c.label} — sur commande</div>
+            <p class="category-empty-text">${c.blurb} Cette gamme se prépare à l'atelier : écrivez-nous pour connaître les disponibilités du moment.</p>
+          </div>
+          <a href="contact.html" class="btn btn-secondary">Nous écrire</a>
+        </div>`;
+    }
+
+    function renderCatalog() {
+      // Filtres : Tout voir + une puce par catégorie
+      document.getElementById('filterBar').innerHTML =
+        `<button class="filter-btn active" data-filter="all">Tout voir</button>` +
+        catalog.categories.map(c => {
+          const n = catalog.count(c.slug);
+          return `<button class="filter-btn${n ? '' : ' is-soon'}" data-filter="${c.slug}">
+                    ${c.label}${n ? ` <span class="filter-count">${n}</span>` : ''}
+                  </button>`;
+        }).join('');
+
+      // Sections regroupées par univers
+      document.getElementById('catalogSections').innerHTML = catalog.groups.map(g => `
+        <div class="catalog-group" data-group="${g.id}">
+          <div class="catalog-group-head">
+            <h2 class="catalog-group-title">${g.label}</h2>
+            <p class="catalog-group-blurb">${g.blurb}</p>
+          </div>
+          ${catalog.categoriesOfGroup(g.id).map(c => {
+            const items = catalog.byCategory(c.slug);
+            return `
+              <div class="category-section" id="${c.slug}" data-category="${c.slug}">
+                <h2 class="products-section-title">
+                  <span class="products-section-icon">${catalog.icon(c.slug, 20)}</span>
+                  ${c.label}
+                  ${items.length ? `<em class="products-section-count">${items.length} produit${items.length > 1 ? 's' : ''}</em>` : ''}
+                </h2>
+                ${items.length
+                  ? `<div class="products-grid">${items.map(productCard).join('')}</div>`
+                  : comingSoon(c)}
+              </div>`;
+          }).join('')}
+        </div>`).join('');
+
       document.querySelectorAll('.reveal:not(.visible)').forEach(el => revealObserver.observe(el));
     }
 
-    // Filter
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        const filter = btn.dataset.filter;
-        document.querySelectorAll('.category-section').forEach(sec => {
-          sec.classList.toggle('hidden', filter !== 'all' && sec.dataset.category !== filter);
-        });
-        if (filter !== 'all') {
-          setTimeout(() => document.getElementById(filter)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-        }
-      });
-    });
+    /* ---------- Filtrage ---------- */
 
-    // Modal
+    function applyFilter(filter, keepOpen) {
+      document.querySelectorAll('.filter-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.filter === filter));
+
+      document.getElementById('filterCurrent').textContent =
+        filter === 'all' ? 'Tout voir' : catalog.label(filter);
+      if (!keepOpen) setFilterPanel(false);
+
+      document.querySelectorAll('.category-section').forEach(sec =>
+        sec.classList.toggle('hidden', filter !== 'all' && sec.dataset.category !== filter));
+
+      // Un univers dont toutes les catégories sont masquées disparaît aussi
+      document.querySelectorAll('.catalog-group').forEach(grp => {
+        const visible = [...grp.querySelectorAll('.category-section')].some(s => !s.classList.contains('hidden'));
+        grp.classList.toggle('hidden', !visible);
+      });
+
+      if (filter !== 'all') {
+        setTimeout(() => document.getElementById(filter)
+          ?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+      }
+    }
+
+    /* ---------- Fiche produit ---------- */
+
     function openModal(id) {
-      const p = ALL_PRODUCTS.find(x => x.id === id);
+      const p = catalog.product(id);
       if (!p) return;
-      document.getElementById('modalImg').textContent = p.emoji;
-      document.getElementById('modalCategory').textContent = p.catLabel;
+      if (typeof reco !== 'undefined') reco.noter(p.id, 'vue');
+      document.getElementById('modalImg').innerHTML = catalog.visual(p, 'product-modal-mono');
+      document.getElementById('modalCategory').textContent = catalog.label(p.category);
       document.getElementById('modalName').textContent = p.name;
-      document.getElementById('modalDesc').textContent = p.desc;
+      document.getElementById('modalDesc').textContent = p.description || '';
       document.getElementById('modalPrice').textContent = p.price.toLocaleString('fr-FR') + ' FCFA';
-      document.getElementById('modalAddBtn').onclick = () => {
-        cart.add({ id: p.id, name: p.name, price: p.price, emoji: p.emoji });
+      const addBtn = document.getElementById('modalAddBtn');
+      addBtn.disabled = catalog.estEpuise(p);
+      addBtn.textContent = catalog.estEpuise(p) ? 'Épuisé' : 'Ajouter au panier';
+      addBtn.onclick = () => {
+        cart.add({ id: p.id, name: p.name, price: p.price }, addBtn);
         closeModal();
       };
       document.getElementById('productModal').classList.add('open');
@@ -194,14 +206,58 @@
       if (e.target === e.currentTarget) closeModal();
     });
     document.getElementById('modalClose')?.addEventListener('click', closeModal);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      renderProducts(ALL_PRODUCTS);
-      // Handle hash navigation
-      const hash = location.hash.replace('#', '');
-      if (hash && grids[hash]) {
-        setTimeout(() => document.getElementById(hash)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 400);
+    /* ---------- Dépliage du tri ---------- */
+
+    function setFilterPanel(open) {
+      const panel  = document.getElementById('filterPanel');
+      const toggle = document.getElementById('filterToggle');
+      if (!panel) return;
+
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.classList.toggle('is-open', open);
+
+      if (open) {
+        panel.hidden = false;
+        panel.style.height = '0px';
+        requestAnimationFrame(() => { panel.style.height = panel.scrollHeight + 'px'; });
+      } else {
+        panel.style.height = panel.scrollHeight + 'px';
+        requestAnimationFrame(() => { panel.style.height = '0px'; });
       }
+    }
+
+    document.addEventListener('lej:ready', () => {
+      renderCatalog();
+
+      const panel = document.getElementById('filterPanel');
+      panel.addEventListener('transitionend', e => {
+        if (e.propertyName !== 'height') return;
+        if (panel.style.height === '0px') panel.hidden = true;
+        else panel.style.height = 'auto';   // reste souple si l'écran change
+      });
+
+      document.getElementById('filterToggle').addEventListener('click', () => {
+        setFilterPanel(document.getElementById('filterToggle').getAttribute('aria-expanded') !== 'true');
+      });
+
+      document.getElementById('filterBar').addEventListener('click', e => {
+        const btn = e.target.closest('.filter-btn');
+        if (btn) applyFilter(btn.dataset.filter);
+      });
+
+      // Fermeture au clic extérieur et à Échap
+      document.addEventListener('click', e => {
+        if (!e.target.closest('.filter-dock')) setFilterPanel(false);
+      });
+      document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') setFilterPanel(false);
+      });
+
+      // Arrivée depuis un lien #categorie
+      const hash = location.hash.replace('#', '');
+      if (hash && catalog.category(hash)) applyFilter(hash);
     });
   </script>
 </body>

@@ -1,0 +1,573 @@
+/* ==========================================================================
+   TABLEAU DE BORD — interface d'administration. Pensée mobile d'abord.
+   ========================================================================== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: var(--font-body);
+  background: #F6F5F2;
+  color: var(--black);
+  line-height: 1.55;
+  -webkit-text-size-adjust: 100%;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.85em; }
+
+/* ---------- En-tête ---------- */
+.ad-top {
+  position: sticky;
+  top: 0;
+  z-index: 60;
+  background: var(--black);
+  color: var(--white);
+}
+
+.ad-top-inner {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0.85rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.ad-brand {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: inherit;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+.ad-brand small {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+}
+
+.ad-top-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+/* ---------- Boutons ---------- */
+.ad-btn {
+  padding: 0.55rem 1rem;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  min-height: 40px;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.ad-btn-primary { background: var(--gold); color: var(--white); }
+.ad-btn-primary:hover { background: var(--gold-dark); }
+
+.ad-btn-ghost {
+  border: 1px solid currentColor;
+  opacity: 0.75;
+}
+.ad-btn-ghost:hover { opacity: 1; }
+
+.ad-btn-danger { color: #C0392B; border: 1px solid currentColor; opacity: 0.8; }
+.ad-btn-danger:hover { opacity: 1; background: #FDEDEA; }
+
+.ad-icon-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  line-height: 1;
+  color: var(--gray-text);
+}
+.ad-icon-btn:hover { background: var(--gray-light); }
+
+/* ---------- Avertissement ---------- */
+.ad-warning {
+  position: relative;
+  max-width: 1180px;
+  margin: 1rem auto 0;
+  padding: 0.9rem 2.5rem 0.9rem 1rem;
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: #FFF8EC;
+  font-size: 0.83rem;
+  line-height: 1.6;
+}
+.ad-warning-close {
+  position: absolute;
+  top: 0.4rem; right: 0.5rem;
+  font-size: 1.3rem;
+  color: var(--gray-text);
+  width: 32px; height: 32px;
+}
+
+/* ---------- Onglets ---------- */
+.ad-tabs {
+  position: sticky;
+  top: 61px;
+  z-index: 50;
+  display: flex;
+  gap: 0.35rem;
+  padding: 0.75rem 1rem;
+  max-width: 1180px;
+  margin: 0 auto;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: #F6F5F2;
+}
+.ad-tabs::-webkit-scrollbar { display: none; }
+
+.ad-tab {
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  font-size: 0.83rem;
+  font-weight: 600;
+  color: var(--gray-text);
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  white-space: nowrap;
+  min-height: 40px;
+}
+.ad-tab.is-active { background: var(--black); color: var(--white); border-color: var(--black); }
+
+/* ---------- Vues ---------- */
+.ad-main { max-width: 1180px; margin: 0 auto; padding: 0.5rem 1rem 5rem; }
+
+.ad-view { display: none; }
+.ad-view.is-active { display: block; }
+
+.ad-view-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin: 1rem 0 1.25rem;
+}
+
+.ad-view-head h1 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.ad-sub { font-size: 0.83rem; color: var(--gray-text); }
+
+.ad-filters {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ---------- Champs ---------- */
+.ad-input {
+  width: 100%;
+  padding: 0.7rem 0.85rem;
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-sm);
+  background: var(--white);
+  font-size: 16px;          /* évite le zoom automatique sur iOS */
+  outline: none;
+  transition: var(--transition);
+}
+.ad-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(201,144,26,0.15); }
+
+.ad-input-sm { font-size: 0.8rem; padding: 0.5rem 0.65rem; }
+.ad-input-xs { width: 84px; text-align: center; padding: 0.45rem; }
+
+textarea.ad-input { resize: vertical; line-height: 1.6; }
+
+.ad-field { display: block; margin-bottom: 1.1rem; }
+.ad-field > span {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.ad-field > span em {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--gray-text);
+  margin-left: 0.4rem;
+}
+
+.ad-check {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 1.1rem;
+  font-size: 0.87rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ad-check input { width: 20px; height: 20px; accent-color: var(--gold); }
+
+/* ---------- Cartes de liste ---------- */
+.ad-list { display: flex; flex-direction: column; gap: 0.6rem; }
+
+.ad-card {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.75rem;
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+}
+.ad-card.is-off { opacity: 0.55; }
+
+.ad-card-thumb {
+  width: 52px; height: 52px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  font-weight: 700;
+  overflow: hidden;
+}
+.ad-card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+.ad-card-body { flex: 1; min-width: 0; }
+
+.ad-card-title {
+  font-weight: 600;
+  font-size: 0.92rem;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.ad-card-meta { font-size: 0.78rem; color: var(--gray-text); }
+
+.ad-chip {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 0.1rem 0.5rem;
+  border-radius: 100px;
+  background: var(--gold);
+  color: var(--white);
+  letter-spacing: 0.03em;
+}
+.ad-chip.is-muted { background: var(--gray-light); color: var(--gray-text); }
+
+.ad-card-actions { display: flex; gap: 0.4rem; flex-shrink: 0; }
+
+.ad-stock-out { color: #C0392B; font-weight: 700; }
+.ad-stock-low { color: #B7791F; font-weight: 700; }
+
+.ad-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--gray-text);
+  font-size: 0.87rem;
+  background: var(--white);
+  border: 1px dashed var(--cream-dark);
+  border-radius: var(--radius-md);
+}
+
+.ad-group { margin-bottom: 1.75rem; }
+.ad-group-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--cream-dark);
+}
+.ad-group .ad-card + .ad-card { margin-top: 0.6rem; }
+.ad-card-thumb-icon { background: var(--white); box-shadow: inset 0 0 0 1px var(--cream-dark); }
+
+/* ---------- Stocks ---------- */
+.ad-stock-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+  margin-bottom: 1.25rem;
+}
+
+.ad-stat {
+  padding: 1rem;
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  text-align: center;
+}
+.ad-stat b { display: block; font-family: var(--font-heading); font-size: 1.6rem; }
+.ad-stat span { font-size: 0.72rem; color: var(--gray-text); text-transform: uppercase; letter-spacing: 0.08em; }
+.ad-stat.is-alert b { color: #C0392B; }
+.ad-stat.is-warn  b { color: #B7791F; }
+
+.ad-table-wrap {
+  background: var(--white);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  overflow-x: auto;
+}
+
+.ad-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.ad-table th, .ad-table td { padding: 0.7rem 0.9rem; text-align: left; }
+.ad-table th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gray-text);
+  border-bottom: 1px solid var(--cream-dark);
+}
+.ad-table tbody tr + tr { border-top: 1px solid var(--gray-light); }
+.ad-num { text-align: right; }
+
+.ad-pill {
+  display: inline-block;
+  padding: 0.15rem 0.6rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.ad-pill.is-ok  { background: #E8F5E9; color: #2E7D32; }
+.ad-pill.is-low { background: #FFF6E5; color: #B7791F; }
+.ad-pill.is-out { background: #FDEDEA; color: #C0392B; }
+
+/* ---------- Tiroir ---------- */
+.ad-drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 90;
+}
+.ad-drawer-overlay.is-open { opacity: 1; pointer-events: auto; }
+
+.ad-drawer {
+  position: fixed;
+  top: 0; right: 0;
+  width: min(460px, 100%);
+  height: 100dvh;
+  background: var(--white);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(100%);
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: -12px 0 40px rgba(0,0,0,0.18);
+}
+.ad-drawer.is-open { transform: none; }
+
+.ad-drawer-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--cream-dark);
+  flex-shrink: 0;
+}
+.ad-drawer-head h2 { font-family: var(--font-heading); font-size: 1.15rem; font-weight: 700; }
+
+.ad-drawer-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem;
+  -webkit-overflow-scrolling: touch;
+}
+
+.ad-drawer-foot {
+  display: flex;
+  gap: 0.6rem;
+  padding: 1rem 1.25rem;
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  border-top: 1px solid var(--cream-dark);
+  flex-shrink: 0;
+}
+.ad-drawer-foot .ad-btn { flex: 1; min-height: 46px; }
+
+/* Champ image */
+.ad-image-row { display: flex; gap: 0.85rem; align-items: flex-start; }
+
+.ad-image-preview {
+  width: 96px; height: 96px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  border: 1px dashed var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  font-size: 0.72rem;
+  color: var(--gray-text);
+}
+.ad-image-preview img { width: 100%; height: 100%; object-fit: cover; }
+
+.ad-image-actions { flex: 1; display: flex; flex-direction: column; gap: 0.45rem; }
+
+/* ---------- Notification ---------- */
+.ad-toast {
+  position: fixed;
+  left: 50%;
+  bottom: 1.25rem;
+  translate: -50% 0;
+  padding: 0.7rem 1.2rem;
+  border-radius: 100px;
+  background: var(--black);
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 600;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease, translate 0.25s ease;
+  z-index: 200;
+}
+.ad-toast.is-on { opacity: 1; translate: -50% -6px; }
+.ad-toast.is-error { background: #C0392B; }
+
+/* ---------- Mobile ---------- */
+@media (max-width: 720px) {
+  .ad-top-inner { padding: 0.7rem 0.85rem; }
+  .ad-top-actions { width: 100%; margin-left: 0; }
+  .ad-top-actions .ad-btn { flex: 1; }
+
+  .ad-tabs { top: 0; position: sticky; }
+  .ad-main { padding-inline: 0.85rem; }
+
+  .ad-filters { grid-template-columns: 1fr; }
+
+  .ad-card { flex-wrap: wrap; }
+  .ad-card-actions { width: 100%; }
+  .ad-card-actions .ad-btn { flex: 1; }
+
+  .ad-view-head { align-items: stretch; flex-direction: column; }
+  .ad-view-head .ad-btn { width: 100%; min-height: 46px; }
+
+  .ad-stock-summary { grid-template-columns: 1fr; }
+
+  /* Tableau des stocks en cartes */
+  .ad-table thead { display: none; }
+  .ad-table, .ad-table tbody, .ad-table tr, .ad-table td { display: block; width: 100%; }
+  .ad-table tr {
+    padding: 0.65rem 0.9rem;
+    border-top: 1px solid var(--gray-light);
+  }
+  .ad-table td {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.25rem 0;
+    text-align: right;
+  }
+  .ad-table td::before {
+    content: attr(data-label);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--gray-text);
+    font-weight: 600;
+  }
+  .ad-num { text-align: right; }
+
+  .ad-image-row { flex-direction: column; }
+  .ad-image-preview { width: 100%; height: 140px; }
+}
+
+/* ---------- Barrière d'accès ---------- */
+/* Cette page ne charge pas global.css : la règle doit être répétée ici.
+   Sans elle, `display: flex` ci-dessous bat la règle par défaut du navigateur
+   et l'écran de connexion restait affiché par-dessus le tableau de bord,
+   même une fois l'accès accordé. */
+[hidden] { display: none !important; }
+
+.ad-gate {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: var(--black);
+}
+
+.ad-gate-card {
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  color: var(--white);
+}
+.ad-gate-card h1 {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+.ad-gate-card p {
+  font-size: 0.9rem;
+  line-height: 1.65;
+  opacity: 0.72;
+  margin-bottom: 1.75rem;
+}
+.ad-gate-card .ad-btn { width: 100%; min-height: 48px; margin-bottom: 0.6rem; }
+.ad-gate-back {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.82rem;
+  opacity: 0.6;
+  text-decoration: underline;
+  color: inherit;
+}
+
+/* ---------- Commandes ---------- */
+.ad-order { align-items: flex-start; }
+
+.ad-order-items {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--gray-text);
+}
+.ad-order-items li { padding: 0.1rem 0; }
+
+.ad-order-msg {
+  margin-top: 0.5rem;
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--gray-text);
+  border-left: 2px solid var(--cream-dark);
+  padding-left: 0.7rem;
+}
+
+.ad-order-total {
+  margin-top: 0.6rem;
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.ad-order-actions { flex-direction: column; align-items: stretch; gap: 0.4rem; min-width: 150px; }
+.ad-order-actions .ad-btn { text-align: center; }
+
+@media (max-width: 720px) {
+  .ad-order-actions { min-width: 0; width: 100%; }
+}
+
+/* Stock non suivi : ni alerte, ni fausse quantité */
+.ad-stock-free { color: var(--gray-text); font-style: italic; }
+.ad-pill.is-free { background: var(--gray-light); color: var(--gray-text); }

@@ -31,6 +31,11 @@ img {
 
 ul { list-style: none; }
 
+/* Sans ça, une règle d'auteur comme `.mobile-nav a { display: flex }` bat la
+   règle par défaut du navigateur et l'attribut `hidden` ne cache plus rien —
+   c'est ainsi que le lien du tableau de bord restait visible pour tous. */
+[hidden] { display: none !important; }
+
 button {
   cursor: pointer;
   font-family: var(--font-body);
@@ -225,6 +230,39 @@ h1, h2, h3, h4 {
 
 .cart-count.visible { display: flex; }
 
+/* Petit rebond de l'icône panier quand un article vient d'y « atterrir ». */
+@keyframes cartBump {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.32); }
+  55%  { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+.nav-cart-btn.cart-bump { animation: cartBump 420ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ── Vol de la miniature produit vers le panier ── */
+.fly-clone {
+  position: fixed;
+  top: 0; left: 0;
+  z-index: 3000;
+  border-radius: 50%;
+  background-color: var(--cream);
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 10px 28px rgba(0,0,0,0.35), 0 0 0 3px rgba(255,255,255,0.6);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+.fly-clone-plain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--gold);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
 /* ── Hamburger ── */
 .hamburger {
   display: flex;
@@ -259,24 +297,31 @@ h1, h2, h3, h4 {
 .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
 /* ========== MOBILE NAV ========== */
+/* Panneau compact ancré sous le bouton menu, plutôt qu'un bandeau pleine largeur. */
 .mobile-nav {
   position: fixed;
-  top: var(--nav-height);
-  left: 0;
-  right: 0;
+  top: calc(var(--nav-height) - 0.35rem);
+  right: clamp(0.75rem, 3vw, 2rem);
+  left: auto;
+  width: min(272px, calc(100vw - 1.5rem));
+  max-height: calc(100vh - var(--nav-height) - 1.5rem);
+  overflow-y: auto;
+  overscroll-behavior: contain;
   background: var(--white);
-  padding: 0.5rem 1.5rem 1.75rem;
-  transform: translateY(-8px);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  padding: 0.4rem 0.9rem 0.9rem;
+  transform: translateY(-10px) scale(0.98);
+  transform-origin: top right;
   opacity: 0;
   visibility: hidden;
-  transition: transform 0.25s ease, opacity 0.25s ease, visibility 0.25s;
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.2s ease, visibility 0.22s;
   z-index: 999;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-  border-top: 1px solid var(--cream-dark);
+  box-shadow: var(--shadow-lg);
 }
 
 .mobile-nav.open {
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
   opacity: 1;
   visibility: visible;
 }
@@ -284,8 +329,8 @@ h1, h2, h3, h4 {
 .mobile-nav a {
   display: flex;
   align-items: center;
-  padding: 0.85rem 0;
-  font-size: 1rem;
+  padding: 0.62rem 0;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--black);
   border-bottom: 1px solid var(--cream-dark);
@@ -297,14 +342,26 @@ h1, h2, h3, h4 {
 .mobile-nav a:hover,
 .mobile-nav a.active {
   color: var(--gold);
-  padding-left: 0.4rem;
+  padding-left: 0.3rem;
 }
 
 .mobile-nav .btn {
-  margin-top: 1.25rem;
+  margin-top: 0.85rem;
   width: 100%;
   justify-content: center;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  padding: 0.7rem 1rem;
+}
+
+/* Sur mobile aussi le panneau reste un menu déroulant, pas un plein écran :
+   on doit continuer à voir la page derrière. */
+@media (max-width: 480px) {
+  .mobile-nav {
+    right: 0.6rem;
+    width: min(258px, calc(100vw - 3rem));
+    padding: 0.3rem 0.8rem 0.8rem;
+  }
+  .mobile-nav a { padding: 0.55rem 0; font-size: 0.87rem; }
 }
 
 /* ========== SECTIONS ========== */
@@ -681,6 +738,133 @@ h1, h2, h3, h4 {
   transform: translateY(0);
 }
 
+/* Entrée de marque dans le menu mobile */
+.mobile-nav-brand {
+  flex-direction: column;
+  align-items: flex-start !important;
+  gap: 0.15rem;
+  font-family: var(--font-heading);
+  font-weight: 700 !important;
+  color: var(--gold-dark) !important;
+}
+.mobile-nav-brand small {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--gray-text);
+}
+
+/* ========== CARTES PRODUIT (partagées par toutes les pages) ========== */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 1.5rem;
+}
+
+.product-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: var(--transition);
+  border: 1px solid var(--cream-dark);
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+}
+
+.product-img {
+  aspect-ratio: 4/3;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.product-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+
+.product-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  background: var(--gold);
+  color: var(--white);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.2rem 0.6rem;
+  border-radius: 100px;
+}
+
+.product-body {
+  padding: 1.25rem;
+}
+
+.product-category {
+  font-size: 0.75rem;
+  color: var(--gold);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
+.product-name {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.35rem;
+}
+
+.product-desc {
+  font-size: 0.85rem;
+  color: var(--gray-text);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-price {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.product-add-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  flex-shrink: 0;
+}
+
+.product-add-btn:hover { background: var(--gold-dark); transform: scale(1.1); }
+
 /* ========== RESPONSIVE ========== */
 @media (max-width: 768px) {
 
@@ -690,8 +874,46 @@ h1, h2, h3, h4 {
   }
 
   .footer-brand { grid-column: 1 / -1; }
+
+  /* Le menu déroulant peut dépasser la hauteur de l'écran */
+  .mobile-nav {
+    max-height: calc(100dvh - var(--nav-height));
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding-bottom: max(1.75rem, env(safe-area-inset-bottom));
+  }
+
+  /* Cibles tactiles confortables */
+  .mobile-nav a { padding: 0.95rem 0; min-height: 48px; }
+  .btn { min-height: 46px; }
+  .product-add-btn { width: 40px; height: 40px; }
+
+  /* Deux produits par ligne plutôt qu'une colonne étirée */
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+  }
+  .product-add-btn { width: 40px; height: 40px; }
+  .product-img { aspect-ratio: 1; }
+  .product-body { padding: 0.85rem; }
+  .product-name { font-size: 0.92rem; }
+  .product-desc { font-size: 0.78rem; }
+  .product-price { font-size: 0.92rem; }
+
+  /* Panneau du panier plein écran */
+  .cart-panel { width: 100%; max-width: none; }
+
+  /* Le contenu principal respire moins verticalement */
+  .section { padding: clamp(2.5rem, 8vw, 4rem) 1rem; }
+  .page-hero { padding-inline: 1rem; }
 }
 
 @media (max-width: 480px) {
   .footer-grid { grid-template-columns: 1fr; }
+  .section-title { font-size: clamp(1.5rem, 6vw, 2rem); }
+}
+
+/* Évite le zoom automatique d'iOS à la saisie */
+@media (max-width: 768px) {
+  input, select, textarea { font-size: 16px; }
 }

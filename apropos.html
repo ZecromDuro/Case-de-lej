@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notre Histoire — La Case de LEJ</title>
   <meta name="description" content="La Case de LEJ, fondée à Abidjan par une agro-transformatrice passionnée. LEJ, les initiales de ses trois enfants."/>
-  <link rel="stylesheet" href="css/variables.css"/>
-  <link rel="stylesheet" href="css/global.css"/>
+  <link rel="stylesheet" href="css/variables.css?v=10"/>
+  <link rel="stylesheet" href="css/global.css?v=10"/>
+  <link rel="stylesheet" href="css/account.css?v=10"/>
   <style>
     /* ===== ABOUT PAGE STYLES ===== */
     .about-hero {
@@ -334,12 +335,12 @@
             <div class="timeline-item">
               <div class="timeline-year">L'essor</div>
               <div class="timeline-title">Les premières commandes</div>
-              <p class="timeline-text">Les premières confitures de mangue font sensation dans le cercle familial. Le bouche-à-oreille fait le reste. Les commandes de paniers pour événements commencent à arriver.</p>
+              <p class="timeline-text">Les premières confitures de mangue font sensation dans le cercle familial. Le bouche-à-oreille fait le reste. Les commandes de coffrets pour événements commencent à arriver.</p>
             </div>
             <div class="timeline-item">
               <div class="timeline-year">Aujourd'hui</div>
               <div class="timeline-title">Une marque reconnue</div>
-              <p class="timeline-text">La Case de LEJ est désormais la référence pour les paniers cadeaux artisanaux à Abidjan. Des particuliers aux grandes entreprises, la marque rayonne dans tout Abidjan.</p>
+              <p class="timeline-text">La Case de LEJ est désormais la référence pour les coffrets cadeaux artisanaux à Abidjan. Des particuliers aux grandes entreprises, la marque rayonne dans tout Abidjan.</p>
             </div>
             <div class="timeline-item">
               <div class="timeline-year">Demain</div>
@@ -422,11 +423,11 @@
       <div class="cta-strip reveal">
         <div>
           <h3>Prêt à goûter l'authenticité ?</h3>
-          <p>Découvrez nos produits ou créez votre panier cadeau personnalisé.</p>
+          <p>Découvrez nos produits ou créez votre coffret cadeau personnalisé.</p>
         </div>
         <div style="display:flex;gap:1rem;flex-wrap:wrap">
           <a href="produits.html" class="btn btn-primary">Nos produits</a>
-          <a href="paniers.html" class="btn btn-secondary">Créer un panier</a>
+          <a href="paniers.html" class="btn btn-secondary">Créer un coffret cadeau</a>
         </div>
       </div>
     </div>
@@ -435,9 +436,14 @@
   <div id="cartPlaceholder"></div>
   <div id="footerPlaceholder"></div>
 
-  <script src="js/components.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/cart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+  <script src="js/supabase-config.js?v=10"></script>
+  <script src="js/catalog.js?v=10"></script>
+  <script src="js/auth.js?v=10"></script>
+  <script src="js/checkout.js?v=10"></script>
+  <script src="js/components.js?v=10"></script>
+  <script src="js/nav.js?v=10"></script>
+  <script src="js/cart.js?v=10"></script>
   <script>
     // Responsive story grid
     const grid = document.querySelector('.story-grid');
