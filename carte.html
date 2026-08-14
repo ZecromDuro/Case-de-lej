@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="images/favicon.png"/>
+  <title>Carte personnalisée — La Case de LEJ</title>
+  <meta name="robots" content="noindex"/>
+  <link rel="stylesheet" href="css/variables.css?v=16"/>
+  <link rel="stylesheet" href="css/global.css?v=16"/>
+  <style>
+    .carte-wrap{min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;padding:2rem 1rem;background:var(--cream, #faf6ef)}
+    .carte-img-box{max-width:100%;width:min(560px,100%)}
+    .carte-img-box img{width:100%;height:auto;display:block;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.15)}
+    .carte-actions{display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center}
+    .carte-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.75rem 1.5rem;border-radius:999px;font-weight:600;font-size:0.95rem;cursor:pointer;border:none;text-decoration:none}
+    .carte-btn-primary{background:var(--gold,#c9a24b);color:#fff}
+    .carte-btn-secondary{background:#fff;color:#333;border:1px solid #ddd}
+    .carte-error{text-align:center;color:#a33;padding:2rem}
+    .carte-loading{color:#888;font-size:0.95rem}
+    @media print{
+      body *{visibility:hidden}
+      .carte-img-box, .carte-img-box *{visibility:visible}
+      .carte-img-box{position:fixed;top:0;left:0;width:100%;max-width:100%}
+      .carte-actions{display:none!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="carte-wrap" id="carteWrap">
+    <p class="carte-loading" id="carteLoading">Chargement de la carte…</p>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const imgUrl = params.get('url');
+    const wrap = document.getElementById('carteWrap');
+
+    function render() {
+      if (!imgUrl) {
+        wrap.innerHTML = '<p class="carte-error">Aucune carte à afficher.</p>';
+        return;
+      }
+      wrap.innerHTML = `
+        <div class="carte-img-box"><img src="${imgUrl}" alt="Carte personnalisée" id="carteImg"/></div>
+        <div class="carte-actions">
+          <button class="carte-btn carte-btn-primary" id="btnPrint">Imprimer</button>
+          <button class="carte-btn carte-btn-secondary" id="btnDownload">Télécharger</button>
+        </div>`;
+
+      document.getElementById('btnPrint').addEventListener('click', () => window.print());
+      document.getElementById('btnDownload').addEventListener('click', async (e) => {
+        const btn = e.currentTarget;
+        const label = btn.textContent;
+        btn.textContent = 'Préparation…';
+        btn.disabled = true;
+        try {
+          const res = await fetch(imgUrl);
+          const blob = await res.blob();
+          const objUrl = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = objUrl;
+          a.download = 'carte-la-case-de-lej.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(() => URL.revokeObjectURL(objUrl), 5000);
+        } catch (err) {
+          window.open(imgUrl, '_blank');
+        } finally {
+          btn.textContent = label;
+          btn.disabled = false;
+        }
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>

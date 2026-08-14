@@ -577,7 +577,7 @@ async function renderOrders() {
               ${o.recipient_address ? `<br/>Livraison : ${esc(o.recipient_address)}` : ''}
             </div>` : ''}
           ${o.card_text ? `<p class="ad-order-msg">« ${esc(o.card_text)} »</p>` : ''}
-          ${o.card_image_url ? `<a class="ad-order-card-link" href="${esc(o.card_image_url)}" target="_blank" rel="noopener">Voir la carte personnalisée →</a>` : ''}
+          ${o.card_image_url ? `<a class="ad-order-card-link" href="carte.html?url=${encodeURIComponent(o.card_image_url)}" target="_blank" rel="noopener">Voir la carte personnalisée →</a>` : ''}
           ${!o.card_text && o.message ? `<p class="ad-order-msg">« ${esc(o.message)} »</p>` : ''}
           <div class="ad-order-total">${o.total.toLocaleString('fr-FR')} FCFA</div>
         </div>

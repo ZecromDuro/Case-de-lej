@@ -6,10 +6,10 @@
   <link rel="icon" type="image/png" href="images/favicon.png"/>
   <title>Coffrets Cadeaux — La Case de LEJ</title>
   <meta name="description" content="Créez votre coffret cadeau personnalisé La Case de LEJ pour mariages, baptêmes, événements d'entreprise. Livraison à Abidjan."/>
-  <link rel="stylesheet" href="css/variables.css?v=15"/>
-  <link rel="stylesheet" href="css/global.css?v=15"/>
-  <link rel="stylesheet" href="css/account.css?v=15"/>
-  <link rel="stylesheet" href="css/paniers.css?v=15"/>
+  <link rel="stylesheet" href="css/variables.css?v=16"/>
+  <link rel="stylesheet" href="css/global.css?v=16"/>
+  <link rel="stylesheet" href="css/account.css?v=16"/>
+  <link rel="stylesheet" href="css/paniers.css?v=16"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Caveat:wght@600&family=Great+Vibes&display=swap"/>
 </head>
 <body>
@@ -220,13 +220,13 @@
   <div id="footerPlaceholder"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-  <script src="js/supabase-config.js?v=15"></script>
-  <script src="js/catalog.js?v=15"></script>
-  <script src="js/auth.js?v=15"></script>
-  <script src="js/checkout.js?v=15"></script>
-  <script src="js/components.js?v=15"></script>
-  <script src="js/nav.js?v=15"></script>
-  <script src="js/cart.js?v=15"></script>
+  <script src="js/supabase-config.js?v=16"></script>
+  <script src="js/catalog.js?v=16"></script>
+  <script src="js/auth.js?v=16"></script>
+  <script src="js/checkout.js?v=16"></script>
+  <script src="js/components.js?v=16"></script>
+  <script src="js/nav.js?v=16"></script>
+  <script src="js/cart.js?v=16"></script>
   <script>
     // State
     const state = {
@@ -326,7 +326,9 @@
       const items = catalog.products.filter(p => state.selections[p.id]);
       const count = items.reduce((s, p) => s + state.selections[p.id], 0);
       const box = state.boxId ? catalog.box(state.boxId) : null;
-      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) + (box ? box.price : 0);
+      const unitTotal = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) + (box ? box.price : 0);
+      const grandTotal = unitTotal * state.qty;
+      const multi = state.qty > 1;
 
       document.getElementById('summaryCount').textContent = count + (count > 1 ? ' articles' : ' article');
 
@@ -334,19 +336,22 @@
       if (items.length === 0) {
         summaryItems.innerHTML = '<div class="summary-empty">Aucun produit sélectionné</div>';
       } else {
-        summaryItems.innerHTML = items.map(p => `
+        summaryItems.innerHTML = items.map(p => {
+          const unit = p.price * state.selections[p.id];
+          return `
           <div class="summary-item">
             <span class="summary-item-name">${p.name} ×${state.selections[p.id]}</span>
-            <span class="summary-item-price">${(p.price * state.selections[p.id]).toLocaleString('fr-FR')} FCFA</span>
-          </div>`).join('')
+            <span class="summary-item-price">${unit.toLocaleString('fr-FR')} FCFA${multi ? ` <em>(${(unit * state.qty).toLocaleString('fr-FR')} F ×${state.qty})</em>` : ''}</span>
+          </div>`;
+        }).join('')
           + (box ? `
           <div class="summary-item">
             <span class="summary-item-name">Emballage — ${box.name}</span>
-            <span class="summary-item-price">${box.price.toLocaleString('fr-FR')} FCFA</span>
+            <span class="summary-item-price">${box.price.toLocaleString('fr-FR')} FCFA${multi ? ` <em>(${(box.price * state.qty).toLocaleString('fr-FR')} F ×${state.qty})</em>` : ''}</span>
           </div>` : '');
       }
 
-      document.getElementById('summaryTotal').textContent = total.toLocaleString('fr-FR') + ' FCFA';
+      document.getElementById('summaryTotal').textContent = grandTotal.toLocaleString('fr-FR') + ' FCFA' + (multi ? ` (×${state.qty} coffrets)` : '');
 
       // Occasion display
       const occEl = document.getElementById('summaryOccasion');
@@ -366,26 +371,31 @@
       if (!el) return;
       const items = catalog.products.filter(p => state.selections[p.id]);
       const box = state.boxId ? catalog.box(state.boxId) : null;
-      const total = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) + (box ? box.price : 0);
+      const unitTotal = items.reduce((s, p) => s + p.price * state.selections[p.id], 0) + (box ? box.price : 0);
+      const grandTotal = unitTotal * state.qty;
+      const multi = state.qty > 1;
 
       el.innerHTML = `
         <div style="font-weight:600;margin-bottom:1rem;font-size:0.9rem;color:var(--gray-text)">
           ${state.occasion ? state.occasion + ' · ' : ''}
           ${state.qty} coffret(s)${box ? ' · ' + box.name : ''}
         </div>
-        ${items.map(p => `
+        ${items.map(p => {
+          const unit = p.price * state.selections[p.id];
+          return `
           <div style="display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.9rem;border-bottom:1px dashed var(--cream-dark)">
-            <span>${p.name} ×${state.selections[p.id]}</span>
-            <span style="font-weight:600;color:var(--gold)">${(p.price * state.selections[p.id]).toLocaleString('fr-FR')} F</span>
-          </div>`).join('')}
+            <span>${p.name} ×${state.selections[p.id]}${multi ? ` <em style="opacity:.65">/coffret</em>` : ''}</span>
+            <span style="font-weight:600;color:var(--gold)">${unit.toLocaleString('fr-FR')} F${multi ? ` <span style="opacity:.65;font-weight:400"> → ${(unit * state.qty).toLocaleString('fr-FR')} F (×${state.qty})</span>` : ''}</span>
+          </div>`;
+        }).join('')}
         ${box ? `
           <div style="display:flex;justify-content:space-between;padding:0.4rem 0;font-size:0.9rem;border-bottom:1px dashed var(--cream-dark)">
-            <span>Emballage — ${box.name}</span>
-            <span style="font-weight:600;color:var(--gold)">${box.price.toLocaleString('fr-FR')} F</span>
+            <span>Emballage — ${box.name}${multi ? ` <em style="opacity:.65">/coffret</em>` : ''}</span>
+            <span style="font-weight:600;color:var(--gold)">${box.price.toLocaleString('fr-FR')} F${multi ? ` <span style="opacity:.65;font-weight:400"> → ${(box.price * state.qty).toLocaleString('fr-FR')} F (×${state.qty})</span>` : ''}</span>
           </div>` : ''}
         <div style="display:flex;justify-content:space-between;padding:1rem 0 0;font-weight:700;font-size:1.05rem">
-          <span>Total estimé (×${state.qty})</span>
-          <span style="color:var(--gold)">${(total * state.qty).toLocaleString('fr-FR')} FCFA</span>
+          <span>Total estimé${multi ? ` (×${state.qty} coffrets)` : ''}</span>
+          <span style="color:var(--gold)">${grandTotal.toLocaleString('fr-FR')} FCFA</span>
         </div>`;
     }
 
@@ -719,7 +729,7 @@
           (state.isGift
             ? `À offrir à : ${recipientName} (${recipientPhone})\nLivraison : ${recipientAddress}\n`
             : (address ? `Livraison : ${address}\n` : '')) +
-          (cardImageUrl ? `\nCarte personnalisée : ${cardImageUrl}\n` : '') +
+          (cardImageUrl ? `\nCarte personnalisée : ${location.origin}/carte.html?url=${encodeURIComponent(cardImageUrl)}\n` : '') +
           `\nMerci de confirmer la disponibilité et la livraison.`
         );
 
