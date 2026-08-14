@@ -213,12 +213,14 @@ h1, h2, h3, h4 {
 
 @media (max-width: 560px) {
   .nav-brand-tagline { display: none; }
-  .nav-brand-title { font-size: 0.78rem; }
-  .nav-brand-text { margin-left: 0.5rem; }
+  .nav-brand-title { font-size: 0.72rem; letter-spacing: 0.02em; }
+  .nav-brand-text { margin-left: 0.4rem; }
+  .nav-logo img { height: 32px; }
+  .nav-actions { gap: 0.15rem; }
 }
 
-@media (max-width: 380px) {
-  .nav-brand-text { display: none; }
+@media (max-width: 340px) {
+  .nav-brand-title { font-size: 0.62rem; }
 }
 
 /* ── Actions : panier + hamburger ── */
