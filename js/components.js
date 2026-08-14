@@ -8,7 +8,7 @@ function injectNavbar() {
 
         <!-- Logo -->
         <a href="index.html" class="nav-logo">
-          <img src="images/logo/logo_nav.png" alt="La Case de LEJ"/>
+          <img src="images/logo/logo_nav.png?v=2" alt="La Case de LEJ"/>
         </a>
 
         <!-- Right: cart + hamburger -->
