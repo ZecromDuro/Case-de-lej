@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" type="image/png" href="images/favicon.png"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>La Case de LEJ</title>
+  <link rel="stylesheet" href="css/variables.css?v=20"/>
+  <link rel="stylesheet" href="css/account.css?v=20"/>
+  <link rel="stylesheet" href="css/admin.css?v=20"/>
+</head>
+<body>
+
+<!-- Barrière d'accès : quiconque n'est pas le propriétaire voit une page
+     introuvable, pour ne pas trahir l'existence de ce panneau. -->
+<div class="ad-gate" id="saGate">
+  <div class="ad-gate-card">
+    <h1 id="saGateTitle">Page introuvable</h1>
+    <p id="saGateText">Cette page n'existe pas.</p>
+    <a class="ad-gate-back" href="index.html">Retour au site</a>
+  </div>
+</div>
+
+<div id="saApp" hidden>
+  <header class="ad-top">
+    <div class="ad-top-inner">
+      <a class="ad-brand" href="index.html">La Case de LEJ<small>Panneau propriétaire</small></a>
+      <div class="ad-top-actions">
+        <a class="ad-btn ad-btn-ghost" href="admin.html">Tableau de bord</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="ad-main">
+    <div class="ad-switch-card">
+      <h1>Écritures du compte administrateur secondaire</h1>
+      <p>Quand c'est activé, le compte client ne peut plus ajouter, modifier ou
+         supprimer de produit, d'emballage, ou de photo. Ton propre compte
+         n'est jamais concerné.</p>
+
+      <div class="ad-switch-row">
+        <div>
+          <div class="ad-switch-label" id="saLabel">Chargement…</div>
+          <div class="ad-switch-state" id="saState"></div>
+        </div>
+        <label class="ad-switch">
+          <input type="checkbox" id="saToggle" disabled/>
+          <span class="ad-switch-track"></span>
+        </label>
+      </div>
+
+      <p class="ad-switch-updated" id="saUpdated"></p>
+    </div>
+  </main>
+</div>
+
+<div class="ad-toast" id="adToast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script src="js/supabase-config.js?v=20"></script>
+<script src="js/auth.js?v=20"></script>
+<script src="js/superadmin.js?v=1"></script>
+</body>
+</html>

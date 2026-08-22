@@ -34,12 +34,36 @@ const showToast = toast;   // partagé avec les scripts communs
 
 function erreurLisible(err) {
   const m = (err && (err.message || err.error_description)) || '';
-  if (/row-level security|violates row-level/i.test(m))
-    return "Écriture refusée : votre compte n'a pas les droits d'administration.";
   if (/duplicate key/i.test(m))  return 'Cet identifiant existe déjà.';
   if (/foreign key/i.test(m))    return 'Référence invalide (catégorie ou univers inexistant).';
   if (/fetch|network/i.test(m))  return 'Connexion impossible. Vérifiez votre réseau.';
   return m || 'Une erreur est survenue.';
+}
+
+/** Écriture rejetée par la base (RLS) — c'est le seul cas que le tiroir
+    d'édition ne peut pas distinguer d'un vrai souci technique. */
+function estEcritureRefusee(err) {
+  const m = (err && (err.message || err.error_description)) || '';
+  return /row-level security|violates row-level/i.test(m);
+}
+
+function showErrorPopup() {
+  let el = $('#adErrorPopup');
+  if (!el) {
+    el = document.createElement('div');
+    el.className = 'ad-error-overlay';
+    el.id = 'adErrorPopup';
+    el.innerHTML = `
+      <div class="ad-error-card" role="alertdialog" aria-modal="true">
+        <h2>Une erreur est survenue</h2>
+        <p>L'enregistrement a échoué. Réessayez dans quelques instants ; si le problème persiste, contactez le support technique.</p>
+        <button class="ad-btn ad-btn-primary" id="adErrorOk">Compris</button>
+      </div>`;
+    document.body.appendChild(el);
+    $('#adErrorOk').addEventListener('click', () => el.classList.remove('is-open'));
+    el.addEventListener('click', e => { if (e.target === el) el.classList.remove('is-open'); });
+  }
+  el.classList.add('is-open');
 }
 
 /* ==========================================================================
@@ -218,6 +242,7 @@ function wireImageField(productId) {
       toast('Photo envoyée');
     } catch (err) {
       $('#imgPreview').innerHTML = '<span>Échec</span>';
+      if (estEcritureRefusee(err)) { showErrorPopup(); return; }
       toast(erreurLisible(err), true);
     }
   });
@@ -245,7 +270,11 @@ function formData() {
 
 async function save(table, row, keyCol) {
   const { error } = await sb.from(table).upsert(row, { onConflict: keyCol });
-  if (error) { toast(erreurLisible(error), true); return false; }
+  if (error) {
+    if (estEcritureRefusee(error)) { showErrorPopup(); return false; }
+    toast(erreurLisible(error), true);
+    return false;
+  }
   toast('Enregistré');
   await catalog.load(true);
   renderAll();
@@ -255,7 +284,11 @@ async function save(table, row, keyCol) {
 async function remove(table, keyCol, value, question) {
   if (!confirm(question)) return;
   const { error } = await sb.from(table).delete().eq(keyCol, value);
-  if (error) { toast(erreurLisible(error), true); return; }
+  if (error) {
+    if (estEcritureRefusee(error)) { showErrorPopup(); return; }
+    toast(erreurLisible(error), true);
+    return;
+  }
   toast('Supprimé');
   await catalog.load(true);
   renderAll();
@@ -643,7 +676,11 @@ document.addEventListener('change', async e => {
   if (stock) {
     const val = stock.value === '' ? null : Math.max(0, Number(stock.value) || 0);
     const { error } = await sb.from('products').update({ stock: val }).eq('id', stock.dataset.stock);
-    if (error) { toast(erreurLisible(error), true); return; }
+    if (error) {
+      if (estEcritureRefusee(error)) { showErrorPopup(); return; }
+      toast(erreurLisible(error), true);
+      return;
+    }
     toast('Stock mis à jour');
     await catalog.load(true);
     renderStocks();
