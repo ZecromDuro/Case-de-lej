@@ -702,3 +702,5 @@ textarea.ad-input { resize: vertical; line-height: 1.6; }
 
 .ad-log-ok  { color: #2E7D32; font-weight: 600; }
 .ad-log-bad { color: #C0392B; font-weight: 600; }
+
+.ad-table small { color: var(--gray-text); font-weight: 400; }

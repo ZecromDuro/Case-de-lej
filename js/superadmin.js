@@ -112,20 +112,25 @@ async function chargerJournal() {
     <div class="ad-stat ${bloques ? 'is-alert' : ''}"><b>${bloques}</b><span>écritures bloquées</span></div>`;
 
   $('#saLogTable').innerHTML = `
-    <thead><tr><th>Date</th><th>Type</th><th>Compte</th><th>Détail</th></tr></thead>
+    <thead><tr><th>Date</th><th>Heure</th><th>Type</th><th>Utilisateur</th><th>Détail</th></tr></thead>
     <tbody>
       ${data.length ? data.map(r => {
         const meta = EVENT_LABELS[r.event_type] || { label: r.event_type, cls: 'is-write' };
-        const date = new Date(r.created_at).toLocaleString('fr-FR',
-          { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const d = new Date(r.created_at);
+        const date = d.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit', year: '2-digit' });
+        const heure = d.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        const qui = r.user_name
+          ? `${esc(r.user_name)}${r.user_email ? ` <small>(${esc(r.user_email)})</small>` : ''}`
+          : esc(r.user_email || 'Visiteur anonyme');
         return `
           <tr>
             <td data-label="Date">${date}</td>
+            <td data-label="Heure">${heure}</td>
             <td data-label="Type"><span class="ad-log-badge ${meta.cls}">${esc(meta.label)}</span></td>
-            <td data-label="Compte">${esc(r.user_email || 'Visiteur anonyme')}</td>
+            <td data-label="Utilisateur">${qui}</td>
             <td data-label="Détail">${formatDetails(r)}</td>
           </tr>`;
-      }).join('') : '<tr><td colspan="4">Rien pour le moment.</td></tr>'}
+      }).join('') : '<tr><td colspan="5">Rien pour le moment.</td></tr>'}
     </tbody>`;
 }
 
