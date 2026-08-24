@@ -7,8 +7,15 @@
    ========================================================================== */
 
 const OWNER_EMAIL = 'yjeanaristide@gmail.com';
+const LOG_LIMIT = 300;
 
-const $ = (s, r = document) => r.querySelector(s);
+const $  = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+function esc(v) {
+  return String(v ?? '').replace(/[&<>"']/g, c =>
+    ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
 
 function toast(msg, isError) {
   const el = $('#adToast');
@@ -60,6 +67,68 @@ async function basculer(checked) {
   await chargerReglages();
 }
 
+/* ==========================================================================
+   Journal d'activité
+   ========================================================================== */
+
+const EVENT_LABELS = {
+  page_view:     { label: 'Visite',      cls: 'is-view'   },
+  login:         { label: 'Connexion',   cls: 'is-login'  },
+  signup:        { label: 'Inscription', cls: 'is-signup' },
+  write_attempt: { label: 'Écriture',    cls: 'is-write'  }
+};
+
+function formatDetails(row) {
+  if (row.event_type === 'page_view') return row.path || '—';
+  if (row.event_type === 'write_attempt') {
+    const bloque = row.details && row.details.bloque;
+    const statut = row.success === false
+      ? `<span class="ad-log-bad">${bloque ? 'bloqué' : 'échec'}</span>`
+      : '<span class="ad-log-ok">ok</span>';
+    return `${esc(row.action || '—')} — ${statut}`;
+  }
+  return esc(row.path || row.action || '—');
+}
+
+async function chargerJournal() {
+  const type = $('#saLogFilter').value;
+  let req = sb.from('activity_log').select('*').order('created_at', { ascending: false }).limit(LOG_LIMIT);
+  if (type) req = req.eq('event_type', type);
+
+  const { data, error } = await req;
+  if (error) {
+    $('#saLogTable').innerHTML = `<thead></thead><tbody><tr><td>${esc(error.message)}</td></tr></tbody>`;
+    return;
+  }
+
+  const total = data.length;
+  const parType = data.reduce((acc, r) => { acc[r.event_type] = (acc[r.event_type] || 0) + 1; return acc; }, {});
+  const bloques = data.filter(r => r.event_type === 'write_attempt' && r.details && r.details.bloque).length;
+
+  $('#saLogStats').innerHTML = `
+    <div class="ad-stat"><b>${total}</b><span>événements (${LOG_LIMIT} max)</span></div>
+    <div class="ad-stat"><b>${parType.page_view || 0}</b><span>visites</span></div>
+    <div class="ad-stat"><b>${(parType.login || 0) + (parType.signup || 0)}</b><span>connexions</span></div>
+    <div class="ad-stat ${bloques ? 'is-alert' : ''}"><b>${bloques}</b><span>écritures bloquées</span></div>`;
+
+  $('#saLogTable').innerHTML = `
+    <thead><tr><th>Date</th><th>Type</th><th>Compte</th><th>Détail</th></tr></thead>
+    <tbody>
+      ${data.length ? data.map(r => {
+        const meta = EVENT_LABELS[r.event_type] || { label: r.event_type, cls: 'is-write' };
+        const date = new Date(r.created_at).toLocaleString('fr-FR',
+          { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        return `
+          <tr>
+            <td data-label="Date">${date}</td>
+            <td data-label="Type"><span class="ad-log-badge ${meta.cls}">${esc(meta.label)}</span></td>
+            <td data-label="Compte">${esc(r.user_email || 'Visiteur anonyme')}</td>
+            <td data-label="Détail">${formatDetails(r)}</td>
+          </tr>`;
+      }).join('') : '<tr><td colspan="4">Rien pour le moment.</td></tr>'}
+    </tbody>`;
+}
+
 async function verifierAcces() {
   const gate = $('#saGate');
   const app  = $('#saApp');
@@ -73,10 +142,13 @@ async function verifierAcces() {
   gate.hidden = true;
   app.hidden = false;
   await chargerReglages();
+  await chargerJournal();
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
   $('#saToggle').addEventListener('change', e => basculer(e.target.checked));
+  $('#saLogFilter').addEventListener('change', chargerJournal);
+  $('#saLogRefresh').addEventListener('click', chargerJournal);
   await auth.init();
   auth.onChange(verifierAcces);
   await verifierAcces();

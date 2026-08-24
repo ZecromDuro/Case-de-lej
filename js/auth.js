@@ -95,6 +95,7 @@ const auth = {
       });
       if (error) throw error;
       if (data?.session) await this._apply(data.session);
+      sb.rpc('log_event', { p_event_type: 'signup', p_path: location.pathname }).then(() => {}, () => {});
       // Renvoie la session si elle existe : sans confirmation d'e-mail,
       // la personne est connectée immédiatement.
       return data?.session || null;
@@ -123,6 +124,7 @@ const auth = {
       // On s'assure que la session est bien enregistrée avant de rendre la
       // main : sinon une navigation immédiate peut partir sans elle.
       await sb.auth.getSession();
+      sb.rpc('log_event', { p_event_type: 'login', p_path: location.pathname }).then(() => {}, () => {});
     } finally {
       this._signInPending = false;
     }

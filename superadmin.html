@@ -52,6 +52,30 @@
 
       <p class="ad-switch-updated" id="saUpdated"></p>
     </div>
+
+    <div class="ad-switch-card ad-log-card">
+      <h1>Journal d'activité</h1>
+      <p>Chaque visite de page, chaque connexion et chaque tentative
+         d'ajout/modification/suppression (réussie ou bloquée) est enregistrée
+         ici — visible uniquement par toi.</p>
+
+      <div class="ad-stock-summary" id="saLogStats"></div>
+
+      <div class="ad-filters">
+        <select id="saLogFilter" class="ad-input">
+          <option value="">Tout</option>
+          <option value="page_view">Visites</option>
+          <option value="login">Connexions</option>
+          <option value="signup">Inscriptions</option>
+          <option value="write_attempt">Tentatives d'écriture</option>
+        </select>
+        <button class="ad-btn ad-btn-ghost" id="saLogRefresh">Rafraîchir</button>
+      </div>
+
+      <div class="ad-table-wrap">
+        <table class="ad-table" id="saLogTable"></table>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -59,6 +83,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script src="js/supabase-config.js?v=20"></script>
+<script src="js/track.js?v=1"></script>
 <script src="js/auth.js?v=20"></script>
 <script src="js/superadmin.js?v=1"></script>
 </body>

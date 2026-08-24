@@ -66,6 +66,20 @@ function showErrorPopup() {
   el.classList.add('is-open');
 }
 
+/** Journalise une tentative d'écriture, réussie ou non — y compris quand
+    elle a été interrompue par le verrou du propriétaire. Passe toujours,
+    même pour un compte actuellement bloqué : log_event() n'est pas soumis
+    à writes_allowed(). */
+function logAttempt(action, success, details) {
+  sb.rpc('log_event', {
+    p_event_type: 'write_attempt',
+    p_path: location.pathname,
+    p_action: action,
+    p_success: success,
+    p_details: details || null
+  }).then(() => {}, () => {});
+}
+
 /* ==========================================================================
    Accès
    ========================================================================== */
@@ -240,9 +254,12 @@ function wireImageField(productId) {
       $('#imgValue').value = url;
       $('#imgPreview').innerHTML = `<img src="${url}" alt=""/>`;
       toast('Photo envoyée');
+      logAttempt('image:upload', true, { productId });
     } catch (err) {
       $('#imgPreview').innerHTML = '<span>Échec</span>';
-      if (estEcritureRefusee(err)) { showErrorPopup(); return; }
+      const bloque = estEcritureRefusee(err);
+      logAttempt('image:upload', false, { productId, bloque });
+      if (bloque) { showErrorPopup(); return; }
       toast(erreurLisible(err), true);
     }
   });
@@ -271,10 +288,13 @@ function formData() {
 async function save(table, row, keyCol) {
   const { error } = await sb.from(table).upsert(row, { onConflict: keyCol });
   if (error) {
-    if (estEcritureRefusee(error)) { showErrorPopup(); return false; }
+    const bloque = estEcritureRefusee(error);
+    logAttempt(table + ':save', false, { id: row[keyCol], bloque });
+    if (bloque) { showErrorPopup(); return false; }
     toast(erreurLisible(error), true);
     return false;
   }
+  logAttempt(table + ':save', true, { id: row[keyCol] });
   toast('Enregistré');
   await catalog.load(true);
   renderAll();
@@ -285,10 +305,13 @@ async function remove(table, keyCol, value, question) {
   if (!confirm(question)) return;
   const { error } = await sb.from(table).delete().eq(keyCol, value);
   if (error) {
-    if (estEcritureRefusee(error)) { showErrorPopup(); return; }
+    const bloque = estEcritureRefusee(error);
+    logAttempt(table + ':delete', false, { id: value, bloque });
+    if (bloque) { showErrorPopup(); return; }
     toast(erreurLisible(error), true);
     return;
   }
+  logAttempt(table + ':delete', true, { id: value });
   toast('Supprimé');
   await catalog.load(true);
   renderAll();
@@ -677,10 +700,13 @@ document.addEventListener('change', async e => {
     const val = stock.value === '' ? null : Math.max(0, Number(stock.value) || 0);
     const { error } = await sb.from('products').update({ stock: val }).eq('id', stock.dataset.stock);
     if (error) {
-      if (estEcritureRefusee(error)) { showErrorPopup(); return; }
+      const bloque = estEcritureRefusee(error);
+      logAttempt('products:stock', false, { id: stock.dataset.stock, bloque });
+      if (bloque) { showErrorPopup(); return; }
       toast(erreurLisible(error), true);
       return;
     }
+    logAttempt('products:stock', true, { id: stock.dataset.stock, val });
     toast('Stock mis à jour');
     await catalog.load(true);
     renderStocks();

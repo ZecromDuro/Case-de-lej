@@ -683,3 +683,22 @@ textarea.ad-input { resize: vertical; line-height: 1.6; }
 .ad-switch input:checked + .ad-switch-track::before { translate: 20px 0; }
 
 .ad-switch-updated { margin-top: 1rem; font-size: 0.76rem; color: var(--gray-text); opacity: 0.75; }
+
+.ad-log-card { max-width: 900px; }
+.ad-log-card .ad-filters { margin-bottom: 1rem; }
+.ad-log-card .ad-stock-summary { margin-bottom: 1.25rem; }
+
+.ad-log-badge {
+  display: inline-block;
+  padding: 0.1rem 0.55rem;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+.ad-log-badge.is-view    { background: #EAF1FB; color: #2B5FA8; }
+.ad-log-badge.is-login   { background: #EFEAF9; color: #6A3FB0; }
+.ad-log-badge.is-signup  { background: #EAF9F0; color: #1F8A50; }
+.ad-log-badge.is-write   { background: #FFF3E0; color: #B7791F; }
+
+.ad-log-ok  { color: #2E7D32; font-weight: 600; }
+.ad-log-bad { color: #C0392B; font-weight: 600; }
