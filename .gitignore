@@ -1,0 +1,7 @@
+node_modules/
+
+# Configuration locale de l'outil de développement (non liée au site)
+.claude/
+
+# Fichiers volumineux qui n'ont pas leur place sur GitHub
+*.zip

@@ -1,0 +1,298 @@
+/* ==========================================================================
+   CAZCHOCO — la branche chocolat. Palette propre, plus sombre que le site.
+   ========================================================================== */
+/* Palette reprise du logo : magenta, chocolat, vert cabosse. */
+.cazchoco-page {
+  --cz-dark:   #2A1206;
+  --cz-brown:  #53230C;
+  --cz-pink:   #E8035B;
+  --cz-green:  #186C00;
+  --cz-gold:   #E9B872;
+  --cz-cream:  #FFF3EC;
+}
+
+/* ---------- Hero ---------- */
+.cz-hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--cz-dark);
+  color: var(--cz-cream);
+  padding-top: var(--nav-height);
+}
+
+.cz-hero-bg { position: absolute; inset: 0; pointer-events: none; }
+
+.cz-glow {
+  position: absolute;
+  top: 42%; left: 72%;
+  width: 90vmax; height: 90vmax;
+  translate: -50% -50%;
+  background: radial-gradient(circle, rgba(232,3,91,0.20), rgba(83,35,12,0.30) 40%, transparent 68%);
+  filter: blur(20px);
+  animation: czBreath 11s ease-in-out infinite;
+}
+@keyframes czBreath {
+  0%, 100% { transform: scale(1);    opacity: 0.9; }
+  50%      { transform: scale(1.08); opacity: 1; }
+}
+
+.cz-grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.cz-hero-inner {
+  position: relative;
+  z-index: 1;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem) clamp(3rem, 7vw, 6rem);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+}
+
+.cz-eyebrow {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cz-gold);
+  margin-bottom: 1.1rem;
+}
+
+.cz-wordmark {
+  margin-bottom: 1rem;
+  line-height: 0;
+}
+.cz-wordmark img {
+  width: 100%;
+  max-width: 420px;
+  height: auto;
+  filter: drop-shadow(0 8px 24px rgba(0,0,0,0.45));
+}
+
+.cz-baseline {
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 2.6vw, 1.6rem);
+  margin-bottom: 1.4rem;
+  opacity: 0.92;
+}
+.cz-baseline em { color: var(--cz-pink); font-style: italic; font-weight: 600; }
+
+.cz-lead {
+  font-size: clamp(0.92rem, 1.7vw, 1.02rem);
+  line-height: 1.75;
+  opacity: 0.8;
+  max-width: 46ch;
+  margin-bottom: 2rem;
+}
+
+.cz-actions { display: flex; gap: 0.85rem; flex-wrap: wrap; }
+
+.btn-choco {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.7rem;
+  border-radius: 100px;
+  background: var(--cz-pink);
+  color: var(--white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: var(--transition);
+}
+.btn-choco:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(232,3,91,0.35); }
+
+.btn-choco-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.9rem 1.7rem;
+  border-radius: 100px;
+  border: 1px solid currentColor;
+  color: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  opacity: 0.85;
+  transition: var(--transition);
+}
+.btn-choco-ghost:hover { opacity: 1; transform: translateY(-2px); }
+
+.cz-hero-media {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cz-hero-media img {
+  width: 100%;
+  max-width: 460px;
+  height: auto;
+  filter: drop-shadow(0 30px 50px rgba(0,0,0,0.55));
+  animation: czFloat 9s ease-in-out infinite;
+}
+@keyframes czFloat {
+  0%, 100% { transform: translateY(0)     rotate(0deg); }
+  50%      { transform: translateY(-18px) rotate(1.2deg); }
+}
+
+/* Bandeau défilant */
+.cz-strip {
+  position: relative;
+  z-index: 1;
+  border-top: 1px solid rgba(232,3,91,0.28);
+  border-bottom: 1px solid rgba(232,3,91,0.28);
+  overflow: hidden;
+  padding: 0.85rem 0;
+  background: rgba(0,0,0,0.25);
+}
+.cz-strip-inner {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: max-content;
+  animation: czScroll 26s linear infinite;
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--cz-pink);
+}
+.cz-strip-inner i {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.5;
+}
+@keyframes czScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ---------- Étapes de fabrication ---------- */
+.cz-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  list-style: none;
+  counter-reset: none;
+}
+
+.cz-step {
+  padding: 1.75rem 1.35rem;
+  border-radius: var(--radius-lg);
+  background: var(--cream);
+  border: 1px solid var(--cream-dark);
+  transition: var(--transition);
+}
+.cz-step:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); background: var(--white); }
+
+.cz-step-num {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--cz-pink);
+  opacity: 0.5;
+  margin-bottom: 0.6rem;
+}
+
+.cz-step h3 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.cz-step p {
+  font-size: 0.86rem;
+  color: var(--gray-text);
+  line-height: 1.62;
+}
+
+/* ---------- Gamme ---------- */
+.cz-range { background: var(--cream); }
+
+.cz-range-head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2.25rem;
+}
+.cz-range-head .section-title { margin-bottom: 0; }
+.cz-range .btn-choco-ghost { color: var(--black); }
+
+.cz-empty {
+  padding: 2rem;
+  text-align: center;
+  color: var(--gray-text);
+  background: var(--white);
+  border: 1px dashed var(--cream-dark);
+  border-radius: var(--radius-lg);
+}
+.cz-empty a { color: var(--cz-pink); font-weight: 600; text-decoration: underline; }
+
+/* ---------- Manifeste ---------- */
+.cz-manifesto {
+  background: var(--cz-dark);
+  color: var(--cz-cream);
+  padding: clamp(3.5rem, 9vw, 6.5rem) 0;
+}
+
+.cz-manifesto-inner {
+  max-width: 640px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.cz-figure {
+  font-family: var(--font-heading);
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 700;
+  line-height: 1;
+  color: var(--cz-pink);
+}
+
+.cz-figure-label {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-bottom: 1.75rem;
+}
+
+.cz-manifesto-text {
+  font-size: clamp(0.95rem, 2vw, 1.08rem);
+  line-height: 1.8;
+  opacity: 0.85;
+  margin-bottom: 2rem;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 900px) {
+  .cz-hero-inner { grid-template-columns: 1fr; text-align: center; }
+  .cz-hero-text  { order: 2; }
+  .cz-hero-media { order: 1; }
+  .cz-hero-media img { max-width: 260px; }
+  .cz-wordmark img { max-width: 300px; }
+  .cz-lead { margin-inline: auto; }
+  .cz-actions { justify-content: center; }
+  .cz-steps { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 560px) {
+  .cz-steps { grid-template-columns: 1fr; gap: 0.75rem; }
+  .cz-step { padding: 1.25rem 1.1rem; }
+  .cz-actions .btn-choco,
+  .cz-actions .btn-choco-ghost { flex: 1 1 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cz-glow, .cz-hero-media img, .cz-strip-inner { animation: none; }
+}
