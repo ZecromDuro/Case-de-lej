@@ -20,6 +20,6 @@ window.initializeMetaPixel = function () {
   s.parentNode.insertBefore(t, s);
   })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
 
-  fbq('init', '27739877699024625');
+  fbq('init', '1742872861173727');
   fbq('track', 'PageView');
 };
